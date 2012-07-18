@@ -1,0 +1,119 @@
+\documentclass[runningheads,a4paper]{llncs}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+
+\usepackage[activate=compatibility]{microtype}
+
+% autoref command
+\usepackage[pdftex,urlcolor=black,colorlinks=true,linkcolor=black,citecolor=black]{hyperref}
+\def\sectionautorefname{Section}
+\def\subsectionautorefname{Subsection}
+\def\figureautorefname{Fig.}
+
+% todo macro
+\usepackage{color}
+\newcommand{\todo}[1]{\noindent\textcolor{red}{{\bf \{TODO}: #1{\bf \}}}}
+
+% listings and Verbatim environment
+\usepackage{fancyvrb}
+\usepackage{relsize}
+\usepackage{listings}
+\usepackage{verbatim}
+\newcommand{\defaultlistingsize}{\fontsize{8pt}{9.5pt}}
+\newcommand{\inlinelistingsize}{\fontsize{9pt}{11pt}}
+\newcommand{\smalllistingsize}{\defaultlistingsize}
+\newcommand{\listingsize}{\defaultlistingsize}
+\RecustomVerbatimCommand{\Verb}{Verb}{fontsize=\inlinelistingsize}
+\RecustomVerbatimEnvironment{Verbatim}{Verbatim}{fontsize=\defaultlistingsize}
+\lstset{frame=lines,captionpos=b,numberbychapter=false,escapechar=§,
+        belowskip=0em,belowcaptionskip=0em,
+        basicstyle=\ttfamily\listingsize\selectfont}
+\definecolor{grey}{RGB}{130,130,130}
+
+% use Courier for code, except for URLs
+\usepackage{url}
+\let\oldttdefault\ttdefault
+\renewcommand{\ttdefault}{pcr}
+\renewcommand{\UrlFont}{\fontfamily{\oldttdefault}\selectfont}
+
+% bullet numbers
+\usepackage{tkz-graph}
+\usetikzlibrary{matrix,arrows,decorations.pathmorphing,shapes}
+\newcommand{\dobulletnumber}[1]{\node[circle,text=white,fill=gray,anchor=west,inner sep=1pt] {\sffamily #1}}
+\newcommand{\bulletnumber}[1]{\tikz[baseline=-2.5,overlay]\dobulletnumber{#1};}
+\newcommand{\bulletref}[1]{\tikz[baseline=-2.5]\dobulletnumber{\fontsize{8}{8}\selectfont#1};}
+
+\hyphenation{}
+
+\usepackage{xspace}
+\newcommand{\api}{{\scshape api}\xspace}
+\newcommand{\apis}{{\scshape api}s\xspace}
+
+\usepackage{comment}
+
+\begin{document}
+
+\title{Adding Realtime Coverage to\\the Google Knowledge Graph}
+\titlerunning{Adding Realtime Coverage to Google's Knowledge Graph}
+\authorrunning{Adding Realtime Coverage to Google's Knowledge Graph}
+
+\author{Thomas Steiner\inst{1}\thanks{Full disclosure: the author is also a~Google employee.} \and
+		Ruben Verborgh\inst{2} \and \\
+		Joaquim Gabarro\inst{1} \and 
+		Rik Van de Walle\inst{2}		
+}
+
+\institute{Universitat Politècnica de Catalunya -- Department {\sc lsi}\\
+		   08034 Barcelona, Spain\\
+		   \urldef{\emails}\UrlFont\path|{tsteiner,gabarro}@lsi.upc.edu|
+		   \emails\rm
+		   \and
+		   Ghent University -- {\sc ibbt},
+		   {\sc elis} -- Multimedia Lab\\
+		   Gaston Crommenlaan 8 bus 201,
+		   B-9050 Ledeberg-Ghent, Belgium\\
+		   \urldef{\emails}\UrlFont\path|{ruben.verborgh,rik.vandewalle}@ugent.be|
+		   \emails\rm		   
+}
+
+\maketitle
+% Start footnotes again by 0.
+\setcounter{footnote}{0}
+
+\begin{abstract}
+In May 2012, the Web search engine Google introduced the so-called Knowledge Graph,
+a~graph that understands real-world entities and their relationships to one another.
+Entities covered by the Knowledge Graph include landmarks, celebrities, cities, sports
+teams, buildings, geographical features, movies, celestial objects, works of art, and more.
+The graph enhances Google search in three main ways:
+by disambiguation of search queries,
+by search-logs-based summarization of key facts,
+and by explorative search suggestions.
+With this paper, we suggest a fourth way of enhancing Web search:
+through the addition of realtime coverage
+of what people say about real-world entities on social networks.
+We report on a~browser extension that seamlessly adds relevant microposts
+from the social networking sites Google+, Facebook, and Twitter
+as a~panel to Knowledge Graph entities.
+In a true Linked Data fashion, we interlink detected concepts in microposts
+with Freebase entities, and evaluate our approach for both relevancy and usefulness.
+The extension developed in the context of this paper was published
+on the Chrome Web Store\footnote{\todo{Add Chrome Web Store URL}}.
+A~screenshot with exemplary extension output for the entity
+\emph{Isabella Stewart Gardner Museum} in Boston, MA,
+can be found online\footnote{\url{http://twitpic.com/a8zgiq/full}}. 
+\end{abstract}
+
+\section{Introduction}
+
+
+% http://lists.w3.org/Archives/Public/semantic-web/2012Jun/0028.html
+%http://sameas.org/ggraph/?key=H4sIAAAAAAAAAONgVuLQz9U3MKs0LgIAXXSnTQwAAAA
+%http://sameas.org/ggraph/?ggid=06y3r
+%https://www.google.com/search?hl=en&sa=X&q=bill+gates&stick=H4sIAAAAAAAAAONgVuLQz9U3MKs0LgIAXXSnTQwAAAA&qscrl=1
+
+\bibliographystyle{abbrv}
+\bibliography{iswc2012}
+
+\end{document}
