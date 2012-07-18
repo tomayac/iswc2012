@@ -1,4 +1,6 @@
 .DS_Store
+*.cls
+*.pdf
 *.aux
 *.bbl
 *.blg
