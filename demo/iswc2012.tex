@@ -90,13 +90,13 @@ The graph enhances Google search in three main ways:
 by disambiguation of search queries,
 by search-logs-based summarization of key facts,
 and by explorative search suggestions.
-With this paper, we suggest a fourth way of enhancing Web search:
+With this paper, we suggest a~fourth way of enhancing Web search:
 through the addition of realtime coverage
 of what people say about real-world entities on social networks.
 We report on a~browser extension that seamlessly adds relevant microposts
 from the social networking sites Google+, Facebook, and Twitter
 as a~panel to Knowledge Graph entities.
-In a true Linked Data fashion, we interlink detected concepts in microposts
+In a~true Linked Data fashion, we interlink detected concepts in microposts
 with Freebase entities, and evaluate our approach for both relevancy and usefulness.
 The extension developed in the context of this paper was published
 on the Chrome Web Store\footnote{\todo{Add Chrome Web Store URL}}.
@@ -107,6 +107,8 @@ can be found online\footnote{\url{http://twitpic.com/a8zgiq/full}}.
 
 \section{Introduction}
 
+\section{Methodology}
+
 \section{Evaluation}
 We have evaluated the extension on 21 real-world entities starting from
 Boston, MA, and then recursively following graph links to related concepts.
@@ -114,16 +116,28 @@ Overall we have considered 100 microposts from 94 unique users
 out of which 72 microposts contained outbound links to overall 94 Web pages.
 Our evaluation criteria were \emph{usefulness} of the information
 contained in both the microposts and the potentially linked-to Web pages,
-and the \emph{relevancy} of the microposts to the real-world entities in question.
+and the \emph{relevancy} of the microposts for the real-world entities in question.
 We have calculated Mean Opinion Scores (MOS) for both criteria.
 For \emph{relevancy}, the MOS is 4.38.
-For \emph{usefulness}, we have calculated a MOS of 3.75.
+For \emph{usefulness}, we have calculated a~MOS of 3.75.
 Our complete evaluation is available online\footnote{\url{http://goo.gl/dbvr4}}.
 In the following, we provide an analysis of the results for both criteria.
 
-\noindent \textbf{Usefulness}
+\noindent \textbf{Usefulness:}
 
-\noindent \textbf{Relevancy}
+
+\noindent \textbf{Relevancy:}
+The high MOS value of 4.38 shows that the considered microposts
+were in the majority of cases considered very relevant.
+On the one hand, this is due to the well-chosen entity titles of graph concepts,
+which oftentimes are either unique enough (\emph{e.g.}, Faneuil HalL),
+or, on the other hand, include some sort of disambiguation aid
+(\emph{e.g.}, Museum of Science, Boston).
+Together with the observations of Spitkovsky and Chang in~\cite{spitkovsky2012}
+who have collected an extensive set of link titles for Wikipedia concepts
+and who have shown that an entirely context-free approach
+to link strings to concepts does consistently well,
+this helps our full-text search approach on social networks.
 
 
 % http://lists.w3.org/Archives/Public/semantic-web/2012Jun/0028.html
