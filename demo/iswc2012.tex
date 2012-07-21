@@ -55,16 +55,18 @@ Entities covered by the Knowledge Graph include landmarks, celebrities, cities, 
 teams, buildings, geographical features, movies, celestial objects, works of art, and more.
 The graph enhances Google search in three main ways:
 by disambiguation of search queries,
-by search-logs-based summarization of key facts,
+by search log-based summarization of key facts,
 and by explorative search suggestions.
 With this paper, we suggest a~fourth way of enhancing Web search:
 through the addition of realtime coverage
 of what people say about real-world entities on social networks.
 We report on a~browser extension that seamlessly adds relevant microposts
-from the social networking sites (SNS) Google+, Facebook, and Twitter
+from the social networking sites Google+, Facebook, and Twitter
 as a~panel to Knowledge Graph entities.
 In a~true Linked Data fashion, we interlink detected concepts in microposts
 with Freebase entities, and evaluate our approach for both relevancy and usefulness.
+% RV: Maybe the abstract is not the right place for URLs.
+%     Perhaps something about how it's freely available and how we demonstrate examples in the paper?
 The extension developed in the context of this paper was published
 on the Chrome Web Store\footnote{\todo{Add Chrome Web Store URL}}.
 A~screenshot with exemplary extension output for the entity
@@ -85,16 +87,20 @@ Our evaluation criteria were \emph{usefulness} of the information
 contained in both the microposts and the potentially linked-to Web pages,
 and the \emph{relevancy} of the microposts for the real-world entities in question.
 We have calculated Mean Opinion Scores (MOS) for both criteria.
+% RV: A reference to MOS here? Unfortunately, I only found http://www.itu.int/rec/T-REC-P.800.1-200303-S/en.
+% RV: If there's space, maybe a justification why we're using MOS.
 For \emph{relevancy}, the MOS was 4.38.
+% RV: For clarity, ``4.38 out of 5'' (if it's correc to say it that way)?
 For \emph{usefulness}, we have calculated a~MOS of 3.75.
 Our complete evaluation is available online\footnote{\url{http://goo.gl/dbvr4}}.
+% RV: Should we anonymize?
 In the following, we provide an interpretation of the MOS results for both criteria.
 
 \paragraph{Usefulness:}
 The MOS value of 3.75 suggests potential for improvement,
 albeit in general the information from the microposts and linked-to Web pages
 was overall still considered useful.
-Revealed insights that were positively rated were, among others, recommended restaurants,
+Positively rated revealed insights were, among others, recommended restaurants,
 suggested things to do, scheduled future or past events,
 special (not necessarily advertisement-like) offers, user-generated photos,
 news articles, travel tips, or stories of everyday life.
@@ -105,13 +111,15 @@ We could track down the relevant but not useful microposts to three categories:
 but that were too long to skim,
 (ii) so-called
 @replies\footnote{\url{http://goo.gl/Ge2RG}}
+% RV: Should we go for the full URL here, which is more descriptive?
+%     Alternatively, we could ``What are @Replies and Mentions?'' (\url{http://goo.gl/Ge2RG}})
 on Twitter that are messages to other Twitter users,
 but that lack the context of the conversation, and finally
 (iii) so-called check-in messages on Google+, and both Twitter and Facebook
 via connected Foursquare profiles\footnote{\url{http://goo.gl/NBuCr}},
 which are geotagged (and thus relevant), however,
 provide no other information besides the fact that a~user was at a~certain place.
-By removing all three types of microposts, the MOS could be increased to 3.94.
+By disregarding all three types of microposts, the MOS could be increased to 3.94.
 
 \paragraph{Relevancy:}
 The high MOS value of 4.38 shows that the microposts
@@ -122,10 +130,11 @@ or, on the other hand, include some sort of disambiguation aid
 (\emph{e.g.}, \emph{Museum of Science, \underline{Boston}}).
 In~\cite{spitkovsky2012}, Spitkovsky and Chang have collected
 an extensive set of link titles for Wikipedia concepts
-and shown that an entirely context-free approach
+and show that an entirely context-free approach
 to linking strings with concepts does consistently well.
-Joint with the observation above, this justifies
-the concept-title-based full-text search approach on SNSs,
+Together with the observation above, this justifies
+% RV: Should we need the SNS abbreviation, we can introduce it earlier.
+the concept-title-based full-text search approach on Social Networking Sites,
 reflected by the MOS value.
 
 
