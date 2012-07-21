@@ -15,40 +15,7 @@
 \usepackage{color}
 \newcommand{\todo}[1]{\noindent\textcolor{red}{{\bf \{TODO}: #1{\bf \}}}}
 
-% listings and Verbatim environment
-\usepackage{fancyvrb}
-\usepackage{relsize}
-\usepackage{listings}
-\usepackage{verbatim}
-\newcommand{\defaultlistingsize}{\fontsize{8pt}{9.5pt}}
-\newcommand{\inlinelistingsize}{\fontsize{9pt}{11pt}}
-\newcommand{\smalllistingsize}{\defaultlistingsize}
-\newcommand{\listingsize}{\defaultlistingsize}
-\RecustomVerbatimCommand{\Verb}{Verb}{fontsize=\inlinelistingsize}
-\RecustomVerbatimEnvironment{Verbatim}{Verbatim}{fontsize=\defaultlistingsize}
-\lstset{frame=lines,captionpos=b,numberbychapter=false,escapechar=§,
-        belowskip=0em,belowcaptionskip=0em,
-        basicstyle=\ttfamily\listingsize\selectfont}
-\definecolor{grey}{RGB}{130,130,130}
-
-% use Courier for code, except for URLs
-\usepackage{url}
-\let\oldttdefault\ttdefault
-\renewcommand{\ttdefault}{pcr}
-\renewcommand{\UrlFont}{\fontfamily{\oldttdefault}\selectfont}
-
-% bullet numbers
-\usepackage{tkz-graph}
-\usetikzlibrary{matrix,arrows,decorations.pathmorphing,shapes}
-\newcommand{\dobulletnumber}[1]{\node[circle,text=white,fill=gray,anchor=west,inner sep=1pt] {\sffamily #1}}
-\newcommand{\bulletnumber}[1]{\tikz[baseline=-2.5,overlay]\dobulletnumber{#1};}
-\newcommand{\bulletref}[1]{\tikz[baseline=-2.5]\dobulletnumber{\fontsize{8}{8}\selectfont#1};}
-
 \hyphenation{Isabella}
-
-\usepackage{xspace}
-\newcommand{\api}{{\scshape api}\xspace}
-\newcommand{\apis}{{\scshape api}s\xspace}
 
 \usepackage{comment}
 
@@ -69,8 +36,8 @@
 		   \urldef{\emails}\UrlFont\path|{tsteiner,gabarro}@lsi.upc.edu|
 		   \emails\rm
 		   \and
-		   Ghent University -- {\sc ibbt},
-		   {\sc elis} -- Multimedia Lab\\
+		   Ghent University -- IBBT,
+		   ELIS -- Multimedia Lab\\
 		   Gaston Crommenlaan 8 bus 201,
 		   B-9050 Ledeberg-Ghent, Belgium\\
 		   \urldef{\emails}\UrlFont\path|{ruben.verborgh,rik.vandewalle}@ugent.be|
