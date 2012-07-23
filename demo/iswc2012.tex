@@ -88,14 +88,35 @@ with the latest relevant posts from the Google+ community for news stories.
 
 In this paper, we have implemented a~social network agnostic approach
 to add realtime coverage to Knowledge Graph results via a~browser extension.
-The extension developed in the context of this paper was published
-on the Chrome Web Store\footnote{Knowledge Graph Socializer extension (\todo{Add Chrome Web Store URL})}.
-A~screenshot with exemplary extension output for the entity
-\emph{``Isabella Stewart Gardner Museum''} in Boston, MA,
-can be found online\footnote{Screenshot of the extension (\url{http://twitpic.com/a8zgiq/full})}. 
+The extension is freely available on the Chrome Web
+Store\footnote{Knowledge Graph Socializer extension (\todo{Add Chrome Web Store URL})},
+an also free Google API key is required.
 
 \section{Methodology}
-
+Chrome extensions are small software programs that users can install
+to enrich their browsing experience.
+Via so-called content scripts, extensions can inject and modify the contents of Web pages.
+We have implemented an extension that gets activated when a~user uses Google to search the Web.
+If the extension detects that the current search engine results page
+has an associated real-world entity in the Knowledge Graph,
+first, it extracts the entity's name and Wikipedia URL.
+Second, the extension performs full-text searches via the search APIs of
+the popular social networking sites Google+, Twitter, and Facebook
+and returns the top $n$ results (configurable) of each network.
+Third, all microposts get analyzed and annotated via part-of-speech tagging.
+For each (pair of) nouns, the Freebase search API is used
+to link these strings with entities (in Freebase),
+a~task commonly known as entity linking~\cite{spitkovsky2012}.
+We follow a~context free most frequent sense approach,
+which, according to Agirre and Edmonds~\cite{agirre2007},
+serves as a~surprisingly strong baseline,
+an observation that we can confirm in our evaluation of micropost \emph{relevancy}
+in \autoref{sec:relevancy}.
+In a~final step, the resulting set of microposts is ordered chronologically
+and attached in form of a~separate panel to the Knowledge Graph result.
+A~screenshot with exemplary extension output for the entity
+\emph{``Isabella Stewart Gardner Museum''} in Boston, MA,
+is online\footnote{Screenshot of the extension (\url{http://twitpic.com/a8zgiq/full})}. 
 
 \section{Evaluation}
 For the evaluation we have considered 100 microposts from 94 unique users
@@ -115,7 +136,7 @@ like perceived quality from the users' perspective.
 Therefore, a~set of standard, subjective tests are conducted,
 where a~number of users rate the quality of test samples
 with scores ranging from 1 (worst) to 5 (best).
-The actual MOS between 1 and 5 is then the arithmetic mean of all individual scores.
+The actual MOS is then the arithmetic mean of all individual scores.
 Given our intrinsically subjective evaluation criteria,
 namely \emph{usefulness} and \emph{relevancy},
 MOS provides a~meaningful way to judge the overall quality of our approach.
@@ -149,7 +170,7 @@ that are geotagged (and thus relevant), however,
 provide no other information besides the fact that a~user was at a~certain place.
 By disregarding all three types of microposts, the MOS could be increased to 3.94.
 
-\paragraph{Relevancy:}
+\paragraph{Relevancy:} \label{sec:relevancy}
 The high MOS of 4.38 shows that the microposts
 were in the majority of cases considered very relevant.
 On the one hand, this is due to the well-chosen titles of concepts in the graph,
@@ -182,11 +203,11 @@ Concluding, in this paper we have shown how realtime coverage
 can be added to Knowledge Graph results via a~browser extension.
 We have evaluated both the \emph{usefulness} and \emph{relevancy}
 of the returned microposts and linked-to Web pages,
-and have given an outlook on how via a~potential enriched comments archive
+and have given an outlook on how via a~potentially enriched comments archive
 about real-world entities, further use cases can be covered.
 Through this work, we have demonstrated how the rather static, structured world
 of real-world facts from the Knowledge Graph
-(foundation date, opening hours, spouse, etc.)
+(with facts like foundation date, opening hours, spouse, etc.),
 can be successfully combined for fun and profit
 with the rather dynamic, \emph{a~priori} unstructured world
 of social network microposts.
