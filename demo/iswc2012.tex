@@ -71,6 +71,23 @@ to see how realtime opinions may have changed since time of writing.
 \end{abstract}
 
 \section{Introduction}
+With the introduction of the Knowledge Graph, the search engine Google
+has made a~significant paradigm shift towards \textit{``things, not strings''}~\cite{singhal2012},
+as a~post on the official Google blog states.
+With the graph, Google now publicly acknowledges efforts in the direction of 
+understanding the difference between queries like ``giants''
+for the football team (New York Giants)
+and ``giants'' for the baseball team (San Francisco Giants).
+Users now get word sense disambiguation support that allows them
+to steer the search engine in the right direction.
+
+Google News is a~news aggregator portal provided and operated by Google.
+Earlier this year, a~new feature called realtime coverage
+was added to the portal~\cite{zuccarino2012}, providing signed in US Google+ users
+with the latest relevant posts from the Google+ community for news stories.
+
+In this paper, we have implemented a~social network agnostic approach
+to add realtime coverage to Knowledge Graph results via a~browser extension.
 The extension developed in the context of this paper was published
 on the Chrome Web Store\footnote{Knowledge Graph Socializer extension (\todo{Add Chrome Web Store URL})}.
 A~screenshot with exemplary extension output for the entity
@@ -78,6 +95,7 @@ A~screenshot with exemplary extension output for the entity
 can be found online\footnote{Screenshot of the extension (\url{http://twitpic.com/a8zgiq/full})}. 
 
 \section{Methodology}
+
 
 \section{Evaluation}
 For the evaluation we have considered 100 microposts from 94 unique users
