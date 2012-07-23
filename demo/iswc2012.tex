@@ -22,8 +22,8 @@
 \begin{document}
 
 \title{Adding Realtime Coverage to\\the Google Knowledge Graph}
-\titlerunning{Adding Realtime Coverage to Google's Knowledge Graph}
-\authorrunning{Adding Realtime Coverage to Google's Knowledge Graph}
+\titlerunning{Adding Realtime Coverage to the Google Knowledge Graph}
+\authorrunning{Adding Realtime Coverage to the Google Knowledge Graph}
 
 \author{Thomas Steiner\inst{1}\thanks{Full disclosure: the author is also a~Google employee.} \and
 		Ruben Verborgh\inst{2} \and \\
@@ -49,10 +49,10 @@
 \setcounter{footnote}{0}
 
 \begin{abstract}
-In May 2012, the Web search engine Google introduced the so-called Knowledge Graph,
+In May 2012, the Web search engine Google has introduced the so-called Knowledge Graph,
 a~graph that understands real-world entities and their relationships to one another.
 Entities covered by the Knowledge Graph include landmarks, celebrities, cities, sports
-teams, buildings, geographical features, movies, celestial objects, works of art, and more.
+teams, buildings, movies, celestial objects, works of art, and more.
 The graph enhances Google search in three main ways:
 by disambiguation of search queries,
 by search log-based summarization of key facts,
@@ -62,82 +62,91 @@ through the addition of realtime coverage
 of what people say about real-world entities on social networks.
 We report on a~browser extension that seamlessly adds relevant microposts
 from the social networking sites Google+, Facebook, and Twitter
-as a~panel to Knowledge Graph entities.
+in form of a~panel to Knowledge Graph entities.
 In a~true Linked Data fashion, we interlink detected concepts in microposts
 with Freebase entities, and evaluate our approach for both relevancy and usefulness.
-% RV: Maybe the abstract is not the right place for URLs.
-%     Perhaps something about how it's freely available and how we demonstrate examples in the paper?
-The extension developed in the context of this paper was published
-on the Chrome Web Store\footnote{\todo{Add Chrome Web Store URL}}.
-A~screenshot with exemplary extension output for the entity
-\emph{Isabella Stewart Gardner Museum} in Boston, MA,
-can be found online\footnote{\url{http://twitpic.com/a8zgiq/full}}. 
+The extension is freely available,
+we invite the reader to reconstruct the examples of this paper
+to see how realtime opinions may have changed since time of writing.
 \end{abstract}
 
 \section{Introduction}
+The extension developed in the context of this paper was published
+on the Chrome Web Store\footnote{Knowledge Graph Socializer extension (\todo{Add Chrome Web Store URL})}.
+A~screenshot with exemplary extension output for the entity
+\emph{``Isabella Stewart Gardner Museum''} in Boston, MA,
+can be found online\footnote{Screenshot of the extension (\url{http://twitpic.com/a8zgiq/full})}. 
 
 \section{Methodology}
 
 \section{Evaluation}
-We have evaluated the extension on 21 real-world entities starting from the concept
-\emph{Boston,~MA}, and then recursively following graph links to related concepts.
-Overall, we have considered 100 microposts from 94 unique users
+For the evaluation we have considered 100 microposts from 94 unique users
 out of which 72 microposts contained outbound links to overall 94 Web pages.
+We have evaluated the extension on 21 real-world entities starting from the concept
+\emph{``Boston,~MA''}, and then recursively following graph links to related concepts.
 Our evaluation criteria were \emph{usefulness} of the information
 contained in both the microposts and the potentially linked-to Web pages,
-and the \emph{relevancy} of the microposts for the real-world entities in question.
-We have calculated Mean Opinion Scores (MOS) for both criteria.
-% RV: A reference to MOS here? Unfortunately, I only found http://www.itu.int/rec/T-REC-P.800.1-200303-S/en.
-% RV: If there's space, maybe a justification why we're using MOS.
-For \emph{relevancy}, the MOS was 4.38.
-% RV: For clarity, ``4.38 out of 5'' (if it's correc to say it that way)?
-For \emph{usefulness}, we have calculated a~MOS of 3.75.
-Our complete evaluation is available online\footnote{\url{http://goo.gl/dbvr4}}.
-% RV: Should we anonymize?
+and the \emph{relevancy} of the microposts to the real-world entities in question.
+We have calculated the Mean Opinion Score (MOS)~\cite{mos1998} for both criteria.
+
+Traditionally, MOS is used for conducting subjective evaluations
+of telephony network transmission quality,
+however, more recently, MOS has also found wider usage in the multimedia community
+for evaluating \emph{per se} subjective things
+like perceived quality from the users' perspective. 
+Therefore, a set of standard, subjective tests are conducted,
+where a number of users rate the quality of test samples
+with scores ranging from 1 (worst) to 5 (best).
+The actual MOS between 1 and 5 is then the arithmetic mean of all individual scores.
+Given our intrinsically subjective evaluation criteria,
+namely \emph{usefulness} and \emph{relevancy},
+MOS provides a meaningful way to judge the overall quality of our approach.
+
+For \emph{relevancy}, the MOS was 4.38 out of 5.
+For \emph{usefulness}, we have calculated a~MOS of 3.75 out of 5.
+Our complete evaluation is available online\footnote{Evaluation (\url{http://goo.gl/dbvr4})}.
 In the following, we provide an interpretation of the MOS results for both criteria.
 
 \paragraph{Usefulness:}
-The MOS value of 3.75 suggests potential for improvement,
-albeit in general the information from the microposts and linked-to Web pages
+The MOS of 3.75 suggests potential for improvement,
+albeit the information from the microposts and linked-to Web pages
 was overall still considered useful.
 Positively rated revealed insights were, among others, recommended restaurants,
 suggested things to do, scheduled future or past events,
 special (not necessarily advertisement-like) offers, user-generated photos,
 news articles, travel tips, or stories of everyday life.
-On closer inspection, the microposts that teared down the \emph{usefulness} MOS value
+On closer inspection, the microposts that teared down the \emph{usefulness} MOS
 were in the majority of cases still rated relatively high for \emph{relevancy}.
 We could track down the relevant but not useful microposts to three categories:
 (i) long microposts (Google+, Facebook) that mentioned the concept somewhere,
 but that were too long to skim,
 (ii) so-called
-@replies\footnote{\url{http://goo.gl/Ge2RG}}
-% RV: Should we go for the full URL here, which is more descriptive?
-%     Alternatively, we could ``What are @Replies and Mentions?'' (\url{http://goo.gl/Ge2RG}})
+@Replies\footnote{``What are @Replies and Mentions?'' (\url{http://goo.gl/Ge2RG})}
 on Twitter that are messages to other Twitter users,
 but that lack the context of the conversation, and finally
-(iii) so-called check-in messages on Google+, and both Twitter and Facebook
-via connected Foursquare profiles\footnote{\url{http://goo.gl/NBuCr}},
-which are geotagged (and thus relevant), however,
+(iii) so-called native check-in messages on Google+,
+together with shared Foursquare check-in messages on Twitter and Facebook
+via connected user profiles\footnote{``Connecting/sharing to Facebook and Twitter'' (\url{http://goo.gl/NBuCr})}
+that are geotagged (and thus relevant), however,
 provide no other information besides the fact that a~user was at a~certain place.
 By disregarding all three types of microposts, the MOS could be increased to 3.94.
 
 \paragraph{Relevancy:}
-The high MOS value of 4.38 shows that the microposts
+The high MOS of 4.38 shows that the microposts
 were in the majority of cases considered very relevant.
 On the one hand, this is due to the well-chosen titles of concepts in the graph,
-which oftentimes are either unique enough (\emph{e.g.}, \emph{\underline{Faneuil} Hall}),
-or, on the other hand, include some sort of disambiguation aid
-(\emph{e.g.}, \emph{Museum of Science, \underline{Boston}}).
+which oftentimes are either unique enough (\emph{e.g.}, \emph{``\underline{Faneuil} Hall''}),
+or on the other hand, include some sort of disambiguation aid
+(\emph{e.g.}, \emph{``Museum of Science, \underline{Boston}''}).
 In~\cite{spitkovsky2012}, Spitkovsky and Chang have collected
 an extensive set of link titles for Wikipedia concepts
-and show that an entirely context-free approach
+and shown that an entirely context-free approach
 to linking strings with concepts does consistently well.
 Together with the observation above, this justifies
-% RV: Should we need the SNS abbreviation, we can introduce it earlier.
-the concept-title-based full-text search approach on Social Networking Sites,
-reflected by the MOS value.
+our concept title-based full-text search approach on social networking sites,
+reflected by the MOS.
 
-
+\section{Future Work and Conclusion}
 % http://lists.w3.org/Archives/Public/semantic-web/2012Jun/0028.html
 %http://sameas.org/ggraph/?key=H4sIAAAAAAAAAONgVuLQz9U3MKs0LgIAXXSnTQwAAAA
 %http://sameas.org/ggraph/?ggid=06y3r
