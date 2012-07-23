@@ -94,13 +94,13 @@ of telephony network transmission quality,
 however, more recently, MOS has also found wider usage in the multimedia community
 for evaluating \emph{per se} subjective things
 like perceived quality from the users' perspective. 
-Therefore, a set of standard, subjective tests are conducted,
-where a number of users rate the quality of test samples
+Therefore, a~set of standard, subjective tests are conducted,
+where a~number of users rate the quality of test samples
 with scores ranging from 1 (worst) to 5 (best).
 The actual MOS between 1 and 5 is then the arithmetic mean of all individual scores.
 Given our intrinsically subjective evaluation criteria,
 namely \emph{usefulness} and \emph{relevancy},
-MOS provides a meaningful way to judge the overall quality of our approach.
+MOS provides a~meaningful way to judge the overall quality of our approach.
 
 For \emph{relevancy}, the MOS was 4.38 out of 5.
 For \emph{usefulness}, we have calculated a~MOS of 3.75 out of 5.
@@ -147,10 +147,41 @@ our concept title-based full-text search approach on social networking sites,
 reflected by the MOS.
 
 \section{Future Work and Conclusion}
-% http://lists.w3.org/Archives/Public/semantic-web/2012Jun/0028.html
-%http://sameas.org/ggraph/?key=H4sIAAAAAAAAAONgVuLQz9U3MKs0LgIAXXSnTQwAAAA
-%http://sameas.org/ggraph/?ggid=06y3r
-%https://www.google.com/search?hl=en&sa=X&q=bill+gates&stick=H4sIAAAAAAAAAONgVuLQz9U3MKs0LgIAXXSnTQwAAAA&qscrl=1
+Each concept in the Knowledge Graph has a~unique identifier~\cite{thalhammer2012}.
+Exploiting this fact and considering that Knowledge Graph results
+have already been interlinked via \texttt{owl:sameAs}
+with Freebase entities~\cite{glaser2012},
+we can imagine a~comments archive of things people said about real-world entities.
+The SIOC Ontology~\cite{breslin2005} by Breslin \emph{et al.}
+provides an ideal vocabulary for such archive,
+as both the context of the comments and their provenance can be described.
+Taking it one step further, we can think of not only archiving user comments,
+but also adding meaning to them~\cite{steiner2013},
+which would allow for interesting use cases
+like searching for places that are frequented by celebrities.
+
+Concluding, in this paper we have shown how realtime coverage
+can be added to Knowledge Graph results via a~browser extension.
+We have evaluated both the \emph{usefulness} and \emph{relevancy}
+of the returned microposts and linked-to Web pages,
+and have given an outlook on how via a~potential enriched comments archive
+about real-world entities, further use cases can be covered.
+Through this work, we have demonstrated how the rather static, structured world
+of real-world facts from the Knowledge Graph
+(foundation date, opening hours, spouse, etc.)
+can be successfully combined for fun and profit
+with the rather dynamic, \emph{a~priori} unstructured world
+of social network microposts.
+
+\section*{Acknowledgments}
+T. Steiner is partially supported by the European Commission
+under Grant No.~248296 FP7 (\mbox{I-SEARCH} project).
+R. Verborgh is funded by Ghent University,
+the Interdisciplinary Institute for Broadband Technology~(\mbox{IBBT}),
+the Institute for the Promotion of Innovation by Science and Technology in Flanders~(\mbox{IWT}),
+the Fund for Scientific Research Flanders~(\mbox{FWO} Flanders), and the European Union.
+J. Gabarr\'o is partially supported by \mbox{SGR}~2009--2015 (\mbox{ALCOM}) and
+\mbox{TIN}--2007--66523~(\mbox{FORMALISM}).
 
 \bibliographystyle{abbrv}
 \bibliography{iswc2012}
