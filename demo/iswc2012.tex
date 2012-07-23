@@ -15,6 +15,9 @@
 \usepackage{color}
 \newcommand{\todo}[1]{\noindent\textcolor{red}{{\bf \{TODO}: #1{\bf \}}}}
 
+\usepackage{xspace}
+\newcommand{\googleplus}{Google\nolinebreak\hspace{0em}\raisebox{.28ex}{\tiny\bf +}\kern-0.2ex\xspace}
+
 \hyphenation{Isabella}
 
 \usepackage{comment}
@@ -61,7 +64,7 @@ With this paper, we suggest a~fourth way of enhancing Web search:
 through the addition of realtime coverage
 of what people say about real-world entities on social networks.
 We report on a~browser extension that seamlessly adds relevant microposts
-from the social networking sites Google+, Facebook, and Twitter
+from the social networking sites \googleplus, Facebook, and Twitter
 in form of a~panel to Knowledge Graph entities.
 In a~true Linked Data fashion, we interlink detected concepts in microposts
 with Freebase entities, and evaluate our approach for both relevancy and usefulness.
@@ -83,8 +86,8 @@ to steer the search engine in the right direction.
 
 Google News is a~news aggregator portal provided and operated by Google.
 Earlier this year, a~new feature called realtime coverage
-was added to the portal~\cite{zuccarino2012}, providing signed in US Google+ users
-with the latest relevant posts from the Google+ community for news stories.
+was added to the portal~\cite{zuccarino2012}, providing signed in US \googleplus users
+with the latest relevant posts from the \googleplus community for news stories.
 
 In this paper, we have implemented a~social network agnostic approach
 to add realtime coverage to Knowledge Graph results via a~browser extension.
@@ -101,7 +104,7 @@ If the extension detects that the current search engine results page
 has an associated real-world entity in the Knowledge Graph,
 first, it extracts the entity's name and Wikipedia URL.
 Second, the extension performs full-text searches via the search APIs of
-the popular social networking sites Google+, Twitter, and Facebook
+the popular social networking sites \googleplus, Twitter, and Facebook
 and returns the top $n$ results (configurable) of each network.
 Third, all microposts get analyzed and annotated via part-of-speech tagging.
 For each (pair of) nouns, the Freebase search API is used
@@ -157,13 +160,13 @@ news articles, travel tips, or stories of everyday life.
 On closer inspection, the microposts that teared down the \emph{usefulness} MOS
 were in the majority of cases still rated relatively high for \emph{relevancy}.
 We could track down the relevant but not useful microposts to three categories:
-(i) long microposts (Google+, Facebook) that mentioned the concept somewhere,
+(i) long microposts (\googleplus, Facebook) that mentioned the concept somewhere,
 but that were too long to skim,
 (ii) so-called
 @Replies\footnote{``What are @Replies and Mentions?'' (\url{http://goo.gl/Ge2RG})}
 on Twitter that are messages to other Twitter users,
 but that lack the context of the conversation, and finally
-(iii) so-called native check-in messages on Google+,
+(iii) so-called native check-in messages on \googleplus,
 together with shared Foursquare check-in messages on Twitter and Facebook
 via connected user profiles\footnote{``Connecting/sharing to Facebook and Twitter'' (\url{http://goo.gl/NBuCr})}
 that are geotagged (and thus relevant), however,
