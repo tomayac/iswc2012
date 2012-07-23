@@ -85,20 +85,20 @@ Users now get word sense disambiguation support that allows them
 to steer the search engine in the right direction.
 
 Google News is a~news aggregator portal provided and operated by Google.
-Earlier this year, a~new feature called realtime coverage
+Earlier this year, a~new feature called \emph{realtime coverage}
 was added to the portal~\cite{zuccarino2012}, providing signed in US \googleplus users
 with the latest relevant posts from the \googleplus community for news stories.
 
-In this paper, we have implemented a~social network agnostic approach
+In this paper, we have implemented a~social network-agnostic approach
 to add realtime coverage to Knowledge Graph results via a~browser extension.
 The extension is freely available on the Chrome Web
-Store\footnote{Knowledge Graph Socializer extension (\todo{Add Chrome Web Store URL})},
+Store\footnote{Knowledge Graph Socializer extension (\todo{Add Chrome Web Store URL})};
 an also free Google API key is required.
 
 \section{Methodology}
 Chrome extensions are small software programs that users can install
 to enrich their browsing experience.
-Via so-called content scripts, extensions can inject and modify the contents of Web pages.
+Via so-called \emph{content scripts}, extensions can inject and modify the contents of Web pages.
 We have implemented an extension that gets activated when a~user uses Google to search the Web.
 If the extension detects that the current search engine results page
 has an associated real-world entity in the Knowledge Graph,
@@ -108,9 +108,9 @@ the popular social networking sites \googleplus, Twitter, and Facebook
 and returns the top $n$ results (configurable) of each network.
 Third, all microposts get analyzed and annotated via part-of-speech tagging.
 For each (pair of) nouns, the Freebase search API is used
-to link these strings with entities (in Freebase),
-a~task commonly known as entity linking~\cite{spitkovsky2012}.
-We follow a~context free most frequent sense approach,
+to link these strings with entities,
+a~task commonly known as \emph{entity linking}~\cite{spitkovsky2012}.
+We follow a~context-free, most frequent sense approach,
 which, according to Agirre and Edmonds~\cite{agirre2007},
 serves as a~surprisingly strong baseline,
 an observation that we can confirm in our evaluation of micropost \emph{relevancy}
@@ -120,16 +120,17 @@ and attached in form of a~separate panel to the Knowledge Graph result.
 A~screenshot with exemplary extension output for the entity
 \emph{``Isabella Stewart Gardner Museum''} in Boston, MA,
 is online\footnote{Screenshot of the extension (\url{http://twitpic.com/a8zgiq/full})}. 
+% RV: Might be wortwhile to add annotations to the screenshot.
 
 \section{Evaluation}
-For the evaluation we have considered 100 microposts from 94 unique users
+For the evaluation, we have considered 100 microposts from 94 unique users,
 out of which 72 microposts contained outbound links to overall 94 Web pages.
 We have evaluated the extension on 21 real-world entities starting from the concept
 \emph{``Boston,~MA''}, and then recursively following graph links to related concepts.
 Our evaluation criteria were \emph{usefulness} of the information
 contained in both the microposts and the potentially linked-to Web pages,
 and the \emph{relevancy} of the microposts to the real-world entities in question.
-We have calculated the Mean Opinion Score (MOS)~\cite{mos1998} for both criteria.
+We have calculated the Mean~Opinion Score (MOS)~\cite{mos1998} for both criteria.
 
 Traditionally, MOS is used for conducting subjective evaluations
 of telephony network transmission quality,
