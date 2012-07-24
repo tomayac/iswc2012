@@ -13,6 +13,9 @@
 
 \usepackage{graphicx}
 
+\usepackage{xspace}
+\newcommand{\googleplus}{Google\nolinebreak\hspace{0em}\raisebox{.28ex}{\tiny\bf +}\kern-0.2ex\xspace}
+
 % listings and Verbatim environment
 \usepackage{color}
 \usepackage{fancyvrb}
@@ -90,7 +93,7 @@ framexbottommargin=-1em,
 %%%  Abstract  %%%
 %%%%%%%%%%%%%%%%%%
 \begin{abstract}
-The chorus of the popular song \emph{TiK ToK} by the artist \emph{Ke\$ha}\footnote{\url{http://www.mtv.com/videos/keha/445445/tik-tok.jhtml}} goes \emph{``Don't stop, make it pop. DJ, blow my speakers up. Tonight, I'mma fight. 'Til we see the sunlight. Tik tok on the clock. But the party don't stop, no.''}. We all know, however, that each party comes to an end eventually. With NiteOutMag\texttrademark, we present a~Chrome Web application that can help people recover what (the hell) happened last night. Among the younger generation, nightlife activities---just about like any other activity---together with related multimedia data get shared online on social networks. The problem is that for one and the same event, the event-related user-generated data may be shared on a~plethora of social networks. Therefore, for this challenge, we introduce an application that leverages description of events from several event databases, social data from multiple social networks, and media data from some media sharing platforms. The data collected is attached to events held in a~given area and further processed to generate an event-centric magazine where each page represents an event illustrated by media. Just like the nightlife of people happens \emph{ad hoc} from one party to the other, the NiteOutMag\texttrademark~application gathers as well all its data on-the-fly, without the burden of pre-compiled data directories. The application is available online at \url{http://goo.gl/fjuE5}. A~screencast showcasing the application is also available\footnote{\url{https://t.co/3R8h2RnW}}.
+The chorus of the popular song \emph{TiK ToK} by the artist \emph{Ke\$ha}\footnote{\url{http://www.mtv.com/videos/keha/445445/tik-tok.jhtml}} goes \emph{``Don't stop, make it pop. DJ, blow my speakers up. Tonight, I'mma fight. 'Til we see the sunlight. Tik tok on the clock. But the party don't stop, no''}. We all know, however, that each party comes to an end eventually. With NiteOutMag\texttrademark, we present a~Chrome Web application that can help people recover what (the hell) happened last night. Among the younger generation, nightlife activities---just about like any other activity---together with related multimedia data get shared online on social networks. The problem is that for one and the same event, the event-related user-generated data may be shared on a~plethora of social networks. With this paper, we introduce an application that leverages description of events from several event databases, social data from multiple social networks, and media data from some media sharing platforms. The data collected is attached to events held in a~given area and further processed to generate an event-centric, magazine style presentation, where each page represents an event illustrated by media. Just like the nightlife of people happens \emph{ad hoc} from one party to the other, the NiteOutMag\texttrademark~app as well gathers all its data on-the-fly, without the burden of pre-compiled data directories. The app is available online.
 \end{abstract}
 
 %\category{H.3.4}{Information Systems}{Information Storage and Retrieval}[World Wide Web]
@@ -103,10 +106,9 @@ The chorus of the popular song \emph{TiK ToK} by the artist \emph{Ke\$ha}\footno
 %%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Introduction}                                                      \label{sec:introduction}
-In March 2012, 901 million monthly active users of the social networking site (SNS) Facebook have uploaded more than 300 million photos on average per day~\cite{Facebook2012}. Many of those photos are event-related and typically illustrate events such as music concerts that a~user has attended. Facebook, however, albeit the biggest, is only one among a~plethora of social networks that people use to share event-related content. In the following, we list the SNSs considered for NiteOutMag\texttrademark.
-
-A~social network is an online service or media platform that focuses on building and reflecting social relationships among people sharing interests and/or activities. In this paper, we consider eleven different social networks that represent all together most of the Western world's market share. In detail, the considered social networks are
-\mbox{Google+} (\url{google.com/+}),
+In March 2012, 901 million monthly active users of the social networking site (SNS) Facebook have uploaded more than 300 million photos on average per day~\cite{Facebook2012}. Many of those photos are event-related and typically illustrate events such as music concerts that a~user has attended. Facebook, however, albeit the biggest, is only one among a~plethora of social networks that people use to share event-related content.
+A~social network is an online service or media platform that focuses on building and reflecting social relationships among people sharing interests and/or activities. For this paper, we consider eleven different social networks that represent all together most of the Western world's market share. In detail, the considered social networks are
+\googleplus (\url{google.com/+}),
 Myspace (\url{myspace.com}),
 Facebook (\url{facebook.com}),
 Twitter ({\url{twitter.com}),
@@ -120,16 +122,16 @@ Twitpic (\url{twitpic.com}), and
 
 The actual detection of events based on information from SNSs is out of scope for this paper. We observe that this has become a~very active research field. For example, Petkos \emph{et al.} propose to detect events using a~multimodal clustering approach~\cite{Petkos2012}. In this paper, we will consider event databases that maintain listings of past and upcoming events using crowd sourcing techniques and that can be queried programmatically. More precisely, we consider four event databases, namely Eventful (\url{eventful.com}), Foursquare \\(\url{foursquare.com}), Upcoming (\url{upcoming.org}), and Google Places (\url{google.com/places}).
 
-In this paper, we propose to generate fully automatically an event-centric magazine where each page correspond to a~known event that is illustrated with media shared on the Web. The remainder of this paper is organized as follows. \autoref{sec:related-work} presents some related work aiming at creating summaries and narratives of events using social media. \autoref{sec:implementation} details our approach: we start from a~given location and we collect the events and their illustrative media in a~recent past before assembling a~digital magazine. In \autoref{sec:experiments}, we present and discuss the results we obtained on an experiment. Finally, we give our conclusions and outline future work in \autoref{sec:conclusion}.
+With this paper, we propose to fully automatically generate an event-centric magazine where each page corresponds to a~known event that is illustrated with media shared on the Web. The application is available online\footnote{NiteOutMag\texttrademark app (\url{http://goo.gl/fjuE5})}. A~screencast showcasing the application is also available\footnote{Screencast of the app (\url{https://t.co/3R8h2RnW})}. 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%
 %%%  2. Related Work  %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Related Work}                                                      \label{sec:related-work}
-Capturing life moments and building narratives using social networks is addressed in~\cite{Atosy2011}, where the authors investigated about the interaction between event stories and the use of social networks to tell them. They proposed Storify~\cite{Storify2012}, a~Web application which supports users to perform story telling and in particular: (1) sorting and organizing the items of an experience similar to the elements of a~story, (2) communicating and discussing strategies on how to guide a~user towards an intended experience. The overall storytelling creation is supervised by the user, who describes the story as a~crafted experience~\cite{Hassenzahl2010}. Streams of news navigate through the social platforms such as Twitter, YouTube. Getting the big picture from them is the objective of Storyful~\cite{Storyful2012}. This application allows the user to navigate through the story created by other users or to create his own aggregating the content available from Twitter, Youtube and adding more.
+Capturing life moments and building narratives using social networks is addressed in~\cite{Atosy2011}, where the authors investigated about the interaction between event stories and the use of social networks to tell them. They proposed Storify~\cite{Storify2012}, a~Web application that supports users to perform story telling. The overall story telling creation  process is supervised by the user, who describes the story as a~crafted experience~\cite{Hassenzahl2010}. Storyful~\cite{Storyful2012} is an application  that allows the user to navigate through stories created by other users or to create own ones, aggregating the content available from Twitter, YouTube, etc.
 
-Events have a~key role in the human life and illustrating events with media items stemming from social networks is a~very active research topic. In~\cite{Brenner2012}, Brenner and Izquierdo present an approach to detect social events and retrieve associated photos in collaboratively annotated photo collections combining data of various modalities such as time, location, and textual and visual features. In~\cite{Liu2011}, Liu \emph{et al.} present a~method for combining semantic inferencing and visual analysis for automatically gathering photos and videos illustrating events. Regarding aesthetic aspects of media compilation, in~\cite{Sandhaus2011}, Sandhaus \emph{et al.} consider visual and aesthetic features for the automatic creation of photo books. Obrador \emph{et al.} use visual and aesthetic features for~a category-based approach to automatically assess the aesthetic appeal of photographs~\cite{Obrador2012}.
+Events play a~key role in human life and illustrating events with media items stemming from social networks is a~very active research topic. In~\cite{Brenner2012}, Brenner and Izquierdo present an approach to detect social events and retrieve associated photos in collaboratively annotated photo collections combining data of various modalities such as time, location, and textual and visual features. In~\cite{Liu2011}, Liu \emph{et al.} present a~method for combining semantic inferencing and visual analysis for automatically gathering photos and videos illustrating events. Regarding aesthetic aspects of media compilation, in~\cite{Sandhaus2011}, Sandhaus \emph{et al.} consider visual and aesthetic features for the automatic creation of photo books. Obrador \emph{et al.} use visual and aesthetic features for~a category-based approach to automatically assess the aesthetic appeal of photographs~\cite{Obrador2012}.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%  3. Implementation  %%%
@@ -162,7 +164,9 @@ We have implemented a~media collector consisting of media extractors for all SNS
 It takes a~search term as input, \emph{e.g.}, \emph{Beach Boys Columbia} for the example above, and then performs a~parallel full-text search using the search APIs of all SNSs. When all the media extractors have responded, a~unified SNS-agnostic output is delivered. We propose a~common alignment schema, illustrated in
 \autoref{lst:media}, which shows the resulting metadata for an exemplary media item.  \autoref{fig:architecture} depicts the overall architecture of the media collector.
 
-\begin{lstlisting}[language=JavaScript,caption={Sample output of the media collector showing a~\mbox{Google+} post (edited for legibility, URLs shortened).},label={lst:media}]
+% Ruben, can we add the \googleplus command to the caption? 
+% I get an error when I try.
+\begin{lstlisting}[language=JavaScript,caption={Sample output of the media collector showing a~Google+ post (edited for legibility, URLs shortened).},label={lst:media}]
 {
   "mediaurl": "http://t.co/ubagkiR9",
   "storyurl": "https://t.co/dau5pBWD",
