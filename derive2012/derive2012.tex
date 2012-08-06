@@ -159,11 +159,31 @@ In this section, we provide the implementation details of the NiteOutMag applica
 
 \subsection{Geocoding}
 The application focuses on events that occurred in a~certain area. While event databases tend to work based on concrete GPS points like
-\mbox{(40.7590110, -73.98447220)}, \emph{i.e.}, a~pair composed of a~latitude and a~longitude, human beings use more human-friendly place names such as \emph{Times Square, New York}. Geocoding is the process of finding the geographic coordinates (generally expressed as latitude and longitude) associated to other geographic data such as an address composed of a~street name and a~zip code. The user can enter an exact address, such as \emph{618 W. 46th St, New York, NY 10036}, or a~very broad area like \emph{Las Vegas}. The returned latitude and longitude pair is always the center of the particular area of interest. In our implementation, we use the Google Geocoding API~\cite{Geocoding2012}.
+\mbox{(40.7590110, -73.98447220)}, \emph{i.e.}, a~pair composed of a~latitude and a~longitude, human beings use more human-friendly place names such as \emph{Times Square, New York}. Geocoding is the process of finding the geographic coordinates (generally expressed as latitude and longitude) associated to other geographic data such as an address composed of a~street name and a~zip code. The user can enter an exact address, like \emph{618 W. 46th St, New York, NY 10036}, or a~very broad area like \emph{Las Vegas}. The returned latitude and longitude pair is always the center of the particular area of interest. In our implementation, we use the Google Geocoding API~\cite{Geocoding2012}.
 
 \subsection{Event Search}
-Based on a~latitude and longitude pair, we search for events that took place near this location (in a~radius of five kilometers) in a~recent past using the respective event search APIs~\cite{Eventful2012,Foursquare2012,GooglePlaces2012,Upcoming2012}. We sanitize the event titles by removing HTML tags, punctuation,
-common abbreviations (such as \emph{w/}, which becomes \emph{with}, or \emph{ft./feat.}, which becomes \emph{featuring}). Event directories can overlap in their coverage. Therefore, we deduplicate the returned set of events based on the simple, yet effective Levenshtein distance on the event titles with an empirically determined editing distance of five. Hence, we are capable to find that the event names \emph{Titanic} and \emph{Titanic 3D} correspond to the same movie event.
+Based on a~latitude and longitude pair, we search for events that took place near this location (in a~radius of five kilometers) in the recent past using the respective event search APIs~\cite{Eventful2012,Foursquare2012,GooglePlaces2012,Upcoming2012}.
+
+\subsection{Event Categories}
+Event databases or calendars typically classify events in different categories.
+Our focus with NiteOutMag being nightlife events,
+wherever possible we filter events to match
+a~manually compiled list of nightlife-type categories.
+For Foursquare, this includes the categories \emph{nightlife} and \emph{arts \& entertainment}.
+For Eventful, this includes the categories \emph{music}, \emph{festivals\_parades}, and \emph{singles\_social}.
+For Upcoming, this includes the categories \emph{Music}, \emph{Performing/Visual Arts}, \emph{Media}, \emph{Festivals}, and \emph{Comedy}.
+For Google Places, no such event filtering is possible.
+Google Places, as the name of the service suggests, focuses on places.
+If an event is known to take place at a~place, its event data are returned by the service.
+In consequence, for Google Places, rather than filtering on event categories,
+we filter on place categories to include typical nightlife places
+such as clubs, discothecs, bars, movie theaters, etc.
+
+\subsection{Event Reconciliation}
+We sanitize event titles by removing HTML tags, punctuation, and
+common abbreviations such as \emph{w/}, which becomes \emph{with}; or \emph{ft./feat.}, which becomes \emph{featuring}.
+Event directories can overlap in their coverage.
+Therefore, we reconcile the returned set of events based on the simple, yet effective Levenshtein distance on the event titles with an empirically determined editing distance of five. In consequence, we are capable to detect that event names like \emph{e.g.}, \emph{Titanic} and \emph{Titanic 3D} correspond to the same movie event.
 
 \subsection{Media Search} \label{sec:media-search}
 Unlike event search, media search in our application is \emph{not} based on geolocation. According to a~study performed in May 2012 by Seline~\cite{Quora2012},
