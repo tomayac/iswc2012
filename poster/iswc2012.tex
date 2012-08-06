@@ -9,7 +9,7 @@
 \usepackage[activate=compatibility]{microtype}
 
 % autoref command
-%\usepackage[pdftex,urlcolor=black,colorlinks=true,linkcolor=black,citecolor=black]{hyperref}
+\usepackage[pdftex,urlcolor=black,colorlinks=true,linkcolor=black,citecolor=black]{hyperref}
 \def\sectionautorefname{Section}
 \def\subsectionautorefname{Subsection}
 \def\figureautorefname{Fig.}
@@ -73,7 +73,7 @@
 		Ruben Verborgh\inst{2} \and
         Rapha\"el Troncy\inst{3} \and\\
 		Giuseppe Rizzo\inst{3} \and
-		Jos\"e Luis Redondo Garcia\inst{3}		
+		José Luis Redondo Garcia\inst{3}		
 }
 
 \institute{Universitat Politècnica de Catalunya, Barcelona, Spain\\
@@ -83,7 +83,8 @@
   \email{ruben.verborgh@ugent.be}
   \and
   EURECOM, Sophia Antipolis, France\\
-  \email{raphael.troncy@eurecom.fr}
+  \urldef{\emails}\UrlFont\path|{troncy,rizzo,redondo}@eurecom.fr|
+  \emails\rm
 }
 
 \maketitle
@@ -94,7 +95,7 @@
 \begin{abstract}
 With NiteOutMag, we present a Chrome Web application that can help people recover what (the hell) happened last night. Among the younger generation, nightlife activities---just about like any other activity---together with related multimedia data get shared online on social networks. The problem is that for one and the same event, the event-related user-generated data may be shared on a plethora of social networks. With this paper, we introduce an application that leverages description of events from several event databases, social data from multiple social networks, and media from some image and video sharing platforms. The data collected is attached to events held in a given area and further processed to generate an event-centric, magazine style presentation, where each page represents an event illustrated by media.
 \end{abstract}
-\keywords{Event illustration, event reconciliation, media finder, magazine}
+\keywords{Event Illustration, Event Reconciliation, Media Finder, Magazine}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%
 %%%  1. Introduction  %%%
