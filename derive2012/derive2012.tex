@@ -161,8 +161,8 @@ In this section, we provide the implementation details of the NiteOutMag applica
 The application focuses on events that occurred in a~certain area. While event databases tend to work based on concrete GPS points like
 \mbox{(40.7590110, -73.98447220)}, \emph{i.e.}, a~pair composed of a~latitude and a~longitude, human beings use more human-friendly place names such as \emph{Times Square, New York}. Geocoding is the process of finding the geographic coordinates (generally expressed as latitude and longitude) associated to other geographic data such as an address composed of a~street name and a~zip code. The user can enter an exact address, like \emph{618 W. 46th St, New York, NY 10036}, or a~very broad area like \emph{Las Vegas}. The returned latitude and longitude pair is always the center of the particular area of interest. In our implementation, we use the Google Geocoding API~\cite{Geocoding2012}.
 
-\subsection{Event Search}
-Based on a~latitude and longitude pair, we search for events that took place near this location (in a~radius of five kilometers) in the recent past using the respective event search APIs~\cite{Eventful2012,Foursquare2012,GooglePlaces2012,Upcoming2012}.
+\subsection{Event Search} \label{sec:event-search}
+Based on a~latitude and longitude pair, we search for events that took place near this location (in a~radius of five kilometers) in the recent past using the respective event search APIs from Eventful, Foursquare,Google Places, and Upcoming~\cite{Eventful2012,Foursquare2012,GooglePlaces2012,Upcoming2012}.
 
 \subsection{Event Categories}
 Event databases or calendars typically classify events in different categories.
@@ -177,7 +177,7 @@ Google Places, as the name of the service suggests, focuses on places.
 If an event is known to take place at a~place, its event data are returned by the service.
 In consequence, for Google Places, rather than filtering on event categories,
 we filter on place categories to include typical nightlife places
-such as clubs, discothecs, bars, movie theaters, etc.
+such as clubs, discothèques, bars, movie theaters, etc.
 
 \subsection{Event Reconciliation}
 We sanitize event titles by removing HTML tags, punctuation, and
@@ -186,6 +186,8 @@ Event directories can overlap in their coverage.
 Therefore, we reconcile the returned set of events based on the simple, yet effective Levenshtein distance of the event titles with an empirically determined editing distance of five.
 If in a~final check also the event start times are within a~window of one hour,
 we regard the events the same.
+We recall that due to our event search approach outlined in Subsection~\ref{sec:event-search},
+events are already geographically close.
 In consequence, we are capable to detect that two events with similar event titles like, \emph{e.g.}, \emph{Titanic} and \emph{Titanic 3D} and start times of 8:00PM and 8:30PM most probably correspond to the same movie event.
 
 \subsection{Event Modeling with Schema.org}
@@ -260,14 +262,45 @@ The NiteOutMag application requires the Chrome browser. Download the application
 Once there, drag and drop it into the \url{chrome://chrome/extensions/} page in the browser. When you drop it on the extensions page, you will notice an install option popping up. When you agree to install, you will see the standard installation dialog that informs you about the rights that the application is requesting. It needs access to the event databases and media search APIs we have mentioned before.
 
 \section{Evaluation}
+We have conducted a~short user study whose survey is publicly
+available\footnote{\url{https://docs.google.com/spreadsheet/viewform?formkey=dEY1aVJfSk5aQnVPRzBlSmVIUEVTa1E6MQ\#gid=0}}.
+Overall 12 male (unfortunately no female followed our open call for participation) participants with an average social media experience of 3.9
+(all values are between 1 and 5) have evaluated NiteOutMag.
+We asked participants to evaluate the application for the cities of Las Vegas and Hong Kong.
+Las Vegas is known to have good event coverage in the considered event databases,
+whereas Hong Kong is known to have bad coverage.
+Further, we asked them to evaluate the application with a city of choice.
+Our evaluation criteria were
+\emph{speed} at which a~magazine for a given city was generated,
+\emph{usefulness} of the selected events,
+\emph{relevancy} of the selected images, and
+\emph{attractiveness} of the events and media.
+Further, we allowed for optional free-form answers to the following questions: 
+``How could NiteOutMag be improved?'', ``How many pages did you count in NiteOutMag?'', and
+``How many event sources did you count in NiteOutMag?''.
 
+\subsection{Number of Pages and Number of Event Sources}
+For Las Vegas, on average participants counted 10.3 pages in their magazines and 2.0 event sources,
+for Hong Kong participants counted 1 page and 0.9 event sources,
+and for their city of choice participants counted 4.2 pages and 1.3 event sources.
+This reflects the initial observation that Hong Kong has bad, and Las Vegas good event coverage, with the random cities of choice ranging in between.
 
-%%%%%%%%%%%%%%%%%%%%%%%%
-%%%  4. Experiments  %%%
-%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Suggested Improvements}
+The most demanded feature was to add more content to the magazine.
+More event sources and more social networks are ways to address this request.
+As pages are generated and removed dynamically,
+sometimes when not enough media content is found for an event,
+pages get removed when a~user is looking at them.
+This causes confusion, however, is owed to the inflexible API of \texttt{turn.js}~\cite{TurnJs2012}.
+We will investigate ways to add pages
+only once it is known that enough event content is available.
+An often suggested feature was to load page contents only on demand
+rather than all at once for the whole magazine,
+which is the current implementation.
+Again the API of \texttt{turn.js}
+and the desire to allow for fast page flipping makes it hard to find a~good compromise,
+however, a~reimplementation of the page flipping code can take this request into account.
 
-\section{Experiments}                                                       \label{sec:experiments}
-We have evaluated our application with the top ten list of United States cities by population\footnote{\url{http://en.wikipedia.org/wiki/List_of_United_States_cities_by_population}} with promising results.
 
 \begin{figure}[b!]
 \centering
@@ -276,15 +309,12 @@ We have evaluated our application with the top ten list of United States cities 
 \label{fig:screenshot}
 \end{figure}
 
-\subsection{Query Examples}
-In general, big cities and well-known places of interest reveal good results due to the high density of events. Popular examples are among others (\emph{Fisherman's Wharf, San Francisco}), (\emph{Times Square, New York}), (\emph{Piccadilly Circus, London}), or simply (\emph{Ibiza}). A~manually compiled list of America's top party cities from the magazine Maxim\footnote{\url{http://www.maxim.com/movies/americas-top-10-party-cities}} also reveals interesting results.
-
 \subsection{Discussion and Future Work}
 The results stand and fall with the quality of the events in the event databases. One of the problem we encounter are event titles such as
 \emph{Kandyland 2012 @ the Playboy Mansion -- 1.877.VIP.MANSION}\footnote{\url{http://t.co/YUm7FtmE}} which combine the event title with the venue name
 and a~vanity contact phone number. The detection of such composed titles is difficult and requires advanced linguistic processing.
 
-Event deduplication is a~second issue. The two movie events \emph{The Avengers} and \emph{Marvel's The Avengers 3D} are the same for a~human being. However, for a~machine, the duplication is harder to detect. Media item deduplication is a~task that we have left for future work.
+Event reconciliation is a~second issue. The two movie events \emph{The Avengers} and \emph{Marvel's The Avengers 3D} are the same for a~human being. However, for a~machine, the duplication is harder to detect. Media item reconciliation improvement is a~task that we have left for future work.
 
 The system's response time is improvable. The main issue here is the browser-enforced maximum number of simultaneous HTTP requests. With our current four event sources that we have limited to ten events per source, we already have up to forty events that we need to search media items for. As outlined before in Section~\ref{sec:media-search}, we have opted for a~two-tier approach in order to improve the recall, which effectively means two search requests per event.
 Assuming that for each search request we get on average only two media items, we have roundabout $5+40*2*2=165$ HTTP requests for only one magazine. We will investigate ways to improve the application's responsiveness in the future.
