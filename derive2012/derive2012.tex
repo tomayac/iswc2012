@@ -63,7 +63,7 @@ framexbottommargin=-1em,
 
 \begin{document}
 
-\title{Reconciling and Modeling Nightlife Events\\ from Public Event Databases or Calendars and\\ Representing them in a Magazine-Like Way}
+\title{Reconciling and Modeling Nightlife Events\\ from Public Event Databases or Calendars and\\ Representing them in a~Magazine-Like Way}
 \titlerunning{NiteOutMag}
 \authorrunning{NiteOutMag}
 
@@ -137,7 +137,7 @@ The actual detection of events based on information from SNSs is out of scope fo
 
 \subsection{Contributions and Paper Structure}
 In this paper, we propose an approach to fully automatically generate an event-centric magazine where each page corresponds to a~known event that is illustrated with media shared on the Web.
-The application is available online for testing purposes at \url{http://goo.gl/fjuE5}. A~screencast showcasing the application is available at \url{https://t.co/3R8h2RnW}.
+The application is available online for testing purposes at \url{http://users.restdesc.org/rgverbor/tmp/NiteOutMag.crx}. A~screencast showcasing the application is available at \url{http://youtube.googleapis.com/v/5pEiy2RHBjY}.
 
 The remainder of this paper is organized as follows. Section~\ref{sec:related-work} presents some related work aiming at creating summaries and narratives of events using social media. Section~\ref{sec:implementation} details our approach: we start from a~given location and we collect the events and their illustrative media in a~recent past before assembling a~digital magazine. In Section~\ref{sec:experiments}, we present and discuss the results we obtained on an experiment. Finally, we give our conclusions and outline future work in Section~\ref{sec:conclusion}.
 
@@ -184,7 +184,7 @@ We sanitize event titles by removing HTML tags, punctuation, and
 common abbreviations such as \emph{w/}, which becomes \emph{with}; or \emph{ft./feat.}, which becomes \emph{featuring}.
 Event directories can overlap in their coverage.
 Therefore, we reconcile the returned set of events based on the simple, yet effective Levenshtein distance of the event titles with an empirically determined editing distance of five.
-If in a final check also the event start times are within a window of one hour,
+If in a~final check also the event start times are within a~window of one hour,
 we regard the events the same.
 In consequence, we are capable to detect that two events with similar event titles like, \emph{e.g.}, \emph{Titanic} and \emph{Titanic 3D} and start times of 8:00PM and 8:30PM most probably correspond to the same movie event.
 
@@ -193,12 +193,12 @@ The considered event databases use different event modeling schemas.
 In order to have a~common event representation internally, 
 we use \texttt{schema:Event} properties~\cite{schemaorgevent} from the schema.org vocabulary,
 which are also mapped to \texttt{dbo:Event} from the DBpedia Ontology~\cite{dbpedia2schemaorg}.
-We maintain a straight-forward alignment of the particular event database properties
+We maintain a~straight-forward alignment of the particular event database properties
 from Eventful, Foursquare, Upcoming, and Google Places to schema.org properties.
 Concretely, we support the following properties:
 \begin{itemize}
   \item \texttt{name} The name of the event.
-  \item \texttt{description} A short description of the event.
+  \item \texttt{description} A~short description of the event.
   \item \texttt{location} The location of the event.
   \item \texttt{startDate} The start date and time of the event (in ISO 8601 date format).
   \item \texttt{endDate} The end date and time of the event (in ISO 8601 date format).
@@ -258,6 +258,9 @@ In order to create the illusion of a~real magazine, the ability of flipping from
 \subsection{Installation Instructions}
 The NiteOutMag application requires the Chrome browser. Download the application from the URL \url{http://goo.gl/fjuE5} to the local file system.
 Once there, drag and drop it into the \url{chrome://chrome/extensions/} page in the browser. When you drop it on the extensions page, you will notice an install option popping up. When you agree to install, you will see the standard installation dialog that informs you about the rights that the application is requesting. It needs access to the event databases and media search APIs we have mentioned before.
+
+\section{Evaluation}
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%
 %%%  4. Experiments  %%%
