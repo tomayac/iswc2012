@@ -139,7 +139,7 @@ The actual detection of events based on information from SNSs is out of scope fo
 In this paper, we propose an approach to fully automatically generate an event-centric magazine where each page corresponds to a~known event that is illustrated with media shared on the Web.
 The application is available online for testing purposes at \url{http://goo.gl/fjuE5}. A~screencast showcasing the application is available at \url{https://t.co/3R8h2RnW}.
 
-The remainder of this paper is organized as follows. \autoref{sec:related-work} presents some related work aiming at creating summaries and narratives of events using social media. \autoref{sec:implementation} details our approach: we start from a~given location and we collect the events and their illustrative media in a~recent past before assembling a~digital magazine. In \autoref{sec:experiments}, we present and discuss the results we obtained on an experiment. Finally, we give our conclusions and outline future work in \autoref{sec:conclusion}.
+The remainder of this paper is organized as follows. Section~\ref{sec:related-work} presents some related work aiming at creating summaries and narratives of events using social media. Section~\ref{sec:implementation} details our approach: we start from a~given location and we collect the events and their illustrative media in a~recent past before assembling a~digital magazine. In Section~\ref{sec:experiments}, we present and discuss the results we obtained on an experiment. Finally, we give our conclusions and outline future work in Section~\ref{sec:conclusion}.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%
 %%%  2. Related Work  %%%
@@ -183,23 +183,44 @@ such as clubs, discothecs, bars, movie theaters, etc.
 We sanitize event titles by removing HTML tags, punctuation, and
 common abbreviations such as \emph{w/}, which becomes \emph{with}; or \emph{ft./feat.}, which becomes \emph{featuring}.
 Event directories can overlap in their coverage.
-Therefore, we reconcile the returned set of events based on the simple, yet effective Levenshtein distance on the event titles with an empirically determined editing distance of five. In consequence, we are capable to detect that event names like \emph{e.g.}, \emph{Titanic} and \emph{Titanic 3D} correspond to the same movie event.
+Therefore, we reconcile the returned set of events based on the simple, yet effective Levenshtein distance of the event titles with an empirically determined editing distance of five.
+If in a final check also the event start times are within a window of one hour,
+we regard the events the same.
+In consequence, we are capable to detect that two events with similar event titles like, \emph{e.g.}, \emph{Titanic} and \emph{Titanic 3D} and start times of 8:00PM and 8:30PM most probably correspond to the same movie event.
+
+\subsection{Event Modeling with Schema.org}
+The considered event databases use different event modeling schemas.
+In order to have a~common event representation internally, 
+we use \texttt{schema:Event} properties~\cite{schemaorgevent} from the schema.org vocabulary,
+which are also mapped to \texttt{dbo:Event} from the DBpedia Ontology~\cite{dbpedia2schemaorg}.
+We maintain a straight-forward alignment of the particular event database properties
+from Eventful, Foursquare, Upcoming, and Google Places to schema.org properties.
+Concretely, we support the following properties:
+\begin{itemize}
+  \item \texttt{name} The name of the event.
+  \item \texttt{description} A short description of the event.
+  \item \texttt{location} The location of the event.
+  \item \texttt{startDate} The start date and time of the event (in ISO 8601 date format).
+  \item \texttt{endDate} The end date and time of the event (in ISO 8601 date format).
+  \item \texttt{url} The URL of the event.
+  \item \texttt{image} The URL of an image of the event.
+\end{itemize}
+At this stage of NiteOutMag, we do not expose these event representations externally,
+however, have shown how events coming from different sources
+can be exposed in a~related project~\cite{Liu2011}.
 
 \subsection{Media Search} \label{sec:media-search}
 Unlike event search, media search in our application is \emph{not} based on geolocation. According to a~study performed in May 2012 by Seline~\cite{Quora2012},
-only roughly 1\% of all microposts on Twitter are geotagged. In addition to that, as our approach covers more SNSs than Twitter, we need to consider that not all SNSs support geotagging of content. In consequence, we use a~two-tier approach for media search. Let's illustrate this by a~real event of a~Beach Boys concert\footnote{\url{http://www.thebeachboys.com/\#tour}} in the Merriweather Post Pavilion in Columbia, MD. The event name is \emph{Beach Boys},
+only roughly 1\% of all microposts on Twitter are geotagged. In addition to that, as our approach covers more SNSs than Twitter, we need to consider that not all SNSs support geotagging of content. In consequence, we use a~two-tier approach for media search. We illustrate this by a~real event of a~Beach Boys concert\footnote{\url{http://www.thebeachboys.com/\#tour}} in the Merriweather Post Pavilion in Columbia, MD. The event title is \emph{Beach Boys},
 the venue name is \emph{Merriweather Post Pavilion}, and the area is \emph{Columbia, Maryland (MD)}. We define as \emph{human-friendly address} the first part up to the comma of the \texttt{formatted\_address} field in the Google Geocoding API~\cite{Geocoding2012}, \emph{i.e.}, \emph{Columbia} in this case. Human beings aware of the local context do not need to disambiguate, \emph{i.e.}, there is no need to explicitly state \emph{MD}. The two-tier approach consists thus of a~full-text search for:
 \begin{itemize}
- \item \emph{(i)} the (event name) $+$ the (venue name), and
- \item \emph{(ii)} the (event name) $+$ the (human-friendly address).
+ \item \emph{(i)} the (event title) $+$ the (venue name), and
+ \item \emph{(ii)} the (event title) $+$ the (human-friendly address).
 \end{itemize}
 
-We have implemented a~media collector consisting of media extractors for all SNSs listed in \autoref{sec:introduction}.
-% DOUBLE-BLIND REVIEW
-% This media collector was first described in~\cite{Khrouf2012}.
-% DOUBLE-BLIND REVIEW
-It takes a~search term as input, \emph{e.g.}, \emph{Beach Boys Columbia} for the example above, and then performs a~parallel full-text search using the search APIs of all SNSs. When all the media extractors have responded, a~unified SNS-agnostic output is delivered. We propose a~common alignment schema, illustrated in
-\autoref{lst:media}, which shows the resulting metadata for an exemplary media item.  \autoref{fig:architecture} depicts the overall architecture of the media collector.
+We have implemented a~media collector consisting of media extractors for all SNSs listed in Section~\ref{sec:introduction}.
+This media collector was first described in~\cite{Khrouf2012}.
+It takes a~search term as input, \emph{e.g.}, \emph{Beach Boys Columbia} for the example above, and then performs a~parallel full-text search using the search APIs of all SNSs. When all the media extractors have responded, a~unified SNS-agnostic output is delivered. We propose a~common alignment schema, illustrated in Listing~\ref{lst:media}, which shows the resulting metadata for an exemplary media item. Fig.~\ref{fig:architecture} depicts the overall architecture of the media collector.
 
 \begin{lstlisting}[language=JavaScript,caption={Sample output of the media collector showing a~\mbox{Google+} post (edited for legibility, URLs shortened).},label={lst:media}]
 {
@@ -232,7 +253,7 @@ It takes a~search term as input, \emph{e.g.}, \emph{Beach Boys Columbia} for the
 \end{figure*}
 
 \subsection{Magazine Layout}
-In order to create the illusion of a~real magazine, the ability of flipping from page to page needs to be as credible as possible. The open-source library \texttt{turn.js} by Emmanuel García~\cite{TurnJs2012} allows for the dynamic creation of magazines solely based on HTML5 technologies with a~very realistic page flip effect. We treat each event as one page of the magazine, add the event metadata as headline and subheading of the page, and arrange the images and accompanying microposts to fill up the page as illustration. For each event, we use the image with the highest resolution as background image of the page in order to create a~lifestyle magazine appearance. For additional print-like look and feel, we use drop caps (\autoref{fig:screenshot}). The title page gets dynamically created based on a~Google image search for the (human-friendly address) $+$ the keyword (nightlife).
+In order to create the illusion of a~real magazine, the ability of flipping from page to page needs to be as credible as possible. The open-source library \texttt{turn.js} by Emmanuel García~\cite{TurnJs2012} allows for the dynamic creation of magazines solely based on HTML5 technologies with a~very realistic page flip effect. We treat each event as one page of the magazine, add the event metadata as headline and subheading of the page, and arrange the images and accompanying microposts to fill up the page as illustration. For each event, we use the image with the highest resolution as background image of the page in order to create a~lifestyle magazine appearance. For additional print-like look and feel, we use drop caps (Fig.~\ref{fig:screenshot}). The title page gets dynamically created based on a~Google image search for the (human-friendly address) $+$ the keyword (nightlife).
 
 \subsection{Installation Instructions}
 The NiteOutMag application requires the Chrome browser. Download the application from the URL \url{http://goo.gl/fjuE5} to the local file system.
@@ -257,12 +278,12 @@ In general, big cities and well-known places of interest reveal good results due
 
 \subsection{Discussion and Future Work}
 The results stand and fall with the quality of the events in the event databases. One of the problem we encounter are event titles such as
-\emph{Kandyland 2012 @ the Playboy Mansion -- 1.877.VIP.MANSION}\footnote{\url{http://t.co/YUm7FtmE}} which combine the event name with the venue name
+\emph{Kandyland 2012 @ the Playboy Mansion -- 1.877.VIP.MANSION}\footnote{\url{http://t.co/YUm7FtmE}} which combine the event title with the venue name
 and a~vanity contact phone number. The detection of such composed titles is difficult and requires advanced linguistic processing.
 
 Event deduplication is a~second issue. The two movie events \emph{The Avengers} and \emph{Marvel's The Avengers 3D} are the same for a~human being. However, for a~machine, the duplication is harder to detect. Media item deduplication is a~task that we have left for future work.
 
-The system's response time is improvable. The main issue here is the browser-enforced maximum number of simultaneous HTTP requests. With our current four event sources that we have limited to ten events per source, we already have up to forty events that we need to search media items for. As outlined before in \autoref{sec:media-search}, we have opted for a~two-tier approach in order to improve the recall, which effectively means two search requests per event.
+The system's response time is improvable. The main issue here is the browser-enforced maximum number of simultaneous HTTP requests. With our current four event sources that we have limited to ten events per source, we already have up to forty events that we need to search media items for. As outlined before in Section~\ref{sec:media-search}, we have opted for a~two-tier approach in order to improve the recall, which effectively means two search requests per event.
 Assuming that for each search request we get on average only two media items, we have roundabout $5+40*2*2=165$ HTTP requests for only one magazine. We will investigate ways to improve the application's responsiveness in the future.
 
 %%%%%%%%%%%%%%%%%%%%%%%
