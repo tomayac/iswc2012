@@ -1,17 +1,19 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%  Modeling and Reconciling Nightlife Events from Public Event Databases for the Automatic Generation of Magazines  %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \documentclass[runningheads,a4paper]{llncs}
 
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
-
 \usepackage[activate=compatibility]{microtype}
+\usepackage{graphicx}
 
 % autoref command
 \usepackage[pdftex,urlcolor=black,colorlinks=true,linkcolor=black,citecolor=black]{hyperref}
 \def\sectionautorefname{Section}
 \def\subsectionautorefname{Subsection}
 \def\figureautorefname{Fig.}
-
-\usepackage{graphicx}
 
 % listings and Verbatim environment
 \usepackage{color}
@@ -26,8 +28,7 @@
 \RecustomVerbatimCommand{\Verb}{Verb}{fontsize=\inlinelistingsize}
 \RecustomVerbatimEnvironment{Verbatim}{Verbatim}{fontsize=\defaultlistingsize}
 \lstset{frame=lines,captionpos=b,numberbychapter=false,escapechar=§,
-        aboveskip=0.5em,belowskip=0em,abovecaptionskip=0em,belowcaptionskip=0em,
-framexbottommargin=-1em,
+        aboveskip=0.5em,belowskip=0em,abovecaptionskip=0em,belowcaptionskip=0em,framexbottommargin=-1em,
         basicstyle=\ttfamily\listingsize\selectfont}
 
 \definecolor{lightgray}{rgb}{.9,.9,.9}
@@ -56,24 +57,25 @@ framexbottommargin=-1em,
 \usepackage{xspace}
 \newcommand{\googleplus}{Google\nolinebreak\hspace{0em}\raisebox{.28ex}{\tiny\bf +}\kern-0.2ex\xspace}
 
-
 \hyphenation{NiteOutMag}
 
 \usepackage{comment}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%  Beginning of document  %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \begin{document}
 
-\title{Reconciling and Modeling Nightlife Events\\ from Public Event Databases or Calendars and\\ Representing them in a~Magazine-Like Way}
+\title{Modeling and Reconciling Nightlife Events from Public Event Databases for the Automatic Generation of Magazines}
 \titlerunning{Reconciling and Modeling Nightlife Events}
-\authorrunning{Steiner, Verborgh, Troncy, \emph{et al.}}
-
 
 \author{Thomas Steiner\inst{1} \and
 		Ruben Verborgh\inst{2} \and
         Rapha\"el Troncy\inst{3} \and\\
 		Giuseppe Rizzo\inst{3} \and
 		José Luis Redondo Garcia\inst{3} \and	\\
-		Joaquim Gabarro\inst{1} \and 
+		Joaquim Gabarro\inst{1} \and
 		Rik~Van~de~Walle\inst{2}		
 }
 
@@ -87,7 +89,7 @@ framexbottommargin=-1em,
 		   Gaston Crommenlaan 8 bus 201,
 		   B-9050 Ledeberg-Ghent, Belgium\\
 		   \urldef{\emails}\UrlFont\path|{ruben.verborgh,rik.vandewalle}@ugent.be|
-		   \emails\rm		   
+		   \emails\rm		
 		  \and
 		  EURECOM, Sophia Antipolis, France\\
 		   \urldef{\emails}\UrlFont\path|{troncy,rizzo,redondo}@eurecom.fr|
@@ -102,13 +104,9 @@ framexbottommargin=-1em,
 %%%  Abstract  %%%
 %%%%%%%%%%%%%%%%%%
 \begin{abstract}
-The chorus of the popular song \emph{TiK ToK} by the artist \emph{Ke\$ha}\footnote{\url{http://www.mtv.com/videos/keha/445445/tik-tok.jhtml}} goes \emph{``Don't stop, make it pop. DJ, blow my speakers up. Tonight, I'mma fight. 'Til we see the sunlight. Tik tok on the clock. But the party don't stop, no''}. We all know, however, that each nightlife event, be it a~party, concert, or bar evening, comes to an end eventually. With NiteOutMag, we present a~Chrome Web application that can help people revive nightlife events in the recent past. Among the younger generation, nightlife activities---just like any other activity---together with related multimedia data get shared online on social networks. The problem is that for one and the same event, the event-related user-generated data may be shared on a~plethora of social networks. Therefore, with this paper, we introduce an application that extracts, reconciles, and models events from several event databases or calendars, social data from multiple social networks, and media data from some media sharing platforms. The collected data is attached to events held in a~given area and further processed to generate an event-centric magazine where each page represents an event illustrated by media items.
+The chorus of the popular song \emph{TiK ToK} by the artist \emph{Ke\$ha}\footnote{\url{http://www.mtv.com/videos/keha/445445/tik-tok.jhtml}} goes \emph{``Don't stop, make it pop. DJ, blow my speakers up. Tonight, I'mma fight. 'Til we see the sunlight. Tik tok on the clock. But the party don't stop, no''}. We all know, however, that each nightlife event, be it a~party, concert, or bar evening, comes to an end eventually. With NiteOutMag, we present a~Chrome Web application that can help people revive nightlife events in the recent past. Among the younger generation, nightlife activities---just like any other activity---together with related multimedia data get shared online on social networks. The problem is that for one and the same event, the event-related user-generated data may be shared on a~plethora of social networks. Therefore, with this paper, we introduce an application that extracts, reconciles, and models events from several event databases or calendars, social data from multiple social networks, and media from some photo and video sharing platforms. The collected data is attached to events held in a~given area and further processed to generate an event-centric magazine where each page represents an event illustrated by media items.
 \end{abstract}
-
-%\category{H.3.4}{Information Systems}{Information Storage and Retrieval}[World Wide Web]
-%\category{H.3.5}{Online Information Services}{Web-based services}
-
-%\keywords{}
+\keywords{Event Illustration, Event Reconciliation, Media Finder, Magazine}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%
 %%%  1. Introduction  %%%
@@ -118,9 +116,7 @@ The chorus of the popular song \emph{TiK ToK} by the artist \emph{Ke\$ha}\footno
 In March 2012, 901 million monthly active users of the social networking site (SNS) Facebook have uploaded more than 300 million photos on average per day~\cite{Facebook2012}. Many of those photos are event-related and often illustrate nightlife events such as music concerts that a~user has attended. Facebook, however, albeit the biggest, is only one among a~plethora of social networks that people use to share event-related content.
 A~social network is an online service or media platform that focuses on building and reflecting social relationships among people sharing interests and/or activities.
 
-\subsection{Considered Social Networking Sites}
-In this paper, we consider eleven different social networks that represent all together most of the Western world's market share. In detail, the considered social networks are
-\googleplus (\url{google.com/+}),
+In this paper, we consider eleven different social networks that represent all together most of the Western world's market share: \googleplus (\url{google.com/+}),
 Myspace (\url{myspace.com}),
 Facebook (\url{facebook.com}),
 Twitter ({\url{twitter.com}),
@@ -132,14 +128,9 @@ Twitpic (\url{twitpic.com}), and
 MobyPicture (\url{mobypicture.com}),
 \mbox{img.ly} (\url{img.ly}).
 
-\subsection{Considered Event Databases or Calendars}
-The actual detection of events based on information from SNSs is out of scope for this paper. We observe that this has become a~very active research field. For example, Petkos \emph{et al.} propose to detect events using a~multimodal clustering approach~\cite{Petkos2012}. In this paper, we will consider event databases or calendars that maintain listings of past and upcoming events using crowd sourcing techniques and that can be queried programmatically. More precisely, we consider four event databases, namely Eventful (\url{eventful.com}), Foursquare (\url{foursquare.com}), Upcoming (\url{upcoming.org}), and Google Places (\url{google.com/places}).
+The actual detection of events based on information from SNSs is out of scope for this paper. We observe that this has become a~very active research field. For example, Petkos \emph{et al.} propose to detect events using a~multimodal clustering approach~\cite{Petkos2012}. In this paper, we will consider event databases or calendars that maintain listings of past and upcoming events using crowd sourcing techniques and that can be queried programmatically. More precisely, we consider four event databases, namely Eventful (\url{eventful.com}), Foursquare (\url{foursquare.com}), Upcoming (\url{upcoming.org}), and Google Places (\url{google.com/places}). In this paper, we propose an approach to fully automatically generate an event-centric magazine where each page corresponds to a~known event that is illustrated with media shared on the Web. The application is available online for testing purposes at \url{http://users.restdesc.org/rgverbor/tmp/NiteOutMag.crx}. A~screencast showcasing the application is available at \url{http://youtube.googleapis.com/v/5pEiy2RHBjY}.
 
-\subsection{Contributions and Paper Structure}
-In this paper, we propose an approach to fully automatically generate an event-centric magazine where each page corresponds to a~known event that is illustrated with media shared on the Web.
-The application is available online for testing purposes at \url{http://users.restdesc.org/rgverbor/tmp/NiteOutMag.crx}. A~screencast showcasing the application is available at \url{http://youtube.googleapis.com/v/5pEiy2RHBjY}.
-
-The remainder of this paper is organized as follows. Section~\ref{sec:related-work} presents some related work aiming at creating summaries and narratives of events using social media. Section~\ref{sec:implementation} details our approach: we start from a~given location and we collect the events and their illustrative media in a~recent past before assembling a~digital magazine. In Section~\ref{sec:evaluation}, we present and discuss the results we obtained on an experiment. Finally, we give our conclusions and outline future work in Section~\ref{sec:conclusion}.
+The remainder of this paper is organized as follows. Section~\ref{sec:related-work} presents some related work aiming at creating summaries and narratives of events using social media. Section~\ref{sec:implementation} details our approach: we start from a~given location and we collect the events and their illustrative media in a~recent past before assembling a~digital magazine. In Section~\ref{sec:evaluation}, we evaluate our system and we discuss the results of user study. Finally, we give our conclusions and outline future work in Section~\ref{sec:conclusion}.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%
 %%%  2. Related Work  %%%
@@ -191,7 +182,7 @@ In consequence, we are capable to detect that two events with similar event titl
 
 \subsection{Event Modeling with Schema.org}
 The considered event databases use different event modeling schemas.
-In order to have a~common event representation internally, 
+In order to have a~common event representation internally,
 we use \texttt{schema:Event} properties~\cite{schemaorgevent} from the schema.org vocabulary,
 which are also mapped to \texttt{dbo:Event} from the DBpedia Ontology~\cite{dbpedia2schemaorg}.
 We maintain a~straight-forward alignment of the particular event database properties
@@ -274,7 +265,7 @@ Our evaluation criteria were
 \emph{usefulness} of the selected events,
 \emph{relevancy} of the selected images, and
 \emph{attractiveness} of the events and media.
-Further, we allowed for optional free-form answers to the following questions: 
+Further, we allowed for optional free-form answers to the following questions:
 ``How could NiteOutMag be improved?'', ``How many pages did you count in NiteOutMag?'', and
 ``How many event sources did you count in NiteOutMag?''.
 
@@ -288,7 +279,7 @@ The results are listed below in detail.
   Participants were not convinced by the magazine generation speed.
   Unfortunately, due to the limited number of HTTP requests,
   the only way to address this issue is to generate pages more on demand
-  rather than all at once, with drawbacks in the page flipping speed. 
+  rather than all at once, with drawbacks in the page flipping speed.
   \item[Usefulness:] 1.9\\
   The very low rating of the usefulness of the selected events suggests
   that we need to improve the event filtering and be more selective
@@ -297,14 +288,14 @@ The results are listed below in detail.
   Participants rated the relevancy of the selected media items for the events quite low.
   Upon further observation and after checking back with the participants,
   we could trace this down to a negative bandwagon effect with false positive media items.
-  When only one media item was obviously bad, participants punished the whole 
+  When only one media item was obviously bad, participants punished the whole
   event media item set with a negative rating, albeit not the whole set was bad.
   \item[Attractiveness:] 2.3\\
-  What most limits the impression of a real magazine is the limited amount of 
-  coherent text for many events. More advanced language analysis is required 
+  What most limits the impression of a real magazine is the limited amount of
+  coherent text for many events. More advanced language analysis is required
   to potentially generate coherent summaries out of several microposts.
   In a first step, non-English microposts can be easily removed.
-  According to the full-text responses, some users also had concerns with the 
+  According to the full-text responses, some users also had concerns with the
   selected page background image whose implementation is detailed in Subsection~\ref{sec:magazine-layout}.
 \end{description}
 
