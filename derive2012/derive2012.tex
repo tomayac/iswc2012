@@ -141,53 +141,25 @@ Capturing life moments and building narratives using social networks is addresse
 
 Events have a~key role in the human life and illustrating events with media items stemming from social networks is a~very active research topic. In~\cite{Brenner2012}, Brenner and Izquierdo present an approach to detect social events and retrieve associated photos in collaboratively annotated photo collections combining data of various modalities such as time, location, and textual and visual features. In~\cite{Liu2011}, Liu \emph{et al.} present a~method for combining semantic inferencing and visual analysis for automatically gathering photos and videos illustrating events. Regarding aesthetic aspects of media compilation, in~\cite{Sandhaus2011}, Sandhaus \emph{et al.} consider visual and aesthetic features for the automatic creation of photo books. Obrador \emph{et al.} use visual and aesthetic features for~a category-based approach to automatically assess the aesthetic appeal of photographs~\cite{Obrador2012}.
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%  3. Implementation  %%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%  3. NiteOutMag Implementation  %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\section{Implementation}                                                    \label{sec:implementation}
+\section{NiteOutMag Implementation}                                                    \label{sec:implementation}
 In this section, we provide the implementation details of the NiteOutMag application. It is implemented as a~Chrome application since this technique provides a~transparent statement about the required resources of the application, \emph{i.e.}, cross-domain access to event databases and search APIs.
 
-\subsection{Geocoding}
+\subsection{Geocoding}                                                      \label{sec:geocoding}
 The application focuses on events that occurred in a~certain area. While event databases tend to work based on GPS points like
 (40.7590110, -73.98447220), \emph{i.e.}, a~pair composed of a~latitude and a~longitude, human beings use more human-friendly place names such as \emph{Times Square, New York}. Geocoding is the process of finding the geographic coordinates (generally expressed as latitude and longitude) associated to other geographic data such as an address composed of a~street name and a~zip code. The user can enter an exact address, like \emph{618 W. 46th St, New York, NY 10036}, or a~very broad area like \emph{Las Vegas}. The returned latitude and longitude pair is always the center of the particular area of interest. In our implementation, we use the Google Geocoding API~\cite{Geocoding2012}.
 
-\subsection{Event Search and Event Categories} \label{sec:event-search}
+\subsection{Event Search and Event Categories}                              \label{sec:event-search}
 Based on a~latitude and longitude pair, we search for events that took place near this location (in a~radius of five kilometers) in the recent past using the respective event search APIs from Eventful, Foursquare,Google Places, and Upcoming~\cite{Eventful2012,Foursquare2012,GooglePlaces2012,Upcoming2012}.
 
-Event databases or calendars typically classify events in different categories.
-Our focus with NiteOutMag being nightlife events,
-wherever possible we filter events to match
-a~manually compiled list of nightlife-type categories.
-For Foursquare, this includes the categories \emph{nightlife} and \emph{arts \& entertainment}.
-For Eventful, this includes the categories \emph{music}, \emph{festivals\_parades}, and \emph{singles\_social}.
-For Upcoming, this includes the categories \emph{Music}, \emph{Performing/Visual Arts}, \emph{Media}, \emph{Festivals}, and \emph{Comedy}.
-For Google Places, no such event filtering is possible.
-Google Places, as the name of the service suggests, focuses on places.
-If an event is known to take place at a~place, its event data are returned by the service.
-In consequence, for Google Places, rather than filtering on event categories,
-we filter on place categories to include typical nightlife places
-such as clubs, discothèques, bars, movie theaters, etc.
+Event databases or calendars typically classify events in different categories. Our focus with NiteOutMag being nightlife events, wherever possible we filter events to match a~manually compiled list of nightlife-type categories. For Foursquare, this includes the categories \emph{nightlife} and \emph{arts \& entertainment}. For Eventful, this includes the categories \emph{music}, \emph{festivals\_parades}, and \emph{singles\_social}. For Upcoming, this includes the categories \emph{Music}, \emph{Performing/Visual Arts}, \emph{Media}, \emph{Festivals}, and \emph{Comedy}. For Google Places, no such event filtering is possible. Google Places, as the name of the service suggests, focuses on places. If an event is known to take place at a~place, its event data are returned by the service. In consequence, for Google Places, rather than filtering on event categories, we filter on place categories to include typical nightlife places
+such as clubs, discoth\`eques, bars, movie theaters, etc.
 
-\subsection{Event Reconciliation}
-We sanitize event titles by removing HTML tags, punctuation, and
-common abbreviations such as \emph{w/}, which becomes \emph{with}; or \emph{ft./feat.}, which becomes \emph{featuring}.
-Event directories can overlap in their coverage.
-Therefore, we reconcile the returned set of events based on the simple, yet effective Levenshtein distance of the event titles with an empirically determined editing distance of five.
-If in a~final check also the event start times are within a~window of one hour,
-we regard the events the same.
-We recall that due to our event search approach outlined in Subsection~\ref{sec:event-search},
-events are already geographically close.
-In consequence, we are capable to detect that two events with similar event titles like, \emph{e.g.}, \emph{Titanic} and \emph{Titanic 3D} and start times of 8:00PM and 8:30PM most probably correspond to the same movie event.
-
-\subsection{Event Modeling with Schema.org}
-The considered event databases use different event modeling schemas.
-In order to have a~common event representation internally,
-we use \texttt{schema:Event} properties~\cite{schemaorgevent} from the schema.org vocabulary,
-which are also mapped to \texttt{dbo:Event} from the DBpedia Ontology~\cite{dbpedia2schemaorg}.
-We maintain a~straight-forward alignment of the particular event database properties
-from Eventful, Foursquare, Upcoming, and Google Places to schema.org properties.
-Concretely, we support the following properties:
+\subsection{Event Modeling with Schema.org}                                 \label{sec:event-modeling}
+The event databases we are harvesting use different event modeling schemas. In order to have a~common internal event representation, we use \texttt{schema:Event} properties~\cite{schemaorgevent} from the schema.org vocabulary, which are also mapped to \texttt{dbo:Event} from the DBpedia Ontology~\cite{dbpedia2schemaorg} or the LODE ontology~\cite{Shaw:ASWC09}. We maintain a~straight-forward alignment of the particular event database properties from Eventful, Foursquare, Upcoming, and Google Places to schema.org properties. Concretely, we support the following properties:
 \begin{itemize}
   \item \texttt{name} The name of the event.
   \item \texttt{description} A~short description of the event.
@@ -195,24 +167,23 @@ Concretely, we support the following properties:
   \item \texttt{startDate} The start date and time of the event (in ISO 8601 date format).
   \item \texttt{endDate} The end date and time of the event (in ISO 8601 date format).
   \item \texttt{url} The URL of the event.
-  \item \texttt{image} The URL of an image of the event.
+  \item \texttt{image} The URL of an image of the event (typically, the poster).
 \end{itemize}
-At this stage of NiteOutMag, we do not expose these event representations externally,
-however, have shown how events coming from different sources
-can be exposed in a~related project~\cite{Liu2011}.
+At this stage of NiteOutMag, we do not expose these event representations externally. However, we plan to make a better use of the EventMedia dataset in the future~\cite{Khrouf:SWJ12}.
 
-\subsection{Media Search} \label{sec:media-search}
+\subsection{Event Reconciliation}                                           \label{sec:event-reconciliation}
+We sanitize event titles by removing HTML tags, punctuation, and common abbreviations such as \emph{w/}, which becomes \emph{with}; or \emph{ft./feat.}, which becomes \emph{featuring}. Event directories can overlap in their coverage. Therefore, we reconcile the returned set of events based on the simple, yet effective Levenshtein distance of the event titles with an empirically determined editing distance of five. Furthermore, if two event start times are also within a~window of one hour, we regard the events as the same. We recall that due to our event search approach outlined in Subsection~\ref{sec:event-search}, events are already geographically close. In consequence, we are capable to detect that two events with similar event titles such as \emph{Titanic} and \emph{Titanic 3D} and start times of 8:00PM and 8:30PM correspond most probably to the same movie event.
+
+\subsection{Media Search}                                                   \label{sec:media-search}
 Unlike event search, media search in our application is \emph{not} based on geolocation. According to a~study performed in May 2012 by Seline~\cite{Quora2012},
 only roughly 1\% of all microposts on Twitter are geotagged. In addition to that, as our approach covers more SNSs than Twitter, we need to consider that not all SNSs support geotagging of content. In consequence, we use a~two-tier approach for media search. We illustrate this by a~real event of a~Beach Boys concert\footnote{\url{http://www.thebeachboys.com/\#tour}} in the Merriweather Post Pavilion in Columbia, MD. The event title is \emph{Beach Boys},
-the venue name is \emph{Merriweather Post Pavilion}, and the area is \emph{Columbia, Maryland (MD)}. We define as \emph{human-friendly address} the first part up to the comma of the \texttt{formatted\_address} field in the Google Geocoding API~\cite{Geocoding2012}, \emph{i.e.}, \emph{Columbia} in this case. Human beings aware of the local context do not need to disambiguate, \emph{i.e.}, there is no need to explicitly state \emph{MD}. The two-tier approach consists thus of a~full-text search for:
+the venue name is \emph{Merriweather Post Pavilion} and the area is \emph{Columbia, Maryland (MD)}. We define as \emph{human-friendly address} the first part up to the comma of the \texttt{formatted\_address} field in the Google Geocoding API~\cite{Geocoding2012}, \emph{i.e.}, \emph{Columbia} in this case. Human beings aware of the local context do not need to disambiguate, \emph{i.e.}, there is no need to explicitly state \emph{MD}. The two-tier approach consists thus of a~full-text search for:
 \begin{itemize}
  \item \emph{(i)} the (event title) $+$ the (venue name), and
  \item \emph{(ii)} the (event title) $+$ the (human-friendly address).
 \end{itemize}
 
-We have implemented a~media collector consisting of media extractors for all SNSs listed in Section~\ref{sec:introduction}.
-This media collector was first described in~\cite{Khrouf2012}.
-It takes a~search term as input, \emph{e.g.}, \emph{Beach Boys Columbia} for the example above, and then performs a~parallel full-text search using the search APIs of all SNSs. When all the media extractors have responded, a~unified SNS-agnostic output is delivered. We propose a~common alignment schema, illustrated in Listing~\ref{lst:media}, which shows the resulting metadata for an exemplary media item. Fig.~\ref{fig:architecture} depicts the overall architecture of the media collector.
+We have implemented a~media collector consisting of media extractors for all SNSs listed in Section~\ref{sec:introduction}. This media collector has been described in~\cite{Khrouf:RAMSS12,Rizzo:SAM12}. It takes a~search term as input, \emph{e.g.}, \emph{Beach Boys Columbia} for the example above, and then performs a~parallel full-text search using the search APIs of all SNSs. When all the media extractors have responded, a~unified SNS-agnostic output is delivered. We propose a~common alignment schema, illustrated in Listing~\ref{lst:media}, which shows the resulting metadata for an exemplary media item. Fig.~\ref{fig:architecture} depicts the overall architecture of the media collector.
 
 \begin{lstlisting}[language=JavaScript,caption={Sample output of the media collector showing a~\mbox{Google+} post (edited for legibility, URLs shortened).},label={lst:media}]
 {
@@ -244,100 +215,56 @@ It takes a~search term as input, \emph{e.g.}, \emph{Beach Boys Columbia} for the
 \label{fig:architecture}
 \end{figure*}
 
-\subsection{Magazine Layout} \label{sec:magazine-layout}
+\subsection{Magazine Layout}                                                \label{sec:magazine-layout}
 In order to create the illusion of a~real magazine, the ability of flipping from page to page needs to be as credible as possible. The open-source library \texttt{turn.js} by Emmanuel García~\cite{TurnJs2012} allows for the dynamic creation of magazines solely based on HTML5 technologies with a~very realistic page flip effect. We treat each event as one page of the magazine, add the event metadata as headline and subheading of the page, and arrange the images and accompanying microposts to fill up the page as illustration. For each event, we use the image with the highest resolution as background image of the page in order to create a~lifestyle magazine appearance. For additional print-like look and feel, we use drop caps (Fig.~\ref{fig:screenshot}). The title page gets dynamically created based on a~Google image search for the (human-friendly address) $+$ the keyword (nightlife).
 
 \subsection{Installation Instructions}
-The NiteOutMag application requires the Chrome browser. Download the application from the URL \url{http://goo.gl/fjuE5} to the local file system.
-Once there, drag and drop it into the \url{chrome://chrome/extensions/} page in the browser. When you drop it on the extensions page, you will notice an install option popping up. When you agree to install, you will see the standard installation dialog that informs you about the rights that the application is requesting. It needs access to the event databases and media search APIs we have mentioned before.
-
-\section{Evaluation} \label{sec:evaluation}
-We have conducted a~short user study whose survey is publicly
-available\footnote{\url{https://docs.google.com/spreadsheet/viewform?formkey=dEY1aVJfSk5aQnVPRzBlSmVIUEVTa1E6MQ\#gid=0}}.
-Overall 12 male (unfortunately no female followed our open call for participation) participants with an average social media experience of 3.9
-(all values are between 1 and 5) have evaluated NiteOutMag.
-We asked participants to evaluate the application for the cities of Las Vegas and Hong Kong.
-Las Vegas is known to have good event coverage in the considered event databases,
-whereas Hong Kong is known to have bad coverage.
-Further, we asked them to evaluate the application with a city of choice.
-Our evaluation criteria were
-\emph{speed} at which a~magazine for a given city was generated,
-\emph{usefulness} of the selected events,
-\emph{relevancy} of the selected images, and
-\emph{attractiveness} of the events and media.
-Further, we allowed for optional free-form answers to the following questions:
-``How could NiteOutMag be improved?'', ``How many pages did you count in NiteOutMag?'', and
-``How many event sources did you count in NiteOutMag?''.
-
-\subsection{Speed, Usefulness, Relevancy, and Attractiveness}
-We have evaluated the criteria \emph{speed}, \emph{usefulness}, \emph{relevancy},
-and \emph{attractiveness} accumulated for all cities in an accumulated way.
-The raw anonymized user feedback from our user study is available for further analysis\footnote{\url{https://docs.google.com/spreadsheet/ccc?key=0AtLlSNwL2H8YdFR3ZDd4YVp4WE5Ed3FwTThLU3I5RUE}}.
-The results are listed below in detail.
-\begin{description}
-  \item[Speed:] 2.3\\
-  Participants were not convinced by the magazine generation speed.
-  Unfortunately, due to the limited number of HTTP requests,
-  the only way to address this issue is to generate pages more on demand
-  rather than all at once, with drawbacks in the page flipping speed.
-  \item[Usefulness:] 1.9\\
-  The very low rating of the usefulness of the selected events suggests
-  that we need to improve the event filtering and be more selective
-  with the categories introduced in Subsection~\ref{sec:event-search}.
-  \item[Relevancy:] 2.3\\
-  Participants rated the relevancy of the selected media items for the events quite low.
-  Upon further observation and after checking back with the participants,
-  we could trace this down to a negative bandwagon effect with false positive media items.
-  When only one media item was obviously bad, participants punished the whole
-  event media item set with a negative rating, albeit not the whole set was bad.
-  \item[Attractiveness:] 2.3\\
-  What most limits the impression of a real magazine is the limited amount of
-  coherent text for many events. More advanced language analysis is required
-  to potentially generate coherent summaries out of several microposts.
-  In a first step, non-English microposts can be easily removed.
-  According to the full-text responses, some users also had concerns with the
-  selected page background image whose implementation is detailed in Subsection~\ref{sec:magazine-layout}.
-\end{description}
-
-\subsection{Number of Pages and Number of Event Sources}
-For Las Vegas, on average participants counted 10.3 pages in their magazines and 2.0 event sources,
-for Hong Kong participants counted 1 page and 0.9 event sources,
-and for their city of choice participants counted 4.2 pages and 1.3 event sources.
-This reflects the initial observation that Hong Kong has bad, and Las Vegas good event coverage, with the random cities of choice ranging in between.
-
-\subsection{Suggested Improvements}
-The most demanded feature was to add more content to the magazine.
-More event sources and more social networks are ways to address this request.
-As pages are generated and removed dynamically,
-sometimes when not enough media content is found for an event,
-pages get removed when a~user is looking at them.
-This causes confusion, however, is owed to the inflexible API of \texttt{turn.js}~\cite{TurnJs2012}.
-We will investigate ways to add pages
-only once it is known that enough event content is available.
-An often suggested feature was to load page contents only on demand
-rather than all at once for the whole magazine,
-which is the current implementation.
-Again the API of \texttt{turn.js}
-and the desire to allow for fast page flipping makes it hard to find a~good compromise,
-however, a~reimplementation of the page flipping code can take this request into account.
-Participants clearly expected a back cover and a table of contents, however,
-the current implementation does not provide those.
-We will add a back cover that takes an even and odd number of pages into account,
-and create a table of contents and also add headlines to the magazine's front cover.
-
-\begin{figure}[b!]
+The NiteOutMag application requires the Chrome browser. Download the application from the URL \url{http://goo.gl/fjuE5} to the local file system. Drag and drop it into the \url{chrome://chrome/extensions/} page in the browser. When you drop it on the extensions page, you will notice an install option popping up. When you agree to install, you will see the standard installation dialog that informs you about the rights that the application is requesting. It needs access to the event databases and media search APIs we have mentioned before.
+\begin{figure}[htbp]
 \centering
 \includegraphics[width=0.8\columnwidth]{./screenshot.jpg}
 \caption{Screenshot of the NiteOutMag application with two events from Las Vegas and the righthand-side page about to be flipped}
 \label{fig:screenshot}
 \end{figure}
 
-\section{Future Work and Conclusion} \label{sec:conclusion}
+%%%%%%%%%%%%%%%%%%%%%%%
+%%%  4. Evaluation  %%%
+%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Evaluation}                                                        \label{sec:evaluation}
+We have conducted a~short user study via an online questionnaire\footnote{\url{https://docs.google.com/spreadsheet/viewform?formkey=dEY1aVJfSk5aQnVPRzBlSmVIUEVTa1E6MQ}}. Overall, 12 participants (all male) with an average social media experience of 3.9 (all values are between 1 and 5) have evaluated NiteOutMag. We asked participants to evaluate the application for the cities of Las Vegas and Hong Kong. Las Vegas is known to have good event coverage in the event databases we are harvesting, whereas Hong Kong is known to have bad coverage. Further, we asked them to evaluate the application with a city of choice. Our evaluation criteria were
+\emph{speed} at which a~magazine for a given city was generated, \emph{usefulness} of the selected events, \emph{relevancy} of the selected images for these events, and \emph{attractiveness} of the events and media. Further, we allowed for optional free-form answers to the following questions: ``How could NiteOutMag be improved?'', ``How many pages did you count in NiteOutMag?'', and ``How many event sources did you count in NiteOutMag?''. The last two questions enable us to check whether the application worked as expected.
+
+\subsection{Speed, Usefulness, Relevancy, and Attractiveness}
+We have evaluated the criteria \emph{speed}, \emph{usefulness}, \emph{relevancy}, and \emph{attractiveness} for all cities in an accumulated way. The raw anonymized user feedback from our user study is available for further analysis\footnote{\url{https://docs.google.com/spreadsheet/ccc?key=0AtLlSNwL2H8YdFR3ZDd4YVp4WE5Ed3FwTThLU3I5RUE}}.
+The results are analyzed in details below.
+\begin{description}
+  \item[Speed:] 2.3\\
+  Participants were not convinced by the magazine generation speed. Unfortunately, due to the limited number of HTTP requests, the only way to address this issue is to generate pages more on demand rather than all at once, with drawbacks in the page flipping speed.
+  \item[Usefulness:] 1.9\\
+  The very low rating of the usefulness of the selected events suggests that we need to improve the event filtering and be more selective with the categories introduced in Subsection~\ref{sec:event-search}.
+  \item[Relevancy:] 2.3\\
+  Participants rated the relevancy of the selected media items for the events quite low. Upon further observation and after checking back with the participants, we could trace this down to a negative bandwagon effect with false positive media items. When only one media item was obviously bad, participants punished the whole event media item set with a negative rating, albeit not the whole set was bad.
+  \item[Attractiveness:] 2.3\\
+  What most limits the impression of a real magazine is the limited amount of coherent text for many events. More advanced language analysis is required
+  to potentially generate coherent summaries out of several microposts. In a first step, non-English microposts can be easily removed. According to the full-text responses, some users also had concerns with the selected page background image whose implementation is detailed in Subsection~\ref{sec:magazine-layout}.
+\end{description}
+
+\subsection{Number of Pages and Number of Event Sources}
+For Las Vegas, on average, participants counted 10.3 pages in their magazines and 2.0 event sources, while for Hong Kong, participants counted only 1 page and 0.9 event sources. For the city of choice, participants counted 4.2 pages from 1.3 event sources. This reflects the initial observation that Hong Kong has bad, and Las Vegas good event coverage, with the random cities of choice ranging in between.
+
+\subsection{Suggested Improvements}
+The most demanded feature was to add more content to the magazine. More event sources and more social networks are ways to address this request. As pages are generated and removed dynamically, sometimes, when not enough media content is found for an event, pages get removed when a~user is looking at them. This causes confusion, however, is owed to the inflexible API of \texttt{turn.js}~\cite{TurnJs2012}. We will investigate ways to add pages only once it is known that enough media content is available. A recurrent suggested feature is to load page contents only on demand rather than all at once for the whole magazine, which is the current implementation. Again the API of \texttt{turn.js} and the desire to allow for fast page flipping makes it hard to find a~good compromise. However, a~re-implementation of the page flipping code can take this request into account. Participants clearly expected a back cover and a table of contents, however,
+the current implementation does not provide those. We will add a back cover that takes an even and odd number of pages into account, and create a table of contents and also add headlines to the magazine's front cover.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%  5. Conclusion and Future Work  %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Conclusion and Future Work}                                        \label{sec:conclusion}
 The results stand and fall with the quality of the events in the event databases. One of the problem we encounter are event titles such as
 \emph{Kandyland 2012 @ the Playboy Mansion -- 1.877.VIP.MANSION}\footnote{\url{http://t.co/YUm7FtmE}} which combine the event title with the venue name
-and a~vanity contact phone number. The detection of such composed titles is difficult and requires advanced linguistic processing.
-
-Event reconciliation is a~second issue. The two movie events \emph{The Avengers} and \emph{Marvel's The Avengers 3D} are the same for a~human being. However, for a~machine, the duplication is harder to detect. Media item reconciliation improvement is a~task that we have left for future work.
+and a~vanity contact phone number. The detection of such composed titles is difficult and requires advanced linguistic processing. Event reconciliation is a~second issue. The two movie events \emph{The Avengers} and \emph{Marvel's The Avengers 3D} are the same for a~human being. However, for a~machine, the duplication is harder to detect. Media item reconciliation improvement is a~task that we have left for future work.
 
 The system's response time is improvable. The main issue here is the browser-enforced maximum number of simultaneous HTTP requests. With our current four event sources that we have limited to ten events per source, we already have up to forty events that we need to search media items for. As outlined before in Section~\ref{sec:media-search}, we have opted for a~two-tier approach in order to improve the recall, which effectively means two search requests per event.
 Assuming that for each search request we get on average only two media items, we have roundabout $5+40*2*2=165$ HTTP requests for only one magazine. We will investigate ways to improve the application's responsiveness in the future.
@@ -349,16 +276,7 @@ In this paper, we have reported on a~Chrome Web application that illustrates eve
 %%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section*{Acknowledgments}                                                   \label{sec:acknowledgments}
-\small
-T. Steiner is partially supported by the European Commission
-under Grant No.~248296 FP7 (\mbox{I-SEARCH} project).
-R. Verborgh is funded by Ghent University,
-the Interdisciplinary Institute for Broadband Technology~(\mbox{IBBT}),
-the Institute for the Promotion of Innovation by Science and Technology in Flanders~(\mbox{IWT}),
-the Fund for Scientific Research Flanders~(\mbox{FWO} Flanders), and the European Union.
-R. Troncy is partially supported by the French National Agency under contracts ANR.11.EITS.006.01, ``Open Innovation Platform for Semantic Media'' (OpenSEM) and the European Union's 7th Framework Programme via the projects LinkedTV (GA 287911).
-J. Gabarr\'o is partially supported by \mbox{SGR}~2009--2015 (\mbox{ALCOM}) and
-\mbox{TIN}--2007--66523~(\mbox{FORMALISM}).
+This work was partially supported by the European Commission under Grants No.~248296 FP7 \mbox{I-SEARCH}, No.~287911 FP7 \mbox{LinkedTV} and the French National Agency under contract ANR.11.EITS.006.01, ``Open Innovation Platform for Semantic Media'' (OpenSEM).
 
 %%%%%%%%%%%%%%%%%%%%%%
 %%%  Bibliography  %%%
