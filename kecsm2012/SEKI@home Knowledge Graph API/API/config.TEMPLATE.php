@@ -5,6 +5,10 @@
   define('DB_NAME', 'a_name');
   define('DB_HOST', 'localhost');
 
+  define('TABLE_SUBJECTS', 'subjects');
+  define('TABLE_PREDICATES', 'predicates');
+  define('TABLE_OBJECTS', 'objects');
+
 
   dbConnect(DB_USER, DB_PASS, DB_NAME, DB_HOST);
 
