@@ -4,6 +4,7 @@
 \usepackage[T1]{fontenc}
 
 \usepackage[activate=compatibility]{microtype}
+\usepackage{graphicx}
 
 % autoref command
 \usepackage[pdftex,urlcolor=black,colorlinks=true,linkcolor=black,citecolor=black]{hyperref}
@@ -102,10 +103,10 @@ to crawl it.
 \subsection{Contributions and Paper Structure}
 In this position paper, we describe and provide a~prototype implementation
 of an approach, tentatively titled \emph{SEKI@home} and
-based on browser extension-based crowdsourcing,
+based on crowdsourcing via a~browser extension,
 to make closed knowledge bases programmatically and openly accessible.
 We demonstrate its applicability with the Google Knowledge Graph.
-The extension can be installed via \todo{Add Chrome Web Store URL},
+The extension can be added to the Google Chrome browser via \todo{Add Chrome Web Store URL},
 our unofficial crowdsourced Google Knowledge Graph API can be tested at
 \todo{Add API URL}.
 
@@ -113,6 +114,51 @@ The remainder of this paper is structured as follows:
 \todo{Add Paper Structure}
 
 \section{Methodology}
+\subsection{Browser Extensions}
+We have implemented our prototype browser extension for the Google Chrome browser.
+Chrome extensions are small software programs that users can install
+to enrich their browsing experience.
+Via so-called \emph{content scripts},
+extensions can inject and modify the contents of Web pages.
+We have implemented an extension that gets activated when a~user
+uses Google to search the Web.
+
+\subsection{Web Scraping}
+Web scraping is a~technique to extract data from Web pages.
+We use CSS selectors~\cite{hunt2012} to retrieve page content from SERPs
+that have an associated real-world entity in the Knowledge Graph.
+An exemplary query selector is \texttt{.kno-desc}
+(all elements with class name ``kno-desc''),
+which via the JavaScript command \texttt{document.querySelector}
+returns the description of a~graph entity.
+
+\subsection{Lifting the Extracted Knowledge Graph Data}
+Albeit the claim of the Knowledge Graph is
+\textit{``things, not strings''}~\cite{singhal2012},
+what gets displayed to search engine users are strings,
+as can be seen in \autoref{fig:screenshot}.
+In order to make this data meaningful again, we need to lift it.
+We use JSON-LD~\cite{sporny2012}, a~JSON representation format
+for expressing directed graphs;
+mixing both Linked Data and non-Linked Data in a~single document.
+JSON-LD allows for adding meaning by simply including or referencing a context.
+The syntax is designed to not disturb already deployed systems running on JSON,
+but provide a smooth upgrade path from JSON to JSON-LD.
+
+\begin{figure}[htb!]
+  \begin{center}
+   \includegraphics[width=0.5\linewidth]{./screenshot.png}
+  \end{center}  
+  \caption{Google Knowledge Graph result for the real-world entity \emph{Chuck Norris}.}
+  \label{fig:screenshot}
+\end{figure}
+
+We have modeled the plaintext graph terms
+like ``Born'', ``Full name'', ``Height'', ``Spouse'', etc.
+in the special namespace \texttt{gkg} (for Google Knowledge Graph)
+that has been partially mapped to common Linked Data vocabularies.
+One example is \texttt{gkg:Description},
+which directly maps to \texttt{dbpprop:shortDescription} from DBpedia.
 
 \section{Evaluation}
 
