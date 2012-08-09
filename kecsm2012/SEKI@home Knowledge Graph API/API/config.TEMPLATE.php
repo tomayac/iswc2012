@@ -24,7 +24,7 @@
    * @param {string} $host
    * @return {MYSQLI}
    */
-  function msqliConnect($user, $pass, $name, $host = 'localhost'){
+  function mysqliConnect($user, $pass, $name, $host = 'localhost'){
     $mysqli = new mysqli($host, $user, $pass, $name);
 
     /* check connection */
