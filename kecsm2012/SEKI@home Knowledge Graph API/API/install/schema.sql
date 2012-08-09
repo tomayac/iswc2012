@@ -9,16 +9,17 @@ CREATE TABLE `subjects` (
   INDEX (sid),
   INDEX (name),
   INDEX (wiki),
-  CONSTRAINT sid UNIQUE (sid),
-  CONSTRAINT name UNIQUE (name),
-  CONSTRAINT wiki UNIQUE (wiki)
+  CONSTRAINT _sid UNIQUE (sid),
+  CONSTRAINT _name UNIQUE (name),
+  CONSTRAINT _wiki UNIQUE (wiki)
 ) AUTO_INCREMENT=1;
 
 DROP TABLE IF EXISTS `predicates`;
 CREATE TABLE `predicates` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `value` varchar(128) NOT NULL,
-  CONSTRAINT value UNIQUE (value)
+  PRIMARY KEY (id),
+  CONSTRAINT _value UNIQUE (value)
 ) AUTO_INCREMENT=1;
 
 DROP TABLE IF EXISTS `objects`;
@@ -27,8 +28,9 @@ CREATE TABLE `objects` (
   `sid` int(11) NOT NULL,
   `pid` int(11) NOT NULL,
   `value` varchar(128) NOT NULL,
+  PRIMARY KEY (id),
   INDEX (sid),
   INDEX (pid),
   INDEX (value),
-  CONSTRAINT value UNIQUE (value)
+  CONSTRAINT _value UNIQUE (value)
 ) AUTO_INCREMENT=1;
