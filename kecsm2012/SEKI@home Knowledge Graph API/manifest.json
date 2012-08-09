@@ -1,0 +1,43 @@
+{ 
+  "name": "Knowledge Graph Socializer",
+  "version": "0.1",
+  "manifest_version": 2,
+  "description": "This extension adds a social component to Google Knowledge Graph results.",
+  "icons": {
+    "16": "icon16.png",
+    "48": "icon48.png",
+    "128": "icon128.png"
+  },
+  "default_locale": "en_US",
+  "background": {
+    "page": "background.html"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://www.google.com/*"],
+      "js": [
+        "lexer.js",
+        "POSTagger.js",
+        "lexicon.js",
+        "humane.js",
+        "contentscript.js"
+      ],
+      "run_at": "document_idle"
+    }
+  ],
+  "content_security_policy": "script-src 'self'; object-src 'self'",
+  "offline_enabled": false,
+  "options_page": "options.html",
+  "permissions": [
+    "https://www.google.com/*",
+    "https://www.googleapis.com/plus/*",
+    "https://search.twitter.com/*",
+    "https://graph.facebook.com/*",
+    "https://www.googleapis.com/freebase/*"
+  ],
+  "web_accessible_resources": [
+    "facebook.png",
+    "twitter.png",
+    "googleplus.png"
+  ]
+}
