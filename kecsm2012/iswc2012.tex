@@ -68,6 +68,8 @@ note that the concept of \emph{SEKI@home} is generalizable for other closed know
 \end{abstract}
 
 \section{Introduction}
+
+\subsection{The Google Knowledge Graph}
 With the introduction of the Knowledge Graph, the search engine Google
 has made a~significant paradigm shift towards \textit{``things, not strings''}~\cite{singhal2012},
 as a~post on the official Google blog states.
@@ -81,6 +83,34 @@ This triggered demand for a~Knowledge Graph API that would allow for
 programmatically accessing the facts stored in the graph~\cite{quora2012}.
 At time of writing, however, no such API is available.
 
+\subsection{On Crowdsourcing}
+The term \emph{crowdsourcing} was first coined by Jeff Howe
+in an article in the magazine Wired~\cite{howe2006}.
+It is a~\textit{portmanteau} of ``crowd'' and ``outsourcing''.
+Howe writes: \textit{``The new pool of cheap labor:
+everyday people using their spare cycles to create content, solve problems,
+even do corporate R\&D''}.
+The difference to outsourcing is that the crowd is undefined by design.
+We suggest crowdsourcing for the described task of extracting facts from
+SERPs with Knowledge Graph results for two reasons:
+\textit{(i)} there is no publicly available list
+of the 500 million objects~\cite{singhal2012} in the graph, and
+\textit{(ii)} even if there was such a~list,
+it would not be practicable (nor allowed by the terms and conditions of Google)
+to crawl it.
+
+\subsection{Contributions and Paper Structure}
+In this position paper, we describe and provide a~prototype implementation
+of an approach, tentatively titled \emph{SEKI@home} and
+based on browser extension-based crowdsourcing,
+to make closed knowledge bases programmatically and openly accessible.
+We demonstrate its applicability with the Google Knowledge Graph.
+The extension can be installed via \todo{Add Chrome Web Store URL},
+our unofficial crowdsourced Google Knowledge Graph API can be tested at
+\todo{Add API URL}.
+
+The remainder of this paper is structured as follows:
+\todo{Add Paper Structure}
 
 \section{Methodology}
 
@@ -89,11 +119,11 @@ At time of writing, however, no such API is available.
 \section{Future Work and Conclusion}
 
 \section*{Acknowledgments}
-\small
+%\small
 T. Steiner is partially supported by the European Commission
 under Grant No.~248296 FP7 (\mbox{I-SEARCH} project).
 
-\linespread{1}
+%\linespread{1}
 \bibliographystyle{abbrv}
 \bibliography{iswc2012}
 
