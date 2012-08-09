@@ -1,0 +1,5 @@
+[install]
+msqy {{database_name}} < install/schema.sq
+
+[usage]
+to be written
