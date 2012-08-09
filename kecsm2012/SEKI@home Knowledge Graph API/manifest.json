@@ -1,8 +1,8 @@
-{ 
-  "name": "Knowledge Graph Socializer",
+{
+  "name": "SEKI",
   "version": "0.1",
   "manifest_version": 2,
-  "description": "This extension adds a social component to Google Knowledge Graph results.",
+  "description": "to be bla blaed in the future...",
   "icons": {
     "16": "icon16.png",
     "48": "icon48.png",
@@ -16,10 +16,6 @@
     {
       "matches": ["https://www.google.com/*"],
       "js": [
-        "lexer.js",
-        "POSTagger.js",
-        "lexicon.js",
-        "humane.js",
         "contentscript.js"
       ],
       "run_at": "document_idle"
