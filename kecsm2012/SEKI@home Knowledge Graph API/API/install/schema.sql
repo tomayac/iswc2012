@@ -2,9 +2,9 @@
 DROP TABLE IF EXISTS `subjects`;
 CREATE TABLE `subjects` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `oid` varchar(128) NOT NULL,
-  `name` varchar(128) NOT NULL,
-  `wiki` varchar(256) NOT NULL,
+  `oid` varchar(128),
+  `name` varchar(128),
+  `wiki` varchar(256),
   PRIMARY KEY (id),
   CONSTRAINT _oid UNIQUE (oid),
   CONSTRAINT _name UNIQUE (name),
