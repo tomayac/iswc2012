@@ -28,5 +28,5 @@ CREATE TABLE `objects` (
   PRIMARY KEY (id),
   INDEX (sid),
   INDEX (pid),
-  CONSTRAINT _value UNIQUE (value)
+  CONSTRAINT _uniqueTriple UNIQUE (sid, pid, value)
 ) AUTO_INCREMENT=1;
