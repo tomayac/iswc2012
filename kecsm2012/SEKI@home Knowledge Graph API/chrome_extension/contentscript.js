@@ -233,9 +233,6 @@
                 Query: query.q,
                 Name: value.textContent.multiTrim(', ')
               };
-              if (value.title) {
-                key.title = value.title;
-              }
               for (var kname in key) {
                 if (!key[kname] || key[kname].length === 0) {
                   delete key[kname];
