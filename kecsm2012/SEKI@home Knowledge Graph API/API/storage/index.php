@@ -11,7 +11,7 @@
   $jsonld_options = array(
     'format' => 'application/nquads'
   );
-phpinfo();
+
   $store = ARC2::getStore(array(
     'db_host' => DB_HOST,
     'db_name' => DB_NAME,
