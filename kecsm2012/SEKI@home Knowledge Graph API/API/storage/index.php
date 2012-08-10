@@ -15,7 +15,7 @@
   $data = $_REQUEST;
   //cleanData($data);
 
-  if ($data['data'] && $object = json_decode($data['data'])) {
+  if (isset($data['data']) && $object = json_decode($data['data'])) {
     $rdf = jsonld_to_rdf($object, $jsonld_options);
     $query = "INSERT INTO <$graph_uri> { \n $rdf \n }";
     $store->query($query);

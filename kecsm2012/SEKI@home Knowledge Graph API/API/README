@@ -1,7 +1,3 @@
 [install]
-msqy {{database_name}} < install/schema.sq
 cp config.TEMPLATE.php config.php
-# configure config.php file with your mysql credentials
-
-[usage]
-to be written
+# edit and configure config.php file with your mysql credentials

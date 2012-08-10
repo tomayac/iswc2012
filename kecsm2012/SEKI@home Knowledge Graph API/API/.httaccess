@@ -1,0 +1,24 @@
+# Follow symbolic links in this directory.
+Options +FollowSymlinks
+
+# Set the default handler to index.php:
+DirectoryIndex index.php
+
+Options -MultiViews
+
+# Various rewrite rules.
+<IfModule mod_rewrite.c>
+  RewriteEngine on
+
+  RewriteBase /
+
+  # Don't allow access to hidden files and folder (that begin with ".")
+  RewriteRule "(^|/)\." - [F]
+
+
+  # ignore php extensions
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !\.php$
+  RewriteRule ^(.*)$ $1.php [L]
+
+</IfModule>

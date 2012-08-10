@@ -8,11 +8,8 @@
   require_once 'setup_store.php';
 
   $query = '';
-  if (isset($_GET['q'])) {
-    $ID = $_GET['q'];
-    $url = "<http://openknowledgegraph.org/data/$ID>";
-    $query = $_GET['q'];
-
+  if (isset($_GET['query'])) {
+    $query = $_GET['query'];
     if ($rows = $store->query($query, 'rows')) {
       jsonOutput(array(
         'result' => $rows
