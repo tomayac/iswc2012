@@ -13,7 +13,7 @@
   };
 
   // restore from options
-  chrome.extension.sendRequest({item: "google_key"}, function(response) {
+  chrome.extension.sendRequest({item: 'google_key'}, function(response) {
     GLOBAL_CONFIG.GOOGLE_KEY = response.reply || GLOBAL_CONFIG.GOOGLE_KEY;
     if ((GLOBAL_CONFIG.GOOGLE_KEY === '') ||
         (GLOBAL_CONFIG.GOOGLE_KEY === GLOBAL_CONFIG.TESTING_KEY)) {
@@ -40,6 +40,7 @@
   var SERVER_URL = 'http://openknowledgegraph.org/';
   var DATA_URL = SERVER_URL + 'data/';
   var ONTOLOGY_URL = SERVER_URL + 'ontology/';
+  var STORAGE_URL = SERVER_URL + 'storage/';
 
   // contains IDs, class names, and HTML for the knowledge panel
   var KNOWLEDGE_PANEL = {
@@ -62,14 +63,15 @@
   }
 
   var CONTEXT_MAP = {
-    NAME: "http://xmlns.com/foaf/0.1/name",
+    NAME: 'http://xmlns.com/foaf/0.1/name',
     TOPIC_OF: {
-      "@id": "http://xmlns.com/foaf/0.1/isPrimaryTopicOf",
-      type: "@id"
+      '@id': 'http://xmlns.com/foaf/0.1/isPrimaryTopicOf',
+      type: '@id'
     },
-    FULL_NAME: "http://xmlns.com/foaf/0.1/givenName",
-    HEIGHT: "http://dbpedia.org/ontology/height",
-    SPOUSE: "http://dbpedia.org/ontology/spouse"
+    FULL_NAME: 'http://xmlns.com/foaf/0.1/givenName',
+    HEIGHT: 'http://dbpedia.org/ontology/height',
+    SPOUSE: 'http://dbpedia.org/ontology/spouse',
+    DEPICTION: 'http://xmlns.com/foaf/0.1/depiction'
   };
 
   String.prototype.multiTrim = function (characters) {
@@ -132,11 +134,16 @@
 
       var query = URI('?' + URI(window.location.href).fragment()).query(true);
       if (query.stick) {
-
         var result = {
           '@id': DATA_URL + query.stick,
-          '@context': {}, // to be updated
+          '@context': { // to be updated
+            Derived_From: {
+              '@id': 'http://www.w3.org/ns/prov#wasDerivedFrom',
+              type: '@id'
+            }
+          },
           Topic_Of: getConceptIdentifier(knowledgePanel),
+          Derived_From: 'http://www.google.com/insidesearch/features/search/knowledge.html',
           Name: getConceptTitle(knowledgePanel),
           Depiction: getConceptDepiction(knowledgePanel)
         };
@@ -375,7 +382,12 @@
   }
 
   function handleResult (result) {
-
+    log('Sending request to server', result);
+    $.get(STORAGE_URL, {
+      data: JSON.stringify(result)
+    }, function(r) {
+      log('[AJAX]', r);
+    });
   }
 
   // starts to poll for a knowledge panel
@@ -388,7 +400,7 @@
           clearInterval(interval);
         });
         POLLING_INTERVALS = [];
-        log('Stopping to poll for Knowledge Panel.');
+        log('Stopping to poll for Knowledge Panel. Result:', result);
 
         // if the parsing has been successful
         if (result && result.constructor === Object) {

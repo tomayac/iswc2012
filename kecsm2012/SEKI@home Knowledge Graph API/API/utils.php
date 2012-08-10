@@ -91,7 +91,7 @@
     $args = func_get_args();
     echo '<pre>';
     foreach ($args as $arg) {
-      var_export ($arg);
+      echo htmlentities(var_export($arg, true));
       echo "\n";
     }
     echo '</pre>';

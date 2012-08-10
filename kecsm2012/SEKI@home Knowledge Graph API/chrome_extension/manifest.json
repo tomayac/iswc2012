@@ -27,6 +27,7 @@
   "offline_enabled": false,
   "options_page": "options.html",
   "permissions": [
+    "http://openknowledgegraph.org/*",
     "https://www.google.com/*",
     "https://www.googleapis.com/plus/*",
     "https://search.twitter.com/*",
