@@ -25,8 +25,12 @@
 
 \hyphenation{}
 
+\usepackage{color}
+\definecolor{grey}{RGB}{160,160,160}
+\newcommand{\linewrap}{\raisebox{-.6ex}{\textcolor{grey}{$\hookleftarrow$}}}
+
 \usepackage{comment}
-% \linespread{0.96}
+\linespread{0.96}
 
 \begin{document}
 
@@ -69,7 +73,7 @@ to a~centralized, publicly accessible triple store,
 and thus over time recreates an open Knowledge Graph.
 We have implemented and made available a~prototype browser extension
 tailored to the Google Knowledge Graph, however,
-note that the concept of \emph{SEKI@home} is generalizable for other closed knowledge bases.
+note that the concept of \emph{SEKI@home} is generalizable for other knowledge bases.
 \end{abstract}
 
 \section{Introduction}
@@ -121,7 +125,7 @@ to make closed knowledge bases programmatically and openly accessible.
 We demonstrate its applicability with the Google Knowledge Graph.
 The extension can be added to the Google Chrome browser via \todo{Add Chrome Web Store URL},
 our unofficial crowdsourced Google Knowledge Graph API can be tested at
-\todo{Add API URL}.
+\url{http://openknowledgegraph.org/sparql}.
 
 The remainder of this paper is structured as follows.
 In \autoref{sec:related-work}, we highlight related work
@@ -174,7 +178,7 @@ returns the description of a~Knowledge Graph entity.
 Albeit the claim of the Knowledge Graph is
 \textit{``things, not strings''}~\cite{singhal2012_1},
 what gets displayed to search engine users are strings,
-as can be seen in \autoref{fig:screenshot}.
+as can be seen in a~screenshot available at \url{http://twitpic.com/ahqqls/full}.
 In order to make this data meaningful again, we need to lift it.
 We use JSON-LD~\cite{sporny2012}, a~JSON representation format
 for expressing directed graphs;
@@ -183,6 +187,7 @@ JSON-LD allows for adding meaning by simply including or referencing a~context.
 The syntax is designed to not disturb already deployed systems running on JSON,
 but provide a~smooth upgrade path from JSON to JSON-LD.
 
+\begin{comment}
 \begin{figure}[htb!]
   \begin{center}
    \includegraphics[width=0.5\linewidth]{./screenshot.png}
@@ -190,12 +195,14 @@ but provide a~smooth upgrade path from JSON to JSON-LD.
   \caption{Google Knowledge Graph result for the real-world entity \emph{Chuck Norris}.}
   \label{fig:screenshot}
 \end{figure}
+\end{comment}
 
 We have modeled the plaintext Knowledge Graph terms (or predicates)
 like ``Born'', ``Full name'', ``Height'', ``Spouse'', etc.
-in the special namespace \texttt{gkg} (for Google Knowledge Graph)
-that has already been partially mapped to common Linked Data vocabularies.
-One example is \texttt{gkg:Description},
+in an informal Knowledge Graph ontology under the namespace \texttt{okg}
+(for Open Knowledge Graph) with spaces converted to underscores.
+This ontology has already been partially mapped to common Linked Data vocabularies.
+One example is \texttt{okg:Description},
 which directly maps to \texttt{dbpprop:shortDescription} from DBpedia.
 Similar to the unknown list of objects in the Knowledge Graph (see \autoref{sec:on-crowdsourcing}),
 there is no known list of Knowledge Graph terms,
@@ -214,12 +221,18 @@ will be a~permanent work in progress.
       "@id": "http://xmlns.com/foaf/0.1/isPrimaryTopicOf",
       "type": "@id"
     },
+    "Derived_From": {
+      "@id": "http://www.w3.org/ns/prov#wasDerivedFrom",
+      "type": "@id"
+    },
     "Fact": "http://openknowledegraph.org/ontology/Fact",
     "Query": "http://openknowledegraph.org/ontology/Query",
     "Full_name": "http://xmlns.com/foaf/0.1/givenName",
     "Height": "http://dbpedia.org/ontology/height",
     "Spouse": "http://dbpedia.org/ontology/spouse"
   },
+  "Derived_From": "http://www.google.com/insidesearch/§\linewrap§
+      features/search/knowledge.html",
   "Topic_Of": "http://en.wikipedia.org/wiki/Chuck_Norris",
   "Name": "Chuck Norris",
   "Fact": ["Chuck Norris can cut thru a knife w/ butter."],
@@ -252,6 +265,35 @@ which we have done via the property \texttt{prov:wasDerivedFrom}
 from the PROV Ontology~\cite{lebo2012} for each entity.
 
 \section{Evaluation} \label{sec:evaluation}
+At time of writing, we have evaluated the \emph{SEKI@home} approach
+with a~number of 15 users
+with medium to advanced computer and programming skills
+who had installed the browser extension
+and who simply browsed the Google Knowledge Graph by following links,
+starting from the URL \url{https://www.google.com/search?q=chuck+norris},
+which triggers Knowledge Graph results.
+
+\subsection{Ease of Use}
+One of our design goals when we imagined \emph{SEKI@home}
+was to make it as unobtrusive as possible.
+We asked the extension users to install the extension
+and tell us if they noticed any difference at all when using Google.
+None of them noticed any difference,
+while actually in the background the extension
+was sending back extracted Knowledge Graph facts
+to the RDF triple store at full pace.
+
+\subsection{Statistics}
+On average, the number of 31 triples gets added to the triple store
+per SERP with Knowledge Graph result.
+Knowledge Graph results vary in their level of detail.
+We have calculated an average number of \todo{Add Number of Categories}
+Knowledge Graph terms (or predicates) per SERP with Knowledge Graph result.
+While some Knowledge Graph values (or objects) are plaintext strings
+like the value ``Carlos Ray Norris'' for \texttt{okg:Full\_name},
+others are references to other Knowledge Graph entities,
+like a~value for \texttt{okg:Movies\_and\_TV\_shows}.
+The relation of plaintext values to reference values is \todo{Add Relation}.
 
 \section{Future Work} \label{sec:future-work}
 A~concrete next step for the current application
