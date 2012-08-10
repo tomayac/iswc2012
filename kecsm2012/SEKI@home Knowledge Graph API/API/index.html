@@ -1,0 +1,993 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  
+  "http://www.w3.org/TR/html4/loose.dtd">  
+<html > 
+<head><title>SEKI@home, or Crowdsourcing
+an Open Knowledge Graph API</title> 
+<meta http-equiv='Content-Type' content='Type=text/html; charset=utf-8'>
+<meta name="generator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
+<meta name="originator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
+<!-- html --> 
+<meta name="src" content="iswc2012.tex"> 
+<meta name="date" content="2012-08-10 21:52:00"> 
+
+<link rel="stylesheet" type="text/css" href="iswc2012.css"> 
+</head><body 
+>
+   <div class="maketitle">
+                                                                  
+
+                                                                  
+   <a 
+ id="likesection.1"></a><a 
+ id="x1-2r1"></a>
+                                                                  
+
+                                                                  
+                                                                  
+
+                                                                  
+
+<h2 class="titleHead">SEKI@home, or Crowdsourcing<br />
+an Open Knowledge Graph API</h2>
+<div class="author" > Thomas Steiner<span 
+class="cmr-7"><sup>1</sup></span> and&#x00A0;Stefan Mirea<span 
+class="cmr-7"><sup>2</sup></span> </div>
+  <div class="institute">
+    <span 
+    class="cmr-6"><sup>1</sup></span>
+    <span 
+class="ecrm-0900">Universitat Politècnica de Catalunya &#8211; Department LSI, Barcelona, Spain</span><br />
+<span 
+class="ectt-0900">tsteiner@lsi.upc.edu</span>
+<br/>
+<span 
+class="cmr-6"><sup>2</sup></span>
+  <span 
+class="ecrm-0900">Computer Science, Jacobs University Bremen, Germany</span><br />
+<span 
+class="ectt-0900">s.mirea@jacobs-university.de</span></div>
+<a 
+ id="Q1-1-1"></a><a 
+ id="Q1-1-2"></a></div>
+   <div 
+class="abstract" 
+>
+     <span 
+class="ecbx-0900">Abstract.</span> <span 
+class="ecrm-0900">In May 2012, the Web search engine Google has introduced</span>
+     <span 
+class="ecrm-0900">the so-called Knowledge Graph, a</span><span 
+class="ecrm-0900">&#x00A0;graph that understands real-world</span>
+     <span 
+class="ecrm-0900">entities  and  their  relationships  to  one  another.  It  currently  contains</span>
+     <span 
+class="ecrm-0900">more  than  500  million  objects,  as  well  as  more  than  3.5  billion</span>
+     <span 
+class="ecrm-0900">facts  about  and  relationships  between  these  different  objects.  Soon</span>
+     <span 
+class="ecrm-0900">after its announcement, people started to ask for a</span><span 
+class="ecrm-0900">&#x00A0;Knowledge Graph</span>
+     <span 
+class="ecrm-0900">Application Programming Interface (API), however, as of today, Google</span>
+     <span 
+class="ecrm-0900">does  not  provide  one.  With  </span><span 
+class="ecti-0900">SEKI@home</span><span 
+class="ecrm-0900">,  which  stands  for  </span><span 
+class="ecti-0900">Search</span>
+     <span 
+class="ecti-0900">for Embedded Knowledge Items</span><span 
+class="ecrm-0900">, we propose a</span><span 
+class="ecrm-0900">&#x00A0;browser extension-based</span>
+     <span 
+class="ecrm-0900">approach to crowdsource such an API. As people with the extension</span>
+     <span 
+class="ecrm-0900">installed search on Google.com, the extension sends extracted anonymous</span>
+     <span 
+class="ecrm-0900">Knowledge Graph facts from Search Engine Results Pages (SERPs) to</span>
+     <span 
+class="ecrm-0900">a</span><span 
+class="ecrm-0900">&#x00A0;centralized, publicly accessible triple store, and thus over time creates</span>
+     <span 
+class="ecrm-0900">a</span><span 
+class="ecrm-0900">&#x00A0;SPARQL-queryable Open Knowledge Graph. We have implemented</span>
+     <span 
+class="ecrm-0900">and made available a</span><span 
+class="ecrm-0900">&#x00A0;prototype browser extension tailored to the Google</span>
+     <span 
+class="ecrm-0900">Knowledge Graph, however, note that the concept of </span><span 
+class="ecti-0900">SEKI@home  </span><span 
+class="ecrm-0900">is</span>
+     <span 
+class="ecrm-0900">generalizable for other knowledge bases.</span>
+</div>
+   <h3 class="sectionHead"><span class="titlemark">1   </span> <a 
+ id="x1-10001"></a>Introduction</h3>
+<!--l. 81--><p class="noindent" >
+   <h4 class="subsectionHead"><span class="titlemark">1.1   </span> <a 
+ id="x1-20001.1"></a>The Google Knowledge Graph</h4>
+<!--l. 82--><p class="noindent" >With the introduction of the Knowledge Graph, the search engine Google has made
+a&#x00A0;significant paradigm shift towards <span 
+class="ecti-1000">&#8220;things, not strings&#8221;</span>&#x00A0;<span class="cite">[<span 
+class="ecbx-1000">7</span>]</span>, as a&#x00A0;post on the official
+                                                                  
+
+                                                                  
+Google blog states. Entities covered by the Knowledge Graph include landmarks,
+celebrities, cities, sports teams, buildings, movies, celestial objects, works of art, and
+more. The Knowledge Graph enhances Google search in three main ways: by
+disambiguation of search queries, by search log-based summarization of key facts, and
+by explorative search suggestions. This triggered demand for a&#x00A0;Knowledge
+Graph API that would allow for programmatically accessing the facts stored
+in the Knowledge Graph&#x00A0;<span class="cite">[<span 
+class="ecbx-1000">6</span>]</span>. At time of writing, however, no such API is
+available.
+<!--l. 95--><p class="noindent" >
+   <h4 class="subsectionHead"><span class="titlemark">1.2   </span> <a 
+ id="x1-30001.2"></a>On Crowdsourcing</h4>
+<!--l. 96--><p class="noindent" >The term <span 
+class="ecti-1000">crowdsourcing </span>was first coined by Jeff Howe in an article in the magazine
+Wired&#x00A0;<span class="cite">[<span 
+class="ecbx-1000">2</span>]</span>. It is a&#x00A0;<span 
+class="ecti-1000">portmanteau </span>of &#8220;crowd&#8221; and &#8220;outsourcing&#8221;. Howe writes: <span 
+class="ecti-1000">&#8220;The new</span>
+<span 
+class="ecti-1000">pool of cheap labor: everyday people using their spare cycles to create content, solve</span>
+<span 
+class="ecti-1000">problems, even do corporate R&amp;D&#8221;</span>. The difference to outsourcing is that the crowd is
+undefined by design. We suggest crowdsourcing for the described task of
+extracting facts from SERPs with Knowledge Graph results for two reasons:
+<span 
+class="ecti-1000">(i) </span>there is no publicly available list of the 500 million objects&#x00A0;<span class="cite">[<span 
+class="ecbx-1000">7</span>]</span> in the
+Knowledge Graph, and <span 
+class="ecti-1000">(ii) </span>even if there was such a&#x00A0;list, it would not be
+practicable (nor allowed by the terms and conditions of Google) to crawl
+it.
+<!--l. 111--><p class="noindent" >
+   <h4 class="subsectionHead"><span class="titlemark">1.3   </span> <a 
+ id="x1-40001.3"></a>Search Results as Social Media</h4>
+<!--l. 112--><p class="noindent" >Kaplan and Haenlein have defined social media as <span 
+class="ecti-1000">&#8220;a</span><span 
+class="ecti-1000">&#x00A0;group of Internet-based</span>
+<span 
+class="ecti-1000">applications that build on the ideological and technological foundations of Web 2.0,</span>
+<span 
+class="ecti-1000">and that allow the creation and exchange of user-generated content&#8221;</span>&#x00A0;<span class="cite">[<span 
+class="ecbx-1000">4</span>]</span>. We
+argue that search results are social media as well, especially in the case of
+Google with its tight integration of Google<span 
+class="ecbx-0500">+</span> , a&#x00A0;feature called <span 
+class="ecti-1000">Search plus Your</span>
+<span 
+class="ecti-1000">World</span>&#x00A0;<span class="cite">[<span 
+class="ecbx-1000">8</span>]</span>.
+<!--l. 120--><p class="noindent" >
+   <h4 class="subsectionHead"><span class="titlemark">1.4   </span> <a 
+ id="x1-50001.4"></a>Contributions and Paper Structure</h4>
+<!--l. 121--><p class="noindent" >In this position paper, we describe and provide a&#x00A0;prototype implementation of an
+approach, tentatively titled <span 
+class="ecti-1000">SEKI@home </span>and based on crowdsourcing via a&#x00A0;browser
+extension, to make closed knowledge bases programmatically and openly accessible.
+We demonstrate its applicability with the Google Knowledge Graph. The
+extension can be added to the Google Chrome browser by navigating to
+<a 
+href="http://bit.ly/SEKIatHome" class="url" ><span 
+class="ectt-1000">http://bit.ly/SEKIatHome</span></a>, our unofficial crowdsourced Open Knowledge Graph
+API can be tested at <a 
+href="http://openknowledgegraph.org/sparql" class="url" ><span 
+class="ectt-1000">http://openknowledgegraph.org/sparql</span></a>.
+<!--l. 131--><p class="indent" >   The remainder of this paper is structured as follows. In <a 
+href="#x1-60002">Section&#x00A0;2</a>, we highlight
+related work for the field of extracting data from websites with RDF wrappers. In
+<a 
+href="#x1-70003">Section&#x00A0;3</a>, we describe the <span 
+class="ecti-1000">SEKI@home </span>approach in detail. We provide a&#x00A0;short
+                                                                  
+
+                                                                  
+evaluation in <a 
+href="#x1-120004">Section&#x00A0;4</a>. The paper ends with an outlook on future work in <a 
+href="#x1-150005">Section&#x00A0;5</a>
+and a&#x00A0;conclusion in <a 
+href="#x1-160006">Section&#x00A0;6</a>.
+<!--l. 139--><p class="noindent" >
+   <h3 class="sectionHead"><span class="titlemark">2   </span> <a 
+ id="x1-60002"></a>Related Work</h3>
+<!--l. 140--><p class="noindent" >Wrappers around Web services or Web pages have been used in the past to
+lift data from the original source to a&#x00A0;meaningful, machine-readable RDF
+level. Examples are the Google Art wrapper by Guéret&#x00A0;<span class="cite">[<span 
+class="ecbx-1000">1</span>]</span>, which lifts the
+data from the Google Art project&#x00A0;<span class="cite">[<span 
+class="ecbx-1000">9</span>]</span>, or the now discontinued SlideShare
+wrapper<span class="footnote-mark"><a 
+href="#footnote1"><sup class="textsuperscript">1</sup></a></span><a 
+ id="x1-6001f1"></a> 
+by the same author. Such wrappers typically work by mimicking the URI scheme of
+the site they are wrapping. Adapting parts of the URL of the original resource for
+that of the wrapper provides access to the desired data. Wrappers do not offer
+SPARQL endpoints, as their data gets computed on-the-fly.
+<!--l. 150--><p class="indent" >   With <span 
+class="ecti-1000">SEKI@home</span>, we offer a&#x00A0;related, however, still different in the detail,
+approach to lift and make machine-readably accessible closed knowledge bases like the
+Knowledge Graph. The entirety of the knowledge base being unknown, via
+crowdsourcing, we can distribute the heavy burden of crawling the whole Knowledge
+Graph on many shoulders. Finally, by storing the extracted facts centrally in a&#x00A0;triple
+store, our approach allows for openly accessing the data via the standard SPARQL
+protocol.
+   <h3 class="sectionHead"><span class="titlemark">3   </span> <a 
+ id="x1-70003"></a>Methodology</h3>
+<!--l. 160--><p class="noindent" >
+   <h4 class="subsectionHead"><span class="titlemark">3.1   </span> <a 
+ id="x1-80003.1"></a>Browser Extensions</h4>
+<!--l. 161--><p class="noindent" >We have implemented our prototype browser extension for the Google Chrome
+browser. Chrome extensions are small software programs that users can install to
+enrich their browsing experience. Via so-called <span 
+class="ecti-1000">content scripts</span>, extensions can inject
+and modify the contents of Web pages. We have implemented an extension that gets
+activated when a&#x00A0;user uses Google to search the Web.
+<!--l. 169--><p class="noindent" >
+   <h4 class="subsectionHead"><span class="titlemark">3.2   </span> <a 
+ id="x1-90003.2"></a>Web Scraping</h4>
+<!--l. 170--><p class="noindent" >Web scraping is a&#x00A0;technique to extract data from Web pages. We use CSS
+selectors&#x00A0;<span class="cite">[<span 
+class="ecbx-1000">3</span>]</span> to retrieve page content from SERPs that have an associated real-world
+entity in the Knowledge Graph. An exemplary query selector is <span 
+class="ectt-1000">.kno-desc </span>(all
+elements with class name &#8220;kno-desc&#8221;), which via the JavaScript command
+                                                                  
+
+                                                                  
+<span 
+class="ectt-1000">document.querySelector </span>returns the description of a&#x00A0;Knowledge Graph
+entity.
+<!--l. 178--><p class="noindent" >
+   <h4 class="subsectionHead"><span class="titlemark">3.3   </span> <a 
+ id="x1-100003.3"></a>Lifting the Extracted Knowledge Graph Data</h4>
+<!--l. 179--><p class="noindent" >Albeit the claim of the Knowledge Graph is <span 
+class="ecti-1000">&#8220;things, not strings&#8221;</span>&#x00A0;<span class="cite">[<span 
+class="ecbx-1000">7</span>]</span>, what gets
+displayed to search engine users are strings, as can be seen in a&#x00A0;screenshot available
+at <a 
+href="http://twitpic.com/ahqqls/full" class="url" ><span 
+class="ectt-1000">http://twitpic.com/ahqqls/full</span></a>. In order to make this data meaningful again,
+we need to lift it. We use JSON-LD&#x00A0;<span class="cite">[<span 
+class="ecbx-1000">10</span>]</span>, a&#x00A0;JSON representation format for
+expressing directed graphs; mixing both Linked Data and non-Linked Data in
+a&#x00A0;single document. JSON-LD allows for adding meaning by simply including or
+referencing a&#x00A0;context. The syntax is designed to not disturb already deployed
+systems running on JSON, but provide a&#x00A0;smooth upgrade path from JSON to
+JSON-LD.
+<!--l. 201--><p class="indent" >   We have modeled the plaintext Knowledge Graph terms (or predicates) like
+&#8220;Born&#8221;, &#8220;Full name&#8221;, &#8220;Height&#8221;, &#8220;Spouse&#8221;, etc. in an informal Knowledge Graph ontology
+under the namespace <span 
+class="ectt-1000">okg </span>(for Open Knowledge Graph) with spaces converted to
+underscores. This ontology has already been partially mapped to common Linked
+Data vocabularies. One example is <span 
+class="ectt-1000">okg:Description</span>, which directly maps to
+<span 
+class="ectt-1000">dbpprop:shortDescription </span>from DBpedia. Similar to the unknown list of
+objects in the Knowledge Graph (see <a 
+href="#x1-30001.2">Subsection&#x00A0;1.2</a>), there is no known list of
+Knowledge Graph terms, which makes a&#x00A0;complete mapping impossible. We have
+collected roughly 380 Knowledge Graph terms as of time of writing, however,
+mapping them to other Linked Data vocabularies will be a&#x00A0;permanent work in
+progress. <a 
+href="#x1-10001r1">Listing&#x00A0;1</a> shows the lifted, meaningful JSON-LD as returned by the
+extension.
+   <!--l. 216-->
+                                                                  
+
+                                                                  
+<!--l. 216--><p class="indent" >   <a 
+ id="x1-10001r39"></a><hr class="float"><div class="float" 
+>
+                                                                  
+
+                                                                  
+<a 
+ id="x1-10001r1"></a>
+<a 
+ id="x1-10002"></a>
+<div class="lstlisting" id="listing-1"><span class="label"><a 
+ id="x1-10003r1"></a></span><span 
+class="ectt-1000">{</span><span 
+class="ectt-1000">&#x00A0;</span><br /><span class="label"><a 
+ id="x1-10004r2"></a></span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">"</span><span 
+class="ectt-1000">@id</span><span 
+class="ectt-1000">":</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">"</span><span 
+class="ectt-1000">http</span><span 
+class="ectt-1000">://</span><span 
+class="ectt-1000">openknowledgegraph</span><span 
+class="ectt-1000">.</span><span 
+class="ectt-1000">org</span><span 
+class="ectt-1000">/</span><span 
+class="ectt-1000">data</span><span 
+class="ectt-1000">/</span><span 
+class="ectt-1000">H4sIAAAAA</span><span 
+class="ectt-1000">[...]",</span><span 
+class="ectt-1000">&#x00A0;</span><br /><span class="label"><a 
+ id="x1-10005r3"></a></span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">"</span><span 
+class="ectt-1000">@context</span><span 
+class="ectt-1000">":</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">{</span><span 
+class="ectt-1000">&#x00A0;</span><br /><span class="label"><a 
+ id="x1-10006r4"></a></span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">"</span><span 
+class="ectt-1000">Name</span><span 
+class="ectt-1000">":</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">"</span><span 
+class="ectt-1000">http</span><span 
+class="ectt-1000">://</span><span 
+class="ectt-1000">xmlns</span><span 
+class="ectt-1000">.</span><span 
+class="ectt-1000">com</span><span 
+class="ectt-1000">/</span><span 
+class="ectt-1000">foaf</span><span 
+class="ectt-1000">/0.1/</span><span 
+class="ectt-1000">name</span><span 
+class="ectt-1000">",</span><span 
+class="ectt-1000">&#x00A0;</span><br /><span class="label"><a 
+ id="x1-10007r5"></a></span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">"</span><span 
+class="ectt-1000">Topic_Of</span><span 
+class="ectt-1000">":</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">{</span><span 
+class="ectt-1000">&#x00A0;</span><br /><span class="label"><a 
+ id="x1-10008r6"></a></span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">"</span><span 
+class="ectt-1000">@id</span><span 
+class="ectt-1000">":</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">"</span><span 
+class="ectt-1000">http</span><span 
+class="ectt-1000">://</span><span 
+class="ectt-1000">xmlns</span><span 
+class="ectt-1000">.</span><span 
+class="ectt-1000">com</span><span 
+class="ectt-1000">/</span><span 
+class="ectt-1000">foaf</span><span 
+class="ectt-1000">/0.1/</span><span 
+class="ectt-1000">isPrimaryTopicOf</span><span 
+class="ectt-1000">",</span><span 
+class="ectt-1000">&#x00A0;</span><br /><span class="label"><a 
+ id="x1-10009r7"></a></span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">"</span><span 
+class="ectt-1000">type</span><span 
+class="ectt-1000">":</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">"</span><span 
+class="ectt-1000">@id</span><span 
+class="ectt-1000">"</span><span 
+class="ectt-1000">&#x00A0;</span><br /><span class="label"><a 
+ id="x1-10010r8"></a></span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">},</span><span 
+class="ectt-1000">&#x00A0;</span><br /><span class="label"><a 
+ id="x1-10011r9"></a></span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">"</span><span 
+class="ectt-1000">Derived_From</span><span 
+class="ectt-1000">":</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">{</span><span 
+class="ectt-1000">&#x00A0;</span><br /><span class="label"><a 
+ id="x1-10012r10"></a></span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">"</span><span 
+class="ectt-1000">@id</span><span 
+class="ectt-1000">":</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">"</span><span 
+class="ectt-1000">http</span><span 
+class="ectt-1000">://</span><span 
+class="ectt-1000">www</span><span 
+class="ectt-1000">.</span><span 
+class="ectt-1000">w3</span><span 
+class="ectt-1000">.</span><span 
+class="ectt-1000">org</span><span 
+class="ectt-1000">/</span><span 
+class="ectt-1000">ns</span><span 
+class="ectt-1000">/</span><span 
+class="ectt-1000">prov</span><span 
+class="ectt-1000">#</span><span 
+class="ectt-1000">wasDerivedFrom</span><span 
+class="ectt-1000">",</span><span 
+class="ectt-1000">&#x00A0;</span><br /><span class="label"><a 
+ id="x1-10013r11"></a></span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">"</span><span 
+class="ectt-1000">type</span><span 
+class="ectt-1000">":</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">"</span><span 
+class="ectt-1000">@id</span><span 
+class="ectt-1000">"</span><span 
+class="ectt-1000">&#x00A0;</span><br /><span class="label"><a 
+ id="x1-10014r12"></a></span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">},</span><span 
+class="ectt-1000">&#x00A0;</span><br /><span class="label"><a 
+ id="x1-10015r13"></a></span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">"</span><span 
+class="ectt-1000">Fact</span><span 
+class="ectt-1000">":</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">"</span><span 
+class="ectt-1000">http</span><span 
+class="ectt-1000">://</span><span 
+class="ectt-1000">openknowledegraph</span><span 
+class="ectt-1000">.</span><span 
+class="ectt-1000">org</span><span 
+class="ectt-1000">/</span><span 
+class="ectt-1000">ontology</span><span 
+class="ectt-1000">/</span><span 
+class="ectt-1000">Fact</span><span 
+class="ectt-1000">",</span><span 
+class="ectt-1000">&#x00A0;</span><br /><span class="label"><a 
+ id="x1-10016r14"></a></span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">"</span><span 
+class="ectt-1000">Query</span><span 
+class="ectt-1000">":</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">"</span><span 
+class="ectt-1000">http</span><span 
+class="ectt-1000">://</span><span 
+class="ectt-1000">openknowledegraph</span><span 
+class="ectt-1000">.</span><span 
+class="ectt-1000">org</span><span 
+class="ectt-1000">/</span><span 
+class="ectt-1000">ontology</span><span 
+class="ectt-1000">/</span><span 
+class="ectt-1000">Query</span><span 
+class="ectt-1000">",</span><span 
+class="ectt-1000">&#x00A0;</span><br /><span class="label"><a 
+ id="x1-10017r15"></a></span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">"</span><span 
+class="ectt-1000">Full_name</span><span 
+class="ectt-1000">":</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">"</span><span 
+class="ectt-1000">http</span><span 
+class="ectt-1000">://</span><span 
+class="ectt-1000">xmlns</span><span 
+class="ectt-1000">.</span><span 
+class="ectt-1000">com</span><span 
+class="ectt-1000">/</span><span 
+class="ectt-1000">foaf</span><span 
+class="ectt-1000">/0.1/</span><span 
+class="ectt-1000">givenName</span><span 
+class="ectt-1000">",</span><span 
+class="ectt-1000">&#x00A0;</span><br /><span class="label"><a 
+ id="x1-10018r16"></a></span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">"</span><span 
+class="ectt-1000">Height</span><span 
+class="ectt-1000">":</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">"</span><span 
+class="ectt-1000">http</span><span 
+class="ectt-1000">://</span><span 
+class="ectt-1000">dbpedia</span><span 
+class="ectt-1000">.</span><span 
+class="ectt-1000">org</span><span 
+class="ectt-1000">/</span><span 
+class="ectt-1000">ontology</span><span 
+class="ectt-1000">/</span><span 
+class="ectt-1000">height</span><span 
+class="ectt-1000">",</span><span 
+class="ectt-1000">&#x00A0;</span><br /><span class="label"><a 
+ id="x1-10019r17"></a></span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">"</span><span 
+class="ectt-1000">Spouse</span><span 
+class="ectt-1000">":</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">"</span><span 
+class="ectt-1000">http</span><span 
+class="ectt-1000">://</span><span 
+class="ectt-1000">dbpedia</span><span 
+class="ectt-1000">.</span><span 
+class="ectt-1000">org</span><span 
+class="ectt-1000">/</span><span 
+class="ectt-1000">ontology</span><span 
+class="ectt-1000">/</span><span 
+class="ectt-1000">spouse</span><span 
+class="ectt-1000">"</span><span 
+class="ectt-1000">&#x00A0;</span><br /><span class="label"><a 
+ id="x1-10020r18"></a></span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">},</span><span 
+class="ectt-1000">&#x00A0;</span><br /><span class="label"><a 
+ id="x1-10021r19"></a></span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">"</span><span 
+class="ectt-1000">Derived_From</span><span 
+class="ectt-1000">":</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">"</span><span 
+class="ectt-1000">http</span><span 
+class="ectt-1000">://</span><span 
+class="ectt-1000">www</span><span 
+class="ectt-1000">.</span><span 
+class="ectt-1000">google</span><span 
+class="ectt-1000">.</span><span 
+class="ectt-1000">com</span><span 
+class="ectt-1000">/</span><span 
+class="ectt-1000">insidesearch</span><span 
+class="ectt-1000">/</span><span id="textcolor1"><img 
+src="iswc20120x.png" alt=""  class="hookleftarrow" ></span><span 
+class="ectt-1000">&#x00A0;</span><br /><span class="label"><a 
+ id="x1-10022r20"></a></span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">features</span><span 
+class="ectt-1000">/</span><span 
+class="ectt-1000">search</span><span 
+class="ectt-1000">/</span><span 
+class="ectt-1000">knowledge</span><span 
+class="ectt-1000">.</span><span 
+class="ectt-1000">html</span><span 
+class="ectt-1000">",</span><span 
+class="ectt-1000">&#x00A0;</span><br /><span class="label"><a 
+ id="x1-10023r21"></a></span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">"</span><span 
+class="ectt-1000">Topic_Of</span><span 
+class="ectt-1000">":</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">"</span><span 
+class="ectt-1000">http</span><span 
+class="ectt-1000">://</span><span 
+class="ectt-1000">en</span><span 
+class="ectt-1000">.</span><span 
+class="ectt-1000">wikipedia</span><span 
+class="ectt-1000">.</span><span 
+class="ectt-1000">org</span><span 
+class="ectt-1000">/</span><span 
+class="ectt-1000">wiki</span><span 
+class="ectt-1000">/</span><span 
+class="ectt-1000">Chuck_Norris</span><span 
+class="ectt-1000">",</span><span 
+class="ectt-1000">&#x00A0;</span><br /><span class="label"><a 
+ id="x1-10024r22"></a></span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">"</span><span 
+class="ectt-1000">Name</span><span 
+class="ectt-1000">":</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">"</span><span 
+class="ectt-1000">Chuck</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">Norris</span><span 
+class="ectt-1000">",</span><span 
+class="ectt-1000">&#x00A0;</span><br /><span class="label"><a 
+ id="x1-10025r23"></a></span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">"</span><span 
+class="ectt-1000">Fact</span><span 
+class="ectt-1000">":</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">["</span><span 
+class="ectt-1000">Chuck</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">Norris</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">can</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">cut</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">thru</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">a</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">knife</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">w</span><span 
+class="ectt-1000">/</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">butter</span><span 
+class="ectt-1000">."],</span><span 
+class="ectt-1000">&#x00A0;</span><br /><span class="label"><a 
+ id="x1-10026r24"></a></span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">"</span><span 
+class="ectt-1000">Full_name</span><span 
+class="ectt-1000">":</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">["</span><span 
+class="ectt-1000">Carlos</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">Ray</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">Norris</span><span 
+class="ectt-1000">"],</span><span 
+class="ectt-1000">&#x00A0;</span><br /><span class="label"><a 
+ id="x1-10027r25"></a></span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">"</span><span 
+class="ectt-1000">Height</span><span 
+class="ectt-1000">":</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">["5</span><span 
+class="tctt-1000">'</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">10\""],</span><span 
+class="ectt-1000">&#x00A0;</span><br /><span class="label"><a 
+ id="x1-10028r26"></a></span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">"</span><span 
+class="ectt-1000">Spouse</span><span 
+class="ectt-1000">":</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">[</span><span 
+class="ectt-1000">&#x00A0;</span><br /><span class="label"><a 
+ id="x1-10029r27"></a></span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">{</span><span 
+class="ectt-1000">&#x00A0;</span><br /><span class="label"><a 
+ id="x1-10030r28"></a></span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">"</span><span 
+class="ectt-1000">@id</span><span 
+class="ectt-1000">":</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">"</span><span 
+class="ectt-1000">http</span><span 
+class="ectt-1000">://</span><span 
+class="ectt-1000">openknowledgegraph</span><span 
+class="ectt-1000">.</span><span 
+class="ectt-1000">org</span><span 
+class="ectt-1000">/</span><span 
+class="ectt-1000">data</span><span 
+class="ectt-1000">/</span><span 
+class="ectt-1000">H4sIA</span><span 
+class="ectt-1000">[...]",</span><span 
+class="ectt-1000">&#x00A0;</span><br /><span class="label"><a 
+ id="x1-10031r29"></a></span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">"</span><span 
+class="ectt-1000">Query</span><span 
+class="ectt-1000">":</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">"</span><span 
+class="ectt-1000">gena</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">o</span><span 
+class="tctt-1000">'</span><span 
+class="ectt-1000">kelley</span><span 
+class="ectt-1000">",</span><span 
+class="ectt-1000">&#x00A0;</span><br /><span class="label"><a 
+ id="x1-10032r30"></a></span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">"</span><span 
+class="ectt-1000">Name</span><span 
+class="ectt-1000">":</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">"</span><span 
+class="ectt-1000">Gena</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">O</span><span 
+class="tctt-1000">'</span><span 
+class="ectt-1000">Kelley</span><span 
+class="ectt-1000">"</span><span 
+class="ectt-1000">&#x00A0;</span><br /><span class="label"><a 
+ id="x1-10033r31"></a></span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">},</span><span 
+class="ectt-1000">&#x00A0;</span><br /><span class="label"><a 
+ id="x1-10034r32"></a></span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">{</span><span 
+class="ectt-1000">&#x00A0;</span><br /><span class="label"><a 
+ id="x1-10035r33"></a></span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">"</span><span 
+class="ectt-1000">@id</span><span 
+class="ectt-1000">":</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">"</span><span 
+class="ectt-1000">http</span><span 
+class="ectt-1000">://</span><span 
+class="ectt-1000">openknowledgegraph</span><span 
+class="ectt-1000">.</span><span 
+class="ectt-1000">org</span><span 
+class="ectt-1000">/</span><span 
+class="ectt-1000">data</span><span 
+class="ectt-1000">/</span><span 
+class="ectt-1000">H4sIA</span><span 
+class="ectt-1000">[...]",</span><span 
+class="ectt-1000">&#x00A0;</span><br /><span class="label"><a 
+ id="x1-10036r34"></a></span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">"</span><span 
+class="ectt-1000">Query</span><span 
+class="ectt-1000">":</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">"</span><span 
+class="ectt-1000">dianne</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">holechek</span><span 
+class="ectt-1000">",</span><span 
+class="ectt-1000">&#x00A0;</span><br /><span class="label"><a 
+ id="x1-10037r35"></a></span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">"</span><span 
+class="ectt-1000">Name</span><span 
+class="ectt-1000">":</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">"</span><span 
+class="ectt-1000">Dianne</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">Holechek</span><span 
+class="ectt-1000">"</span><span 
+class="ectt-1000">&#x00A0;</span><br /><span class="label"><a 
+ id="x1-10038r36"></a></span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">}</span><span 
+class="ectt-1000">&#x00A0;</span><br /><span class="label"><a 
+ id="x1-10039r37"></a></span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">]</span><span 
+class="ectt-1000">&#x00A0;</span><br /><span class="label"><a 
+ id="x1-10040r38"></a></span><span 
+class="ectt-1000">}</span>
+<div class="caption" 
+><span class="id">Listing&#x00A0;1: </span><span  
+class="content">Subset of the meaningful JSON-LD from the Chuck Norris Knowledge
+Graph data. The mapping of the Knowledge Graph terms can be seen in the
+@context.</span></div><!--tex4ht:label?: x1-10001r3 -->
+                                                                  
+
+                                                                  
+   </div><hr class="endfloat" />
+   </div>
+   <h4 class="subsectionHead"><span class="titlemark">3.4   </span> <a 
+ id="x1-110003.4"></a>Maintaining Provenance Data</h4>
+<!--l. 258--><p class="noindent" >The facts extracted via the <span 
+class="ecti-1000">SEKI@home </span>approach are derived from existing
+third-party knowledge bases, like the Knowledge Graph. A&#x00A0;derivation is
+a&#x00A0;transformation of an entity into another, a&#x00A0;construction of an entity into another,
+or an update of an entity, resulting in a&#x00A0;new one. In consequence, it is considered
+good form to acknowledge the original source, <span 
+class="ecti-1000">i.e.</span>, the Knowledge Graph, which we
+have done via the property <span 
+class="ectt-1000">prov:wasDerivedFrom </span>from the PROV Ontology&#x00A0;<span class="cite">[<span 
+class="ecbx-1000">5</span>]</span> for
+each entity.
+<!--l. 268--><p class="noindent" >
+   <h3 class="sectionHead"><span class="titlemark">4   </span> <a 
+ id="x1-120004"></a>Evaluation</h3>
+<!--l. 269--><p class="noindent" >At time of writing, we have evaluated the <span 
+class="ecti-1000">SEKI@home </span>approach with a&#x00A0;number of 15
+users with medium to advanced computer and programming skills who had installed the
+browser extension and who simply browsed the Google Knowledge Graph by following
+links, starting from the URL <a 
+href="https://www.google.com/search?q=chuck+norris" class="url" ><span 
+class="ectt-1000">https://www.google.com/search?q=chuck+norris</span></a>,
+which triggers Knowledge Graph results.
+<!--l. 277--><p class="noindent" >
+   <h4 class="subsectionHead"><span class="titlemark">4.1   </span> <a 
+ id="x1-130004.1"></a>Ease of Use</h4>
+<!--l. 278--><p class="noindent" >One of our design goals when we imagined <span 
+class="ecti-1000">SEKI@home </span>was to make it as unobtrusive
+as possible. We asked the extension users to install the extension and tell
+us if they noticed any difference at all when using Google. None of them
+noticed any difference, while actually in the background the extension was
+sending back extracted Knowledge Graph facts to the RDF triple store at full
+pace.
+<!--l. 287--><p class="noindent" >
+   <h4 class="subsectionHead"><span class="titlemark">4.2   </span> <a 
+ id="x1-140004.2"></a>Statistics</h4>
+<!--l. 288--><p class="noindent" >On average, the number of 31 triples gets added to the triple store per SERP with
+Knowledge Graph result. Knowledge Graph results vary in their level of detail. We
+have calculated an average number of about 5 Knowledge Graph terms (or predicates)
+per SERP with Knowledge Graph result. While some Knowledge Graph
+values (or objects) are plaintext strings like the value &#8220;Carlos Ray Norris&#8221; for
+<span 
+class="ectt-1000">okg:Full_name</span>, others are references to other Knowledge Graph entities, like
+a&#x00A0;value for <span 
+class="ectt-1000">okg:Movies_and_TV_shows</span>. The relation of reference values to
+plaintext values is about 1.5, which means the Knowledge Graph is well
+interconnected.
+                                                                  
+
+                                                                  
+<!--l. 300--><p class="noindent" >
+   <h3 class="sectionHead"><span class="titlemark">5   </span> <a 
+ id="x1-150005"></a>Future Work</h3>
+<!--l. 301--><p class="noindent" >A&#x00A0;concrete next step for the current application of our approach to the Knowledge
+Graph is to provide a&#x00A0;more comprehensive mapping of Knowledge Graph terms
+to other Linked Data vocabularies, a&#x00A0;task whose difficulty was outlined in
+<a 
+href="#x1-100003.3">Subsection&#x00A0;3.3</a>. At time of writing, we have applied the <span 
+class="ecti-1000">SEKI@home </span>approach to
+a&#x00A0;concrete knowledge base, namely the Knowledge Graph. In the future, we want to
+apply <span 
+class="ecti-1000">SEKI@home </span>to similar closed knowledge bases. Videos from video portals like
+YouTube or Vimeo can be semantically enriched, as we have shown in&#x00A0;<span class="cite">[<span 
+class="ecbx-1000">11</span>]</span>
+for the case of YouTube. We plan to apply <span 
+class="ecti-1000">SEKI@home </span>to semantic video
+enrichment by splitting the computational heavy annotation task, and store
+the extracted facts centrally in a&#x00A0;triple store to allow for open SPARQL
+access.
+<!--l. 317--><p class="noindent" >
+   <h3 class="sectionHead"><span class="titlemark">6   </span> <a 
+ id="x1-160006"></a>Conclusion</h3>
+<!--l. 318--><p class="noindent" >In this paper, we have shown a&#x00A0;generalizable approach to first opening up closed
+knowledge bases by means of crowdsourcing, and then making the extracted facts
+universally and openly accessible. As an example knowledge base, we have used the
+Google Knowledge Graph. The extracted facts can be accessed via the standard
+SPARQL protocol from the Google-independent Open Knowledge Graph
+website (<a 
+href="http://openknowledgegraph.org/sparql" class="url" ><span 
+class="ectt-1000">http://openknowledgegraph.org/sparql</span></a>). Just like knowledge bases
+evolve over time, the Knowledge Graph in concrete, the facts extracted via
+the <span 
+class="ecti-1000">SEKI@home </span>approach as well mirror those changes eventually. Granted
+that provenance of the extracted data is handled appropriately, we hope to
+have contributed a&#x00A0;useful socially enabled chain link to the Linked Data
+world.
+<!--l. 332--><p class="noindent" >
+   <h3 class="likesectionHead"><a 
+ id="x1-170006"></a>Acknowledgments</h3>
+<!--l. 334--><p class="noindent" >T. Steiner is partially supported by the European Commission under Grant
+No.&#x00A0;248296 FP7 (I-SEARCH project).
+
+  <h3 class="likesectionHead"><a 
+id="x1-170006"></a>References</h3>
+<div>[1] C. Guéret. “GoogleArt — Semantic Data Wrapper (Technical Up- date)”, SemanticWeb.com, Mar. 2011. <a href="http://semanticweb.com/googleart-semantic-data-wrapper-technical-update_b18726">http://semanticweb.com/googleart-semantic-data-wrapper-technical-update_b18726</a>.</div>
+<br/>
+<div>[2] J. Howe. The Rise of Crowdsourcing. Wired, 14(6), June 2006. <a href="http://www.wired.com/wired/archive/14.06/crowds.html">http://www.wired.com/wired/archive/14.06/crowds.html</a>.</div>
+<br/>
+<div>[3] L. Hunt and A. van Kesteren. Selectors API Level 1. Candidate Recommendation, W3C, June 2012. <a href="http://www.w3.org/TR/selectors-api/">http://www.w3.org/TR/selectors-api/</a>.</div>
+<br/>
+<div>[4] A. M. Kaplan and M. Haenlein. Users of the world, unite! The challenges and opportunities of Social Media. Business Horizons, 53(1):59–68, Jan. 2010.</div>
+<br/>
+<div>[5] T. Lebo, S. Sahoo, D. McGuinness, K. Belhajjame, J. Cheney, D. Corsar, D. Garijo, S. Soiland-Reyes, S. Zednik, and J. Zhao. PROV-O: The PROV Ontology, W3C Working Draft 24 July 2012. Working Draft, W3C, July 2012. <a href="http://www.w3.org/TR/prov-o/">http://www.w3.org/TR/prov-o/</a>.</div>
+<br/>
+<div>[6] Questioner on Quora.com. “Is there a Google Knowledge Graph API (or another third party API) to get semantic topic suggestions for a text query?”, May 2012. <a href="http://bit.ly/Is-there-a-Google-Knowledge-Graph-API">http://bit.ly/Is-there-a-Google-Knowledge-Graph-API</a>.</div>
+<br/>
+<div>[7] A. Singhal. “Introducing the Knowledge Graph: things, not strings”, Of- ficial Google Blog, May 2012. <a href="http://googleblog.blogspot.com/2012/05/introducing-knowledge-graph-things-not.html">http://googleblog.blogspot.com/2012/05/introducing-knowledge-graph-things-not.html</a>.</div>
+<br/>
+<div>[8] A. Singhal. “Search, plus Your World”, Official Google Blog, Jan. 2012. <a href="http://googleblog.blogspot.com/2012/01/search-plus-your-world.html">http://googleblog.blogspot.com/2012/01/search-plus-your-world.html</a>.</div>
+<br/>
+<div>[9] A. Sood. “Explore museums and great works of art in the Google Art Project”, Official Google Blog, Feb. 2011. <a href="http://googleblog.blogspot.com/2011/02/explore-museums-and-great-works-of-art.html">http://googleblog.blogspot.com/2011/02/explore-museums-and-great-works-of-art.html</a>.</div>
+<br/>
+<div>[10] M. Sporny, D. Longley, G. Kellogg, M. Lanthaler, and M. Birbeck. JSON-LD Syntax 1.0, A Context-based JSON Serialization for Linking Data. Working Draft, W3C, July 2012. <a href="http://www.w3.org/TR/json-ld-syntax/">http://www.w3.org/TR/json-ld-syntax/</a>.</div>
+<br/>
+<div>[11] T. Steiner. SemWebVid – Making Video a First Class Semantic Web Citizen and a First Class Web Bourgeois. In 9th International Semantic Web Conference (ISWC2010), Nov. 2010.</div>
+<br/>
+<div class="footnote-text" id="footnote1">
+     <!--l. 144--><p class="indent" >     <span class="footnote-mark"><a 
+ id="fn1x0"><sup class="textsuperscript">1 </sup>&#x00A0;</a></span><a 
+href="http://linkeddata.few.vu.nl/slideshare/" class="url" ><span 
+class="ectt-0900">http://linkeddata.few.vu.nl/slideshare/</span></a></div>    
+</body></html> 
+
+                                                                  
+
+
