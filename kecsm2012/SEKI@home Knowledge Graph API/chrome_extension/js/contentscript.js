@@ -28,14 +28,13 @@
     NOTATION_NODE: 12
   }
 
-  var NAMESPACE = 'http://openknowledgegraph.org/data/';
+  var NAMESPACE = 'http://openknowledgegraph.org/';
+  var DATA_URL = NAMESPACE + 'data/';
+  var ONTOLOGY_URL = NAMESPACE + 'ontology/';
 
   var SERVER_URL = 'http://seki.code4fun.de/';
   //var SERVER_URL = 'http://localhost/seki/API/';
-  var DATA_URL = NAMESPACE + 'data/';
-  var ONTOLOGY_URL = SERVER_URL + 'ontology/';
-  var STORAGE_URL = SERVER_URL + 'storage/';
-  var SPARQL_URL = SERVER_URL + 'sparql/';
+
 
   // contains IDs, class names, and HTML for the knowledge panel
   var KNOWLEDGE_PANEL = {
