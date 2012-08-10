@@ -11,9 +11,12 @@
   if (isset($_GET['query'])) {
     $query = $_GET['query'];
     if ($rows = $store->query($query, 'rows')) {
+      turtleOutput($store, $rows);
+      /*
       jsonOutput(array(
         'result' => $rows
       ));
+      */
     } else {
       if ($errors = $store->getErrors()) {
         jsonOutput(array(

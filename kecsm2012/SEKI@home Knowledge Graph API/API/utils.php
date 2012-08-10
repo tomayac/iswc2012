@@ -54,6 +54,16 @@
     }
     jsonOutput($object);
   }
+  
+  function turtleOutput($store, $rows) {
+    if (!headers_sent()) {
+      header('Cache-Control: no-cache, must-revalidate');
+      header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+      header('Content-type:text/turtle');
+      header('Content-attributes: text/turtle; charset=UTF-8');
+    }
+    exit($store->toTurtle($rows));
+  }
 
   /**
    * @brief Outputs a JSON with the proper headers from the given array
