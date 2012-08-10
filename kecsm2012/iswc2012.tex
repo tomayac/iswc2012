@@ -235,9 +235,21 @@ will be a~permanent work in progress.
 }
 \end{lstlisting} 
 
+\subsection{Maintaining Provenance Data}
+The facts extracted via the \emph{SEKI@home} approach
+are derived from existing third-party knowledge bases, like the Knowledge Graph.
+A~derivation is a~transformation of an entity into another,
+a~construction of an entity into another, or an update of an entity,
+resulting in a~new one.
+In consequence, it is considered good form to acknowledge the original source,
+\emph{i.e.}, the Knowledge Graph,
+which we have done via the property \texttt{prov:wasDerivedFrom}
+from the PROV Ontology~\cite{lebo2012} for each entity.
+
 \section{Evaluation}
 
 \section{Future Work}
+
 
 \section{Conclusion}
 In this paper, we have shown a~generalizable approach
