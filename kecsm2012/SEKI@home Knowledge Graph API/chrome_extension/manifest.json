@@ -1,6 +1,6 @@
 {
   "name": "SEKI@home",
-  "version": "0.2",
+  "version": "0.3",
   "manifest_version": 2,
   "description": "SEKI@home, or Crowdsourcing an Open Knowledge Graph API",
   "icons": {
@@ -24,6 +24,7 @@
   "offline_enabled": false,
   "permissions": [
     "http://openknowledgegraph.org/*",
+    "http://seki.code4fun.de/*",
     "http://localhost/*",
     "https://www.google.com/*"
   ]

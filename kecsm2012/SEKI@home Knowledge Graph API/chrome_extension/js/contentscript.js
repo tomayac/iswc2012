@@ -30,7 +30,7 @@
 
   var NAMESPACE = 'http://openknowledgegraph.org/data/';
 
-  var SERVER_URL = 'http://openknowledgegraph.org/';
+  var SERVER_URL = 'http://seki.code4fun.de/';
   //var SERVER_URL = 'http://localhost/seki/API/';
   var DATA_URL = NAMESPACE + 'data/';
   var ONTOLOGY_URL = SERVER_URL + 'ontology/';
