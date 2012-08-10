@@ -3,6 +3,10 @@
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 
+\usepackage{textcomp}
+\usepackage{listings}
+\lstset{frame=lines,captionpos=b,numberbychapter=false,escapechar=§,basicstyle=\ttfamily,upquote=true}
+
 \usepackage[activate=compatibility]{microtype}
 \usepackage{graphicx}
 
@@ -72,7 +76,7 @@ note that the concept of \emph{SEKI@home} is generalizable for other closed know
 
 \subsection{The Google Knowledge Graph}
 With the introduction of the Knowledge Graph, the search engine Google
-has made a~significant paradigm shift towards \textit{``things, not strings''}~\cite{singhal2012},
+has made a~significant paradigm shift towards \textit{``things, not strings''}~\cite{singhal2012_1},
 as a~post on the official Google blog states.
 Entities covered by the Knowledge Graph include landmarks, celebrities, cities, sports
 teams, buildings, movies, celestial objects, works of art, and more.
@@ -84,7 +88,7 @@ This triggered demand for a~Knowledge Graph API that would allow for
 programmatically accessing the facts stored in the graph~\cite{quora2012}.
 At time of writing, however, no such API is available.
 
-\subsection{On Crowdsourcing}
+\subsection{On Crowdsourcing} \label{sec:on-crowdsourcing}
 The term \emph{crowdsourcing} was first coined by Jeff Howe
 in an article in the magazine Wired~\cite{howe2006}.
 It is a~\textit{portmanteau} of ``crowd'' and ``outsourcing''.
@@ -95,10 +99,19 @@ The difference to outsourcing is that the crowd is undefined by design.
 We suggest crowdsourcing for the described task of extracting facts from
 SERPs with Knowledge Graph results for two reasons:
 \textit{(i)} there is no publicly available list
-of the 500 million objects~\cite{singhal2012} in the graph, and
+of the 500 million objects~\cite{singhal2012_1} in the graph, and
 \textit{(ii)} even if there was such a~list,
 it would not be practicable (nor allowed by the terms and conditions of Google)
 to crawl it.
+
+\subsection{Search Results as Social Media}
+Kaplan and Haenlein have defined social media as
+\textit{``a~group of Internet-based applications that build on the ideological and
+technological foundations of Web 2.0, and that allow the creation and
+exchange of user-generated content''}~\cite{kaplan2010}.
+We argue that search results are social media as well,
+especially in the case of Google with its tight integration of \googleplus,
+a~feature called \emph{Search plus Your World}~\cite{singhal2012_2}.
 
 \subsection{Contributions and Paper Structure}
 In this position paper, we describe and provide a~prototype implementation
@@ -134,7 +147,7 @@ returns the description of a~graph entity.
 
 \subsection{Lifting the Extracted Knowledge Graph Data}
 Albeit the claim of the Knowledge Graph is
-\textit{``things, not strings''}~\cite{singhal2012},
+\textit{``things, not strings''}~\cite{singhal2012_1},
 what gets displayed to search engine users are strings,
 as can be seen in \autoref{fig:screenshot}.
 In order to make this data meaningful again, we need to lift it.
@@ -153,12 +166,84 @@ but provide a smooth upgrade path from JSON to JSON-LD.
   \label{fig:screenshot}
 \end{figure}
 
-We have modeled the plaintext graph terms
+We have modeled the plaintext graph terms (or predicates)
 like ``Born'', ``Full name'', ``Height'', ``Spouse'', etc.
 in the special namespace \texttt{gkg} (for Google Knowledge Graph)
-that has been partially mapped to common Linked Data vocabularies.
+that has already been partially mapped to common Linked Data vocabularies.
 One example is \texttt{gkg:Description},
 which directly maps to \texttt{dbpprop:shortDescription} from DBpedia.
+Similar to the unknown list of objects in the graph (see \autoref{sec:on-crowdsourcing}),
+there is no known list of graph terms,
+which makes a~complete mapping impossible.
+We have collected \todo{Add Number of Collected Graph Terms} graph terms
+as of time of writing, however, the mapping to Linked Data terms
+will be a~permanent work in progress.
+\autoref{code:json} shows a~subset of Chuck Norris' Knowledge Graph data in plain JSON,
+\autoref{code:jsonld} the lifted, meaningful JSON-LD version.
+
+\begin{lstlisting}[caption=Subset of the extracted plain JSON from the Chuck Norris Knowledge Graph data., label=code:json, float=h, escapechar=§]
+{
+  "@id": "http://openknowledgegraph.org/data/H4sIAAAAA[...]",
+  "Topic_Of": "http://en.wikipedia.org/wiki/Chuck_Norris",
+  "Name": "Chuck Norris",
+  "Fact": [
+    "Chuck Norris can cut thru a knife w/ butter."
+  ],
+  "Full_name": [
+    "Carlos Ray Norris"
+  ],
+  "Height": [
+    "5' 10\""
+  ],
+  "Spouse": [
+    {
+      "@id": "http://openknowledgegraph.org/data/H4sIA[...]",
+      "query": "gena o'kelley",
+      "text": "Gena O'Kelley"
+    },
+    {
+      "@id": "http://openknowledgegraph.org/data/H4sIA[...]",
+      "query": "dianne holechek",
+      "text": "Dianne Holechek"
+    }
+  ]
+}
+\end{lstlisting} 
+
+\begin{lstlisting}[caption=Subset of the lifted and meaningful JSON-LD from the Chuck Norris Knowledge Graph data. The mapping of the graph terms can be seen in the @context., label=code:jsonld, float=h, escapechar=§]
+{
+  "@id": "http://openknowledgegraph.org/data/H4sIAAAAA[...]",
+  "@context": {
+    "Name": "http://xmlns.com/foaf/0.1/name",
+    "Topic_Of": {
+      "@id": "http://xmlns.com/foaf/0.1/isPrimaryTopicOf",
+      "type": "@id"
+    },
+    "Fact": "http://openknowledegraph.org/ontology/Fact",
+    "Query": "http://openknowledegraph.org/ontology/Query",
+    "Full_name": "http://xmlns.com/foaf/0.1/givenName",
+    "Height": "http://dbpedia.org/ontology/height",
+    "Spouse": "http://dbpedia.org/ontology/spouse"
+  },
+  "Topic_Of": "http://en.wikipedia.org/wiki/Chuck_Norris",
+  "Name": "Chuck Norris",
+  "Fact": ["Chuck Norris can cut thru a knife w/ butter."],
+  "Full_name": ["Carlos Ray Norris"],
+  "Height": ["5' 10\""],
+  "Spouse": [
+    {
+      "@id": "http://openknowledgegraph.org/data/H4sIA[...]",
+      "Query": "gena o'kelley",
+      "Name": "Gena O'Kelley"
+    },
+    {
+      "@id": "http://openknowledgegraph.org/data/H4sIA[...]",
+      "Query": "dianne holechek",
+      "Name": "Dianne Holechek"
+    }
+  ]
+}
+\end{lstlisting} 
 
 \section{Evaluation}
 
