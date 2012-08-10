@@ -208,12 +208,12 @@ which directly maps to \texttt{dbpprop:shortDescription} from DBpedia.
 Similar to the unknown list of objects in the Knowledge Graph (see \autoref{sec:on-crowdsourcing}),
 there is no known list of Knowledge Graph terms,
 which makes a~complete mapping impossible.
-We have collected \todo{Add Number of Collected Knowledge Graph Terms} Knowledge Graph terms
-as of time of writing, however, the mapping to other Linked Data vocabularies
+We have collected roughly 380 Knowledge Graph terms
+as of time of writing, however, mapping them to other Linked Data vocabularies
 will be a~permanent work in progress.
 \autoref{code:jsonld} shows the lifted, meaningful JSON-LD as returned by the extension.
 
-\begin{lstlisting}[caption=Subset of the meaningful JSON-LD from the Chuck Norris Knowledge Graph data. The mapping of the Knowledge Graph terms can be seen in the @context., label=code:jsonld, float=hbt!, escapechar=§]
+\begin{lstlisting}[caption=Subset of the meaningful JSON-LD from the Chuck Norris Knowledge Graph data. The mapping of the Knowledge Graph terms can be seen in the @context., label=code:jsonld, float=hbt!, escapechar=§, belowskip=-1em]
 {
   "@id": "http://openknowledgegraph.org/data/H4sIAAAAA[...]",
   "@context": {
@@ -288,13 +288,14 @@ to the RDF triple store at full pace.
 On average, the number of 31 triples gets added to the triple store
 per SERP with Knowledge Graph result.
 Knowledge Graph results vary in their level of detail.
-We have calculated an average number of \todo{Add Number of Categories}
+We have calculated an average number of about 5
 Knowledge Graph terms (or predicates) per SERP with Knowledge Graph result.
 While some Knowledge Graph values (or objects) are plaintext strings
 like the value ``Carlos Ray Norris'' for \texttt{okg:Full\_name},
 others are references to other Knowledge Graph entities,
 like a~value for \texttt{okg:Movies\_and\_TV\_shows}.
-The relation of plaintext values to reference values is \todo{Add Relation}.
+The relation of reference values to plaintext values is about 1.5,
+which means the Knowledge Graph is well interconnected.
 
 \section{Future Work} \label{sec:future-work}
 A~concrete next step for the current application
