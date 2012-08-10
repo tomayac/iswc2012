@@ -19,13 +19,6 @@
     }";
 
     if ($rows = $store->query($query, 'rows')) {
-      /* Serializer instantiation */
-      $ser = ARC2::getTurtleSerializer();
-
-      /* Serialize a triples array */
-      $doc = $ser->getSerializedTriples($rows);
-      v_export($doc);
-
       jsonOutput(array(
         'result' => $rows
       ));
