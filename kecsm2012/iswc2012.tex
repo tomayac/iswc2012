@@ -64,7 +64,7 @@ however, as of today, Google does not provide one.
 With \emph{SEKI@home}, which stands for \emph{Search for Embedded Knowledge Items},
 we propose a~browser extension-based approach to crowdsource such an API.
 As people with the extension installed search on Google.com,
-the extension sends anonymous graph facts from Search Engine Results Pages (SERPs)
+the extension sends anonymous Knowledge Graph facts from Search Engine Results Pages (SERPs)
 to a~centralized, publicly accessible triple store,
 and thus over time recreates an open Knowledge Graph.
 We have implemented and made available a~prototype browser extension
@@ -80,12 +80,12 @@ has made a~significant paradigm shift towards \textit{``things, not strings''}~\
 as a~post on the official Google blog states.
 Entities covered by the Knowledge Graph include landmarks, celebrities, cities, sports
 teams, buildings, movies, celestial objects, works of art, and more.
-The graph enhances Google search in three main ways:
+The Knowledge Graph enhances Google search in three main ways:
 by disambiguation of search queries,
 by search log-based summarization of key facts,
 and by explorative search suggestions.
 This triggered demand for a~Knowledge Graph API that would allow for
-programmatically accessing the facts stored in the graph~\cite{quora2012}.
+programmatically accessing the facts stored in the Knowledge Graph~\cite{quora2012}.
 At time of writing, however, no such API is available.
 
 \subsection{On Crowdsourcing} \label{sec:on-crowdsourcing}
@@ -99,7 +99,7 @@ The difference to outsourcing is that the crowd is undefined by design.
 We suggest crowdsourcing for the described task of extracting facts from
 SERPs with Knowledge Graph results for two reasons:
 \textit{(i)} there is no publicly available list
-of the 500 million objects~\cite{singhal2012_1} in the graph, and
+of the 500 million objects~\cite{singhal2012_1} in the Knowledge Graph, and
 \textit{(ii)} even if there was such a~list,
 it would not be practicable (nor allowed by the terms and conditions of Google)
 to crawl it.
@@ -126,6 +126,26 @@ our unofficial crowdsourced Google Knowledge Graph API can be tested at
 The remainder of this paper is structured as follows:
 \todo{Add Paper Structure}
 
+\section{Related Work}
+Wrappers around Web services or Web pages have been used in the past
+to lift data from the original source to a~meaningful, machine-readable RDF level.
+Examples are the Google Art wrapper by Guéret~\cite{gueret2011},
+which lifts the data from the Google Art project~\cite{sood2011},
+or the now discontinued SlideShare wrapper\footnote{\url{http://linkeddata.few.vu.nl/slideshare/}} by the same author.
+Such wrappers typically work by mimicking the URI scheme of the site they are wrapping.
+Adapting parts of the URL of the original resource for that of the wrapper
+provides access to the desired data.
+Wrappers do not offer SPARQL endpoints, as their data gets computed on-the-fly.
+
+With \emph{SEKI@home}, we offer a~related, however, still different in the detail,
+approach to lift and make machine-readably accessible
+closed datasets like the Knowledge Graph.
+The entirety of the dataset being unknown,
+via crowdsourcing, we can distribute the heavy burden
+of crawling the whole Knowledge Graph on many shoulders.
+Finally, by storing the extracted facts centrally in a~triple store,
+our approach allows for openly accessing the data via the standard SPARQL protocol.
+
 \section{Methodology}
 \subsection{Browser Extensions}
 We have implemented our prototype browser extension for the Google Chrome browser.
@@ -143,7 +163,7 @@ that have an associated real-world entity in the Knowledge Graph.
 An exemplary query selector is \texttt{.kno-desc}
 (all elements with class name ``kno-desc''),
 which via the JavaScript command \texttt{document.querySelector}
-returns the description of a~graph entity.
+returns the description of a~Knowledge Graph entity.
 
 \subsection{Lifting the Extracted Knowledge Graph Data}
 Albeit the claim of the Knowledge Graph is
@@ -154,9 +174,9 @@ In order to make this data meaningful again, we need to lift it.
 We use JSON-LD~\cite{sporny2012}, a~JSON representation format
 for expressing directed graphs;
 mixing both Linked Data and non-Linked Data in a~single document.
-JSON-LD allows for adding meaning by simply including or referencing a context.
+JSON-LD allows for adding meaning by simply including or referencing a~context.
 The syntax is designed to not disturb already deployed systems running on JSON,
-but provide a smooth upgrade path from JSON to JSON-LD.
+but provide a~smooth upgrade path from JSON to JSON-LD.
 
 \begin{figure}[htb!]
   \begin{center}
@@ -166,51 +186,21 @@ but provide a smooth upgrade path from JSON to JSON-LD.
   \label{fig:screenshot}
 \end{figure}
 
-We have modeled the plaintext graph terms (or predicates)
+We have modeled the plaintext Knowledge Graph terms (or predicates)
 like ``Born'', ``Full name'', ``Height'', ``Spouse'', etc.
 in the special namespace \texttt{gkg} (for Google Knowledge Graph)
 that has already been partially mapped to common Linked Data vocabularies.
 One example is \texttt{gkg:Description},
 which directly maps to \texttt{dbpprop:shortDescription} from DBpedia.
-Similar to the unknown list of objects in the graph (see \autoref{sec:on-crowdsourcing}),
-there is no known list of graph terms,
+Similar to the unknown list of objects in the Knowledge Graph (see \autoref{sec:on-crowdsourcing}),
+there is no known list of Knowledge Graph terms,
 which makes a~complete mapping impossible.
-We have collected \todo{Add Number of Collected Graph Terms} graph terms
+We have collected \todo{Add Number of Collected Knowledge Graph Terms} Knowledge Graph terms
 as of time of writing, however, the mapping to Linked Data terms
 will be a~permanent work in progress.
-\autoref{code:json} shows a~subset of Chuck Norris' Knowledge Graph data in plain JSON,
-\autoref{code:jsonld} the lifted, meaningful JSON-LD version.
+\autoref{code:jsonld} shows the lifted, meaningful JSON-LD as returned by the extension.
 
-\begin{lstlisting}[caption=Subset of the extracted plain JSON from the Chuck Norris Knowledge Graph data., label=code:json, float=h, escapechar=§]
-{
-  "@id": "http://openknowledgegraph.org/data/H4sIAAAAA[...]",
-  "Topic_Of": "http://en.wikipedia.org/wiki/Chuck_Norris",
-  "Name": "Chuck Norris",
-  "Fact": [
-    "Chuck Norris can cut thru a knife w/ butter."
-  ],
-  "Full_name": [
-    "Carlos Ray Norris"
-  ],
-  "Height": [
-    "5' 10\""
-  ],
-  "Spouse": [
-    {
-      "@id": "http://openknowledgegraph.org/data/H4sIA[...]",
-      "query": "gena o'kelley",
-      "text": "Gena O'Kelley"
-    },
-    {
-      "@id": "http://openknowledgegraph.org/data/H4sIA[...]",
-      "query": "dianne holechek",
-      "text": "Dianne Holechek"
-    }
-  ]
-}
-\end{lstlisting} 
-
-\begin{lstlisting}[caption=Subset of the lifted and meaningful JSON-LD from the Chuck Norris Knowledge Graph data. The mapping of the graph terms can be seen in the @context., label=code:jsonld, float=h, escapechar=§]
+\begin{lstlisting}[caption=Subset of the meaningful JSON-LD from the Chuck Norris Knowledge Graph data. The mapping of the Knowledge Graph terms can be seen in the @context., label=code:jsonld, float=h, escapechar=§]
 {
   "@id": "http://openknowledgegraph.org/data/H4sIAAAAA[...]",
   "@context": {
@@ -247,7 +237,9 @@ will be a~permanent work in progress.
 
 \section{Evaluation}
 
-\section{Future Work and Conclusion}
+\section{Future Work}
+
+\section{Conclusion}
 
 \section*{Acknowledgments}
 %\small
