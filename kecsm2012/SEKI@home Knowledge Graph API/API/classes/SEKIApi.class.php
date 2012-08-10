@@ -100,9 +100,6 @@
         }
       } else if ($name !== null) {
         $filters[] = $this->columnToken('name')."='$name'";
-      } else {
-        outputError('At least one identifier needed for the subject');
-        return false;
       }
 
       if ($predicate !== null) {
@@ -110,7 +107,7 @@
       }
 
       if ($objects !== null) {
-        $filters[] = TABLE_OBJECTS.'.sid='.TABLE_SUBJECTS.'.sid';
+        $filters[] = TABLE_OBJECTS.'.sid='.TABLE_SUBJECTS.'.id';
         if ($predicate) {
           $filters[] = TABLE_OBJECTS.'.pid='.TABLE_PREDICATES.'.id';
         }

@@ -10,15 +10,6 @@
 
   $SEKI = new SEKIApi($DB);
 
-  /*
-  v_export($SEKI->insert(
-    'Stefan',
-    null,
-    'watha fork!',
-    'born',
-    '26.08.1991'
-  ));
 
-  $SEKI->get('Stefan');
-  */
+  $SEKI->get(null, null, null, null, '13.08.2010');
 ?>
