@@ -37,6 +37,9 @@
     NOTATION_NODE: 12
   }
 
+  var SERVER = 'http://openknowledgegraph.org/';
+  var ID_URL = SERVER + 'data/';
+
   // contains IDs, class names, and HTML for the knowledge panel
   var KNOWLEDGE_PANEL = {
     ID: 'knop',
@@ -54,6 +57,12 @@
         return false;
       }
     }
+  }
+
+  String.prototype.multiTrim = function (characters) {
+    characters = characters || ',';
+    return this.replace(new RegExp('^[' + characters + ']+'), '')
+                .replace(new RegExp('[' + characters + ']+$'), '');
   }
 
   // helper function for logging status messages
@@ -91,26 +100,38 @@
         }
       }, false);
 
-      var title = getConceptTitle(knowledgePanel);
-      var id = getConceptIdentifier(knowledgePanel);
-      var categories = getConceptCategories(knowledgePanel, categories);
-      var inlineCategories = getConceptInlineCategories(knowledgePanel,
-          categories);
-      for (var name in categories) {
-        if (categories[name].length === 0) {
-          delete categories[name];
-          log('Empty category: "' + name + '"');
+      var query = URI('?' + URI(window.location.href).fragment()).query(true);
+      if (query.stick) {
+        var title = getConceptTitle(knowledgePanel);
+        var wiki = getConceptIdentifier(knowledgePanel);
+        var categories = getConceptCategories(
+                            knowledgePanel,
+                            getConceptInlineCategories(
+                              knowledgePanel,
+                              categories
+                            )
+                          );
+        var result = {
+          '@id': ID_URL + query.stick,
+          Topic_Of: wiki,
+          Name: title
+        };
+
+        for (var name in categories) {
+          if (categories[name].length === 0) {
+            log('Empty category: `' + name + '`');
+          } else {
+            var newName = name.multiTrim(', ').replace(/\s+/g, '_');
+            result[newName] = categories[name];
+          }
         }
+
+        log(JSON.stringify(result, null, 2));
+        return true;
+      } else {
+        log('Error: no stick found');
+        return true;
       }
-      var result = {
-        '@id': id,
-        name: title
-      };
-      for (var name in categories) {
-        result[name] = categories[name];
-      }
-      log(JSON.stringify(result, null, 2));
-      return true;
     } else {
       log('No Knowledge Panel was detected.');
       return false;
@@ -123,7 +144,7 @@
         knowledgePanel.getElementsByClassName(KNOWLEDGE_PANEL.TITLE);
     if ((typeof titlePane === 'object') &&
         (titlePane.length == 1)) {
-      var title = titlePane[0].textContent.trim();
+      var title = titlePane[0].textContent.multiTrim(', ');
       log('The human-readable title is "' + title + '"');
       return title;
     } else {
@@ -143,7 +164,7 @@
       categoryNodes.forEach(function _getData (category) {
         var nameNode = category.previousSibling;
         if (nameNode && nameNode.nodeName === 'SPAN') {
-          var name = nameNode.textContent.trim();
+          var name = nameNode.textContent.multiTrim(', ');
           var valueNodes = getChildren(category,
               KNOWLEDGE_PANEL.CATEGORIES_VALUE);
           if (valueNodes && valueNodes.length >= 1) {
@@ -151,12 +172,17 @@
             valueNodes.forEach(function _getValue (value) {
               var query = URI(value.href).query(true);
               key = {
-                '@id': query.stick,
+                '@id': ID_URL + query.stick,
                 query: query.q,
-                text: value.textContent.trim()
+                text: value.textContent.multiTrim(', ')
               };
               if (value.title) {
                 key.title = value.title;
+              }
+              for (var kname in key) {
+                if (!key[kname] || key[kname].length === 0) {
+                  delete key[kname];
+                }
               }
               categories[name].push(key);
             });
@@ -210,7 +236,7 @@
           true
         );
         if (nameNode) {
-          var name = nameNode.textContent.trim();
+          var name = nameNode.textContent.multiTrim(', ');
           var valueNode = getChildren(
             category,
             KNOWLEDGE_PANEL.INLINE_CATEGORIES_VALUE,
@@ -225,19 +251,25 @@
               ) {
                 var query = URI(value.href).query(true);
                 key = {
-                  '@id': query.stick,
+                  '@id': ID_URL + query.stick,
                   query: query.q,
-                  text: value.textContent.trim()
+                  text: value.textContent.multiTrim(', '),
+                  title: value.title
                 };
-                if(value.title) {
-                  key.title = value.title;
-                }
               } else if (value.nodeType === NodeType.TEXT_NODE) {
-                key = value.textContent.trim();
+                key = value.textContent
+                            .replace(/\([^)]*\)/g, '')
+                            .multiTrim(', ');
+                key = key.length > 0 ? key : null;
               } else {
                 // do nothing
               }
               if (key !== null) {
+                for (var kname in key) {
+                  if (!key[kname] || key[kname].length === 0) {
+                    delete key[kname];
+                  }
+                }
                 categories[name].push(key);
               }
             });
