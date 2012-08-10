@@ -28,11 +28,14 @@
     NOTATION_NODE: 12
   }
 
-  //var SERVER_URL = 'http://localhost/seki/API/';
+  var NAMESPACE = 'http://openknowledgegraph.org/data/';
+
   var SERVER_URL = 'http://openknowledgegraph.org/';
-  var DATA_URL = SERVER_URL + 'data/';
+  //var SERVER_URL = 'http://localhost/seki/API/';
+  var DATA_URL = NAMESPACE + 'data/';
   var ONTOLOGY_URL = SERVER_URL + 'ontology/';
   var STORAGE_URL = SERVER_URL + 'storage/';
+  var SPARQL_URL = SERVER_URL + 'sparql/';
 
   // contains IDs, class names, and HTML for the knowledge panel
   var KNOWLEDGE_PANEL = {
@@ -127,7 +130,7 @@
       var query = URI('?' + URI(window.location.href).fragment()).query(true);
       if (query.stick) {
         var result = {
-          '@id': DATA_URL + query.stick,
+          '@id': NAMESPACE + query.stick,
           '@context': { // to be updated
             Derived_From: {
               '@id': 'http://www.w3.org/ns/prov#wasDerivedFrom',
@@ -230,7 +233,7 @@
             valueNodes.forEach(function _getValue (value) {
               var query = URI(value.href).query(true);
               key = {
-                '@id': DATA_URL + query.stick,
+                '@id': NAMESPACE + query.stick,
                 Query: query.q,
                 Name: value.textContent.multiTrim(', ')
               };
@@ -307,7 +310,7 @@
               ) {
                 var query = URI(value.href).query(true);
                 key = {
-                  '@id': DATA_URL + query.stick,
+                  '@id': NAMESPACE + query.stick,
                   Query: query.q,
                   Name: value.textContent.multiTrim(', ')
                 };
