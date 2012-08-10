@@ -123,10 +123,15 @@ The extension can be added to the Google Chrome browser via \todo{Add Chrome Web
 our unofficial crowdsourced Google Knowledge Graph API can be tested at
 \todo{Add API URL}.
 
-The remainder of this paper is structured as follows:
-\todo{Add Paper Structure}
+The remainder of this paper is structured as follows.
+In \autoref{sec:related-work}, we highlight related work
+for the field of extracting data from websites with RDF wrappers.
+In \autoref{sec:methodology}, we describe the \emph{SEKI@home} approach in detail.
+We provide a~short evaluation in \autoref{sec:evaluation}.
+The paper ends with an outlook on future work in \autoref{sec:future-work}
+and a~conclusion in \autoref{sec:conclusion}.
 
-\section{Related Work}
+\section{Related Work} \label{sec:related-work}
 Wrappers around Web services or Web pages have been used in the past
 to lift data from the original source to a~meaningful, machine-readable RDF level.
 Examples are the Google Art wrapper by Guéret~\cite{gueret2011},
@@ -146,7 +151,7 @@ of crawling the whole Knowledge Graph on many shoulders.
 Finally, by storing the extracted facts centrally in a~triple store,
 our approach allows for openly accessing the data via the standard SPARQL protocol.
 
-\section{Methodology}
+\section{Methodology} \label{sec:methodology}
 \subsection{Browser Extensions}
 We have implemented our prototype browser extension for the Google Chrome browser.
 Chrome extensions are small software programs that users can install
@@ -246,12 +251,12 @@ In consequence, it is considered good form to acknowledge the original source,
 which we have done via the property \texttt{prov:wasDerivedFrom}
 from the PROV Ontology~\cite{lebo2012} for each entity.
 
-\section{Evaluation}
+\section{Evaluation} \label{sec:evaluation}
 
-\section{Future Work}
+\section{Future Work} \label{sec:future-work}
 
 
-\section{Conclusion}
+\section{Conclusion} \label{sec:conclusion}
 In this paper, we have shown a~generalizable approach
 to first opening up closed datasets by means of crowdsourcing,
 and then making the extracted facts universally and openly accessible.
