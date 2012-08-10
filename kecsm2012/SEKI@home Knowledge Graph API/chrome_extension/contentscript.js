@@ -93,15 +93,13 @@
 
       var title = getConceptTitle(knowledgePanel);
       var id = getConceptIdentifier(knowledgePanel);
-      var categories = {};
       var categories = getConceptCategories(knowledgePanel, categories);
       var inlineCategories = getConceptInlineCategories(knowledgePanel,
-                                                        categories
-      );
+          categories);
       for (var name in categories) {
         if (categories[name].length === 0) {
           delete categories[name];
-          log('Empty category: `' + name + '`');
+          log('Empty category: "' + name + '"');
         }
       }
       var result = {
@@ -146,10 +144,8 @@
         var nameNode = category.previousSibling;
         if (nameNode && nameNode.nodeName === 'SPAN') {
           var name = nameNode.textContent.trim();
-          var valueNodes = getChildren(
-            category,
-            KNOWLEDGE_PANEL.CATEGORIES_VALUE
-          );
+          var valueNodes = getChildren(category,
+              KNOWLEDGE_PANEL.CATEGORIES_VALUE);
           if (valueNodes && valueNodes.length >= 1) {
             categories[name] = categories[name] || [];
             valueNodes.forEach(function _getValue (value) {
@@ -159,16 +155,16 @@
                 query: query.q,
                 text: value.textContent.trim()
               };
-              if(value.title) {
+              if (value.title) {
                 key.title = value.title;
               }
               categories[name].push(key);
             });
           } else {
-            log('Error: no values found for category', category);
+            log('Error: no values found for category ', category);
           }
         } else {
-          log('Error: could not get title for category', category);
+          log('Error: could not get title for category ', category);
         }
       });
       log('The following categories were detected: ', Object.keys(categories));
