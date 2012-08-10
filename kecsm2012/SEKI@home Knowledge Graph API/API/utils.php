@@ -1,6 +1,19 @@
 <?php
 
   /**
+   * @param {String|Array} @data
+   */
+  function cleanData (&$data) {
+    if (is_array($data)) {
+      foreach ($data as $key => $value) {
+        cleanData($data[$key]);
+      }
+    } else {
+      $data = mysql_real_escape_string($data);
+    }
+  }
+
+  /**
    * @param {MYSQLI} $mysqli
    * @param {String} $query
    * @param {String} $message

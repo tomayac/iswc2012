@@ -30,21 +30,13 @@
   if ($data['data'] && $object = json_decode($data['data'])) {
     $rdf = jsonld_to_rdf($object, $jsonld_options);
     $query = "INSERT INTO <$graph_uri> { \n $rdf \n }";
-    var_export($store->query($query));
+    $store->query($query);
+    //TODO: error checking and stuff
+    jsonOutput(array(
+      'triples' => count(explode("\n", $rdf))
+    ));
   } else {
-    var_export($data);
-    var_export($object);
     outputError('No valid data object provided');
-  }
-
-  function cleanData (&$data) {
-    if (is_array($data)) {
-      foreach ($data as $key => $value) {
-        cleanData($data[$key]);
-      }
-    } else {
-      $data = mysql_real_escape_string($data);
-    }
   }
 
 ?>

@@ -37,6 +37,7 @@
     NOTATION_NODE: 12
   }
 
+  //var SERVER_URL = 'http://localhost/seki/API/';
   var SERVER_URL = 'http://openknowledgegraph.org/';
   var DATA_URL = SERVER_URL + 'data/';
   var ONTOLOGY_URL = SERVER_URL + 'ontology/';
