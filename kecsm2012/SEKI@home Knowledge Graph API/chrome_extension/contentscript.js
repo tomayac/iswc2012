@@ -37,14 +37,16 @@
     NOTATION_NODE: 12
   }
 
-  var SERVER = 'http://openknowledgegraph.org/';
-  var ID_URL = SERVER + 'data/';
+  var SERVER_URL = 'http://openknowledgegraph.org/';
+  var DATA_URL = SERVER_URL + 'data/';
+  var ONTOLOGY_URL = SERVER_URL + 'ontology/';
 
   // contains IDs, class names, and HTML for the knowledge panel
   var KNOWLEDGE_PANEL = {
     ID: 'knop',
     TITLE: 'kno-t',
     DESCRIPTION: 'kno-desc',
+    DEPICTION: '.kno-lilt.rhsl5 a',
     CATEGORIES: '.vrtr',
     CATEGORIES_VALUE: '.vrt a.fl.ellip',
     INLINE_CATEGORIES: '.kno-f',
@@ -58,6 +60,17 @@
       }
     }
   }
+
+  var CONTEXT_MAP = {
+    NAME: "http://xmlns.com/foaf/0.1/name",
+    TOPIC_OF: {
+      "@id": "http://xmlns.com/foaf/0.1/isPrimaryTopicOf",
+      type: "@id"
+    },
+    FULL_NAME: "http://xmlns.com/foaf/0.1/givenName",
+    HEIGHT: "http://dbpedia.org/ontology/height",
+    SPOUSE: "http://dbpedia.org/ontology/spouse"
+  };
 
   String.prototype.multiTrim = function (characters) {
     characters = characters || ',';
@@ -83,6 +96,21 @@
     return newArray;
   };
 
+  /**
+   * Goes through all the keys and adds creates a context object
+   */
+  function updateContext (context, object) {
+    for (var key in object) {
+      if (key.slice(0, 1) === '@') {
+        // do something?
+      } else {
+        var keyU = key.toUpperCase();
+        context[key] = context[key] || CONTEXT_MAP[keyU] || ONTOLOGY_URL+key;
+      }
+    }
+    return context;
+  }
+
   // checks if a knowledge panel exists on the current SERP
   var checkForKnowledgePanel = function() {
     var knowledgePanel = document.getElementById(KNOWLEDGE_PANEL.ID);
@@ -102,8 +130,22 @@
 
       var query = URI('?' + URI(window.location.href).fragment()).query(true);
       if (query.stick) {
-        var title = getConceptTitle(knowledgePanel);
-        var wiki = getConceptIdentifier(knowledgePanel);
+
+        var result = {
+          '@id': DATA_URL + query.stick,
+          '@context': {}, // to be updated
+          Topic_Of: getConceptIdentifier(knowledgePanel),
+          Name: getConceptTitle(knowledgePanel),
+          Depiction: getConceptDepiction(knowledgePanel)
+        };
+
+        for (var name in result) {
+          if (result[name] === null) {
+            log('Empty `' + name + '` in main result object');
+            delete result[name];
+          }
+        }
+
         var categories = getConceptCategories(
                             knowledgePanel,
                             getConceptInlineCategories(
@@ -111,20 +153,25 @@
                               categories
                             )
                           );
-        var result = {
-          '@id': ID_URL + query.stick,
-          Topic_Of: wiki,
-          Name: title
-        };
-
         for (var name in categories) {
           if (categories[name].length === 0) {
             log('Empty category: `' + name + '`');
           } else {
             var newName = name.multiTrim(', ').replace(/\s+/g, '_');
             result[newName] = categories[name];
+            if (categories[name] instanceof Array) {
+              for (var i=0; i<categories[name].length; ++i) {
+                if (categories[name][i].constructor === Object) {
+                  updateContext(result['@context'], categories[name][i]);
+                }
+              }
+            } else {
+              updateContext(result['@context'], categories[name]);
+            }
           }
         }
+
+        updateContext(result['@context'], result);
 
         log(JSON.stringify(result, null, 2));
         return true;
@@ -137,6 +184,16 @@
       return false;
     }
   };
+
+  var getConceptDepiction = function(knowledgePanel) {
+    var links = getChildren(knowledgePanel, KNOWLEDGE_PANEL.DEPICTION);
+    if (links) {
+      return URI(links[0].href).query(true).imgurl || null;
+    } else {
+      log('No depiction found');
+    }
+    return null;
+  }
 
   // retrieves the human-readable knowledge panel title
   var getConceptTitle = function(knowledgePanel) {
@@ -172,9 +229,9 @@
             valueNodes.forEach(function _getValue (value) {
               var query = URI(value.href).query(true);
               key = {
-                '@id': ID_URL + query.stick,
-                query: query.q,
-                text: value.textContent.multiTrim(', ')
+                '@id': DATA_URL + query.stick,
+                Query: query.q,
+                Name: value.textContent.multiTrim(', ')
               };
               if (value.title) {
                 key.title = value.title;
@@ -184,6 +241,7 @@
                   delete key[kname];
                 }
               }
+              updateContext(key);
               categories[name].push(key);
             });
           } else {
@@ -251,10 +309,9 @@
               ) {
                 var query = URI(value.href).query(true);
                 key = {
-                  '@id': ID_URL + query.stick,
-                  query: query.q,
-                  text: value.textContent.multiTrim(', '),
-                  title: value.title
+                  '@id': DATA_URL + query.stick,
+                  Query: query.q,
+                  Name: value.textContent.multiTrim(', ')
                 };
               } else if (value.nodeType === NodeType.TEXT_NODE) {
                 key = value.textContent
