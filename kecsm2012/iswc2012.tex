@@ -200,7 +200,7 @@ as of time of writing, however, the mapping to Linked Data terms
 will be a~permanent work in progress.
 \autoref{code:jsonld} shows the lifted, meaningful JSON-LD as returned by the extension.
 
-\begin{lstlisting}[caption=Subset of the meaningful JSON-LD from the Chuck Norris Knowledge Graph data. The mapping of the Knowledge Graph terms can be seen in the @context., label=code:jsonld, float=h, escapechar=§]
+\begin{lstlisting}[caption=Subset of the meaningful JSON-LD from the Chuck Norris Knowledge Graph data. The mapping of the Knowledge Graph terms can be seen in the @context., label=code:jsonld, float=bth!, escapechar=§]
 {
   "@id": "http://openknowledgegraph.org/data/H4sIAAAAA[...]",
   "@context": {
@@ -240,6 +240,19 @@ will be a~permanent work in progress.
 \section{Future Work}
 
 \section{Conclusion}
+In this paper, we have shown a~generalizable approach
+to first opening up closed datasets by means of crowdsourcing,
+and then making the extracted facts universally and openly accessible.
+As an example dataset, we have used the Google Knowledge Graph.
+The extracted facts can be accessed via the standard SPARQL protocol
+from the Google-independent Open Knowledge Graph website
+(\url{http://openknowledgegraph.org/sparql}).
+Just like datasets evolve over time, the Knowledge Graph in concrete,
+the facts extracted via the \emph{SEKI@home} approach as well
+mirror those changes eventually.
+Granted that provenance of the extracted data is handled appropriately,
+we hope to have contributed a~useful socially enabled chain link
+to the Linked Data world.
 
 \section*{Acknowledgments}
 %\small
