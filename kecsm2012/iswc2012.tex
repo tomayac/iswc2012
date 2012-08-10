@@ -144,8 +144,8 @@ Wrappers do not offer SPARQL endpoints, as their data gets computed on-the-fly.
 
 With \emph{SEKI@home}, we offer a~related, however, still different in the detail,
 approach to lift and make machine-readably accessible
-closed datasets like the Knowledge Graph.
-The entirety of the dataset being unknown,
+closed knowledge bases like the Knowledge Graph.
+The entirety of the knowledge base being unknown,
 via crowdsourcing, we can distribute the heavy burden
 of crawling the whole Knowledge Graph on many shoulders.
 Finally, by storing the extracted facts centrally in a~triple store,
@@ -170,7 +170,7 @@ An exemplary query selector is \texttt{.kno-desc}
 which via the JavaScript command \texttt{document.querySelector}
 returns the description of a~Knowledge Graph entity.
 
-\subsection{Lifting the Extracted Knowledge Graph Data}
+\subsection{Lifting the Extracted Knowledge Graph Data} \label{sec:lifting}
 Albeit the claim of the Knowledge Graph is
 \textit{``things, not strings''}~\cite{singhal2012_1},
 what gets displayed to search engine users are strings,
@@ -201,11 +201,11 @@ Similar to the unknown list of objects in the Knowledge Graph (see \autoref{sec:
 there is no known list of Knowledge Graph terms,
 which makes a~complete mapping impossible.
 We have collected \todo{Add Number of Collected Knowledge Graph Terms} Knowledge Graph terms
-as of time of writing, however, the mapping to Linked Data terms
+as of time of writing, however, the mapping to other Linked Data vocabularies
 will be a~permanent work in progress.
 \autoref{code:jsonld} shows the lifted, meaningful JSON-LD as returned by the extension.
 
-\begin{lstlisting}[caption=Subset of the meaningful JSON-LD from the Chuck Norris Knowledge Graph data. The mapping of the Knowledge Graph terms can be seen in the @context., label=code:jsonld, float=bth!, escapechar=§]
+\begin{lstlisting}[caption=Subset of the meaningful JSON-LD from the Chuck Norris Knowledge Graph data. The mapping of the Knowledge Graph terms can be seen in the @context., label=code:jsonld, float=hbt!, escapechar=§]
 {
   "@id": "http://openknowledgegraph.org/data/H4sIAAAAA[...]",
   "@context": {
@@ -254,17 +254,31 @@ from the PROV Ontology~\cite{lebo2012} for each entity.
 \section{Evaluation} \label{sec:evaluation}
 
 \section{Future Work} \label{sec:future-work}
-
+A~concrete next step for the current application
+of our approach to the Knowledge Graph is
+to provide a~more comprehensive mapping
+of Knowledge Graph terms to other Linked Data vocabularies,
+a~task whose difficulty was outlined in \autoref{sec:lifting}.
+At time of writing, we have applied the \emph{SEKI@home} approach
+to a~concrete knowledge base, namely the Knowledge Graph.
+In the future, we want to apply \emph{SEKI@home} to
+similar closed knowledge bases.
+Videos from video portals like YouTube or Vimeo can be semantically enriched,
+as we have shown in~\cite{steiner2010} for the case of YouTube.
+We plan to apply \emph{SEKI@home} to semantic video enrichment by splitting
+the computational heavy annotation task,
+and store the extracted facts centrally in a~triple store
+to allow for open SPARQL access.
 
 \section{Conclusion} \label{sec:conclusion}
 In this paper, we have shown a~generalizable approach
-to first opening up closed datasets by means of crowdsourcing,
+to first opening up closed knowledge bases by means of crowdsourcing,
 and then making the extracted facts universally and openly accessible.
-As an example dataset, we have used the Google Knowledge Graph.
+As an example knowledge base, we have used the Google Knowledge Graph.
 The extracted facts can be accessed via the standard SPARQL protocol
 from the Google-independent Open Knowledge Graph website
 (\url{http://openknowledgegraph.org/sparql}).
-Just like datasets evolve over time, the Knowledge Graph in concrete,
+Just like knowledge bases evolve over time, the Knowledge Graph in concrete,
 the facts extracted via the \emph{SEKI@home} approach as well
 mirror those changes eventually.
 Granted that provenance of the extracted data is handled appropriately,
