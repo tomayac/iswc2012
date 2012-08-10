@@ -126,7 +126,9 @@
         }
       }, false);
 
-      var query = URI('?' + URI(window.location.href).fragment()).query(true);
+      var query = URI(window.location.href).query(true);
+      query = query.stick ? query :
+                URI('?' + URI(window.location.href).fragment()).query(true);
       if (query.stick) {
         var result = {
           '@id': NAMESPACE + query.stick,
@@ -377,7 +379,7 @@
 
   function handleResult (result) {
     log('Sending request to server', result);
-    $.get(STORAGE_URL, {
+    $.get(SERVER_URL, {
       data: JSON.stringify(result)
     }, function(r) {
       log('[AJAX]', r);
