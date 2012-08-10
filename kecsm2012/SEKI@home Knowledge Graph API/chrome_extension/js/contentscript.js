@@ -111,7 +111,9 @@
     return context;
   }
 
-  // checks if a knowledge panel exists on the current SERP
+  /*
+   * Checks if a knowledge panel exists on the current SERP
+   */
   var checkForKnowledgePanel = function() {
     var knowledgePanel = document.getElementById(KNOWLEDGE_PANEL.ID);
     if (knowledgePanel) {
@@ -174,7 +176,7 @@
         updateContext(result['@context'], result);
 
         log(JSON.stringify(result, null, 2));
-        return true;
+        return result;
       } else {
         log('Error: no stick found');
         return true;
@@ -372,16 +374,26 @@
     return null;
   }
 
+  function handleResult (result) {
+
+  }
+
   // starts to poll for a knowledge panel
   var init = function() {
     log('Starting to poll for Knowledge Panel.');
     POLLING_INTERVALS.push(setInterval(function() {
-      if (checkForKnowledgePanel()) {
+      var result = checkForKnowledgePanel();
+      if (result) {
         POLLING_INTERVALS.forEach(function(interval) {
           clearInterval(interval);
         });
         POLLING_INTERVALS = [];
         log('Stopping to poll for Knowledge Panel.');
+
+        // if the parsing has been successful
+        if (result && result.constructor === Object) {
+          handleResult(result);
+        }
       }
     }, 500));
   };

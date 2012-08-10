@@ -16,8 +16,8 @@
     {
       "matches": ["https://www.google.com/*"],
       "js": [
-        "URI.min.js",
-        "contentscript.js"
+        "js/URI.min.js",
+        "js/contentscript.js"
       ],
       "run_at": "document_idle"
     }
