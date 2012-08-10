@@ -16,6 +16,7 @@
     {
       "matches": ["https://www.google.com/*"],
       "js": [
+        "js/jquery.js",
         "js/URI.min.js",
         "js/contentscript.js"
       ],
