@@ -29,7 +29,7 @@
       }
     }
   } else {
-    outputError('Invalid query');
+    echo file_get_contents("help.html");
   }
 
 ?>
