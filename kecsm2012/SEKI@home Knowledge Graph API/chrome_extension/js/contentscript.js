@@ -12,15 +12,6 @@
     TESTING_KEY: 'AIzaSyDBpQBFYMroDQzh0HAq4YzB2bL9-AkRFcg'
   };
 
-  // restore from options
-  chrome.extension.sendRequest({item: 'google_key'}, function(response) {
-    GLOBAL_CONFIG.GOOGLE_KEY = response.reply || GLOBAL_CONFIG.GOOGLE_KEY;
-    if ((GLOBAL_CONFIG.GOOGLE_KEY === '') ||
-        (GLOBAL_CONFIG.GOOGLE_KEY === GLOBAL_CONFIG.TESTING_KEY)) {
-      GLOBAL_CONFIG.GOOGLE_KEY = GLOBAL_CONFIG.TESTING_KEY;
-    }
-  });
-
   // enum containing all Node.nodeType values
   var NodeType = {
     ELEMENT_NODE: 1,
