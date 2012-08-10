@@ -32,7 +32,7 @@
   var DATA_URL = NAMESPACE + 'data/';
   var ONTOLOGY_URL = NAMESPACE + 'ontology/';
 
-  var SERVER_URL = 'http://seki.code4fun.de/';
+  var SERVER_URL = 'http://seki.code4fun.de/storage/';
   //var SERVER_URL = 'http://localhost/seki/API/';
 
 
@@ -131,7 +131,7 @@
                 URI('?' + URI(window.location.href).fragment()).query(true);
       if (query.stick) {
         var result = {
-          '@id': NAMESPACE + query.stick,
+          '@id': DATA_URL + query.stick,
           '@context': { // to be updated
             Derived_From: {
               '@id': 'http://www.w3.org/ns/prov#wasDerivedFrom',
@@ -234,7 +234,7 @@
             valueNodes.forEach(function _getValue (value) {
               var query = URI(value.href).query(true);
               key = {
-                '@id': NAMESPACE + query.stick,
+                '@id': DATA_URL + query.stick,
                 Query: query.q,
                 Name: value.textContent.multiTrim(', ')
               };
@@ -311,7 +311,7 @@
               ) {
                 var query = URI(value.href).query(true);
                 key = {
-                  '@id': NAMESPACE + query.stick,
+                  '@id': DATA_URL + query.stick,
                   Query: query.q,
                   Name: value.textContent.multiTrim(', ')
                 };
