@@ -9,6 +9,35 @@
 
   $query = '';
   if (isset($_GET['query'])) {
+
+    $format = isset($_GET['format']) ? $_GET['format'] : 'xml';
+
+    if (!headers_sent()) {
+      $format = isset($_GET['format']) ? trim($_GET['format']) : 'xml';
+      $extensions = array(
+        'xml' => 'xml',
+        'sparql-results+xml' => 'xml',
+        'json' => 'json',
+        'sparql-results+json' => 'json',
+        'php_ser' => 'json',
+        'plain' => 'txt',
+        'sql' => 'sql',
+        'infos' => 'txt',
+        'htmltab' => 'html',
+        'tsv' => 'tsv',
+      );
+      $extension = $format;
+      foreach ($extensions as $key => $value) {
+        if (preg_match('/^' . $key . '/i', $format)) {
+          $extension = $value;
+        }
+      }
+      $filename = 'openknowledgegraph_'.date('Y.m.d_H.i.s').".$extension";
+
+      header('Content-type: text/plain');
+      header("Content-Disposition:attachment;filename='$filename'");
+    }
+
     /* MySQL and endpoint configuration */
     $config = array(
       'db_host' => DB_HOST,
