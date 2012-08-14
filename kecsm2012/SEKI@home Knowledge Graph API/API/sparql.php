@@ -7,13 +7,12 @@
   require_once 'jsonld/jsonld.php';
   require_once 'setup_store.php';
 
-  $query = '';
-  if (isset($_GET['query'])) {
+  if (isset($_REQUEST['query'])) {
 
-    $format = isset($_GET['format']) ? $_GET['format'] : 'xml';
+    $format = isset($_REQUEST['format']) ? $_REQUEST['format'] : 'xml';
 
-    if (!headers_sent()) {
-      $format = isset($_GET['format']) ? trim($_GET['format']) : 'xml';
+    if (!headers_sent() && strlen($_REQUEST['query']) > 0) {
+      $format = isset($_REQUEST['format']) ? trim($_REQUEST['format']) : 'xml';
       $extensions = array(
         'xml' => 'xml',
         'sparql-results+xml' => 'xml',
@@ -24,7 +23,7 @@
         'sql' => 'sql',
         'infos' => 'txt',
         'htmltab' => 'html',
-        'tsv' => 'tsv',
+        'tsv' => 'tsv'
       );
       $extension = $format;
       foreach ($extensions as $key => $value) {
@@ -36,6 +35,7 @@
 
       header('Content-type: text/plain');
       header("Content-Disposition:attachment;filename='$filename'");
+
     }
 
     /* MySQL and endpoint configuration */
@@ -68,5 +68,4 @@
   } else {
     echo file_get_contents("help.html");
   }
-
 ?>
