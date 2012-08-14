@@ -9,28 +9,33 @@
 
   $query = '';
   if (isset($_GET['query'])) {
-    $query = $_GET['query'];
-    if ($rows = $store->query($query, 'rows')) {
-      turtleOutput($store, $rows);
-      /*
-      jsonOutput(array(
-        'result' => $rows
-      ));
-      */
-    } else {
-      if ($errors = $store->getErrors()) {
-        jsonOutput(array(
-          'errors' => $errors,
-          'query' => $query
-        ));
-      } else {
-        jsonOutput(array(
-          'result' => array(),
-          'error' => 'Empty result',
-          'query' => $query
-        ));
-      }
+    /* MySQL and endpoint configuration */
+    $config = array(
+      'db_host' => DB_HOST,
+      'db_name' => DB_NAME,
+      'db_user' => DB_USER,
+      'db_pwd' => DB_PASS,
+      'store_name' => 'SEKI',
+
+      /* endpoint */
+      'endpoint_features' => array(
+        'select', 'construct', 'ask', 'describe',
+        'load', 'insert', 'delete',
+        'dump' /* dump is a special command for streaming SPOG export */
+      ),
+      'endpoint_timeout' => 60, /* not implemented in ARC2 preview */
+      'endpoint_read_key' => '', /* optional */
+      'endpoint_write_key' => '', /* optional */
+      'endpoint_max_limit' => 512 /* optional */
+    );
+
+    /* instantiation */
+    $ep = ARC2::getStoreEndpoint($config);
+    if (!$ep->isSetUp()) {
+      $ep->setUp(); /* create MySQL tables */
     }
+    /* request handling */
+    $ep->go();
   } else {
     echo file_get_contents("help.html");
   }
