@@ -193,6 +193,7 @@
   var getConceptDepiction = function(knowledgePanel) {
     var links = getChildren(knowledgePanel, KNOWLEDGE_PANEL.DEPICTION);
     if (links) {
+      //TODO: search for location. this gives error. Fix it
       return URI(links[0].href).query(true).imgurl || null;
     } else {
       log('No depiction found');
