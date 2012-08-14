@@ -7,38 +7,19 @@
   require_once '../jsonld/jsonld.php';
   require_once '../setup_store.php';
 
-  //$id_regexp = '/^[a-zA-Z0-9_]+$/';
-  $id_regexp = '/.+/';
-
-  $query = '';
-  if (isset($_GET['q']) && preg_match($id_regexp, $_GET['q'])) {
-    $ID = $_GET['q'];
-    $url = "<http://openknowledgegraph.org/data/$ID>";
-    $query = "SELECT ?predicate ?object WHERE {
-       $url ?predicate ?object
-    }";
-
-    if ($rows = $store->query($query, 'rows')) {
-      turtleOutput($store, $rows);
-    /*
-      jsonOutput(array(
-        'result' => $rows
-      ));
-    */
-    } else {
-      if ($errors = $store->getErrors()) {
-        jsonOutput(array(
-          'errors' => $errors,
-          'query' => $query
-        ));
-      } else {
-        jsonOutput(array(
-          'result' => array(),
-          'error' => 'Empty result',
-          'query' => $query
-        ));
-      }
-    }
+  if (isset($_GET['query'])) {
+    $dirname = dirname($_SERVER['REQUEST_URI']);
+    $base = implode('/', array_slice(explode('/', $dirname), 0, -1));
+    $url = WEB_ROOT . $base . '/sparql.php?query=' .
+                      urldecode(
+                        'SELECT ?predicate ?object WHERE { ' .
+                          $_GET['query'] . ' ?predicate ?object ' .
+                        '}'
+                      );
+    v_export($url);
+    echo '<hr />';
+    $page = get_web_page($url);
+    echo $page['content'];
   } else {
     outputError('Invalid identifier');
   }
