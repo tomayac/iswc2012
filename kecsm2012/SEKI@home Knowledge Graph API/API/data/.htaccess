@@ -1,18 +1,14 @@
-# Don't show directory listings for URLs which map to a directory.
-# Options -Indexes
-
 # Follow symbolic links in this directory.
 Options +FollowSymlinks
+Options +Indexes
 
 # Set the default handler to index.php:
 DirectoryIndex index.php
 
-# Various rewrite rules.
+Options -MultiViews
+
 <IfModule mod_rewrite.c>
   RewriteEngine on
-  
-  # set base to the data subfolder
-  RewriteBase /data/
 
   # Don't allow access to hidden files and folder (that begin with ".")
   RewriteRule "(^|/)\." - [F]
@@ -25,6 +21,6 @@ DirectoryIndex index.php
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_FILENAME} !-d
   RewriteCond %{REQUEST_URI} !=/favicon.ico
-  RewriteRule ^(.*)$ index.php?q=$1 [L]
+  RewriteRule ^(.*)$ index.php?query=$1 [L]
 
 </IfModule>
