@@ -7,4 +7,7 @@
   define('DB_NAME', 'a_name');
   define('DB_HOST', 'localhost');
 
+  // no leading slash
+  define('WEB_ROOT', 'http://localhost');
+
 ?>
