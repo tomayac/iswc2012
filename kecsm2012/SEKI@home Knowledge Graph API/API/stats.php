@@ -11,7 +11,7 @@
   }
 
   $query_last = 'SELECT
-                        T.t as count,
+                        T.t as total,
                         S.val AS subject,
                         P.val AS predicate,
                         O.val AS object
