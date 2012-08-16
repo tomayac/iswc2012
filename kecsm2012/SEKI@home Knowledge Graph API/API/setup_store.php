@@ -8,7 +8,7 @@
     'db_name' => DB_NAME,
     'db_user' => DB_USER,
     'db_pwd' => DB_PASS,
-    'store_name' => 'SEKI'
+    'store_name' => DB_STORE_NAME
   ));
 
   if (!$store->isSetUp()) {
