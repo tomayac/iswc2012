@@ -22,7 +22,6 @@
       }
       table {
         border: 1px solid #ccc;
-        border-collapse: collapse;
         width: 300px;
         font-family: inherit;
         font-size: inherit;
@@ -36,13 +35,14 @@
         margin-bottom: 5px;
       }
       th:only-child {
-        background: lightgreen;
+        border-bottom: 1px solid #ccc;
+        background: #bfb;
         padding: 4px;
         text-align: left;
         color: #000;
       }
       td:first-child{
-        padding: 2px 4px;
+        padding: 0px 2px;
         font-weight: bold;
       }
       #totalInfo {
@@ -51,6 +51,21 @@
       #total {
         font-weight: bold;
         color: #a36;
+      }
+      pre {
+        display: block;
+        border: 1px solid #ccc;
+        background: #fafafa;
+        width: 500px;
+        margin: 4px 0 15px 0;
+        word-wrap: break-word;
+      }
+      pre a:only-child {
+        display: block;
+        padding: 5px;
+      }
+      pre a:only-child:hover {
+        background: #cfc;
       }
     </style>
     <script src="js/jquery.js"></script>
@@ -62,12 +77,12 @@
       <h1>Open Knowledge Graph</h1>
       <h2>SPARQL Endpoint</h2>
 
-      Try for example<br>
-      <a href="sparql?query=select%20?o%20where%20{%20%3Chttp://openknowledgegraph.org/data/H4sIAAAAAAAAAONgVuLUz9U3MDTNycgFAKi7e68NAAAA%3E%20%3Chttp://openknowledgegraph.org/ontology/Fact%3E%20?o.%20}">
-        SELECT ?fact WHERE {<br>
-        &nbsp;&nbsp;&lt;http://openknowledgegraph.org/data/H4sIAAAAAAAAAONgVuLUz9U3MDTNycgFAKi7e68NAAAA&gt; &lt;http://openknowledgegraph.org/ontology/Fact&gt; ?fact .<br>
-        }
-      </a>
+      <div>Try for example</div>
+      <pre><a
+        href="sparql?query=select%20?o%20where%20{%20%3Chttp://openknowledgegraph.org/data/H4sIAAAAAAAAAONgVuLUz9U3MDTNycgFAKi7e68NAAAA%3E%20%3Chttp://openknowledgegraph.org/ontology/Fact%3E%20?o.%20}"
+>SELECT ?fact WHERE {
+  &lt;http://openknowledgegraph.org/data/H4sIAAAAAAAAAONgVuLUz9U3MDTNycgFAKi7e68NAAAA&gt; &lt;http://openknowledgegraph.org/ontology/Fact&gt; ?fact .
+}</a></pre>
 
       <div id="totalInfo">
         Total number of triples:
