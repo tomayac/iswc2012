@@ -1,13 +1,87 @@
 <html>
-  <body>
-    <h1>Open Knowledge Graph</h1>
-    <h2>SPARQL Endpoint</h2>
-
-    Try for example<br>
-    <a href="sparql?query=select%20?o%20where%20{%20%3Chttp://openknowledgegraph.org/data/H4sIAAAAAAAAAONgVuLUz9U3MDTNycgFAKi7e68NAAAA%3E%20%3Chttp://openknowledgegraph.org/ontology/Fact%3E%20?o.%20}">
-      SELECT ?fact WHERE {<br>
-      &nbsp;&nbsp;&lt;http://openknowledgegraph.org/data/H4sIAAAAAAAAAONgVuLUz9U3MDTNycgFAKi7e68NAAAA&gt; &lt;http://openknowledgegraph.org/ontology/Fact&gt; ?fact .<br>
+  <head>
+    <style>
+      body {
+        height: auto!important;
+        min-height: 0;
+        padding: 5px;
+        margin: 0;
       }
-    </a>
+      a {
+        text-decoration: none;
+        color: #36a;
+      }
+      a:hover {
+        color: #a36;
+      }
+      #main {
+        font-family: "lucida grande", verdana, arial, trebuchet, sans-serif;
+        font-size: 9pt;
+        overflow: hidden;
+      }
+      table {
+        border: 1px solid #ccc;
+        border-collapse: collapse;
+        width: 300px;
+        font-family: inherit;
+        font-size: inherit;
+      }
+      #lastTriples {
+        max-height: 420px;
+        overflow: auto;
+      }
+      .triple {
+        border-bottom: 1px solid #ccc;
+        margin-bottom: 5px;
+      }
+      th:only-child {
+        background: lightgreen;
+        padding: 4px;
+        text-align: left;
+        color: #000;
+      }
+      td:first-child{
+        padding: 2px 4px;
+        font-weight: bold;
+      }
+      #totalInfo {
+        text-align: right;
+      }
+      #total {
+        font-weight: bold;
+        color: #a36;
+      }
+    </style>
+    <script src="js/jquery.js"></script>
+    <script src="js/lastTriple.js"></script>
+  </head>
+  <body>
+    <div id="main">
+
+      <h1>Open Knowledge Graph</h1>
+      <h2>SPARQL Endpoint</h2>
+
+      Try for example<br>
+      <a href="sparql?query=select%20?o%20where%20{%20%3Chttp://openknowledgegraph.org/data/H4sIAAAAAAAAAONgVuLUz9U3MDTNycgFAKi7e68NAAAA%3E%20%3Chttp://openknowledgegraph.org/ontology/Fact%3E%20?o.%20}">
+        SELECT ?fact WHERE {<br>
+        &nbsp;&nbsp;&lt;http://openknowledgegraph.org/data/H4sIAAAAAAAAAONgVuLUz9U3MDTNycgFAKi7e68NAAAA&gt; &lt;http://openknowledgegraph.org/ontology/Fact&gt; ?fact .<br>
+        }
+      </a>
+
+      <div id="totalInfo">
+        Total number of triples:
+        <span id="total"><img src="images/ajax_16x16.gif" /></span>
+      </div>
+      <table id="tripleTable">
+        <thead>
+          <tr>
+            <th colspan="2">Last triples added:</th>
+          </tr>
+        </thead>
+        <tbody id="lastTriples">
+
+        </tbody>
+      </table>
+    </div>
   </body>
 </html>
