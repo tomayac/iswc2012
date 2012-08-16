@@ -1,0 +1,27 @@
+# Follow symbolic links in this directory.
+Options +FollowSymlinks
+
+# Set the default handler to index.php:
+DirectoryIndex index.php
+
+Options -MultiViews
+
+<IfModule mod_rewrite.c>
+  RewriteEngine on
+  
+  RewriteBase /data/
+  
+  # Don't allow access to hidden files and folder (that begin with ".")
+  RewriteRule "(^|/)\." - [F]
+
+  # Redirect everyone to example.com instead of www.example.com
+  #RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
+  #RewriteRule ^ http://%1%{REQUEST_URI} [L,R=301]
+
+  # Pass requests not referring directly to files in the filesystem to index.php
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteCond %{REQUEST_URI} !=/favicon.ico
+  RewriteRule ^(.*)$ index.php?query=$1 [L]
+
+</IfModule>
