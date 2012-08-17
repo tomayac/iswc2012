@@ -19,18 +19,22 @@ $(function _popupWindowOnLoad () {
       lastTotal = result.total;
       if (result.subject) {
         var middle = result.subject.lastIndexOf('/') + 1;
-        result.subject = '<a href="'+result.subject+'" target="_blank" ' +
+        result.subject = '&lt;<a href="'+result.subject+'" target="_blank" ' +
                             'title="click to download" >' +
                             result.subject.slice(0, middle) + ' ' +
                             result.subject.slice(middle) +
-                          '</a>';
+                          '</a>&gt;';
       }
+
       $total.html(result.total);
       var wrapper = $(document.createElement('tbody'));
       wrapper.attr('id', result.total).addClass('triple');
       delete result.total;
 
       for (var key in result) {
+        if (/^https?:\/\//i.test(result[key])) {
+          result[key] = '&lt;' + result[key] + '&gt;';
+        }
         wrapper.append( '<tr>' +
                           '<td>' + key + '</td>' +
                           '<td class="'+ key +'">' + result[key] +
