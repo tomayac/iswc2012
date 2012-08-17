@@ -21,15 +21,17 @@
                         ' . DB_STORE_NAME . '_s2val S,
                         ' . DB_STORE_NAME . '_o2val O,
                         ' . DB_STORE_NAME . '_id2val P
-                  WHERE T.s=S.id AND T.p=P.id AND T.o=O.id
+                  WHERE T.s=S.id AND T.p=P.id AND T.o=O.id AND T.t=20086
                   ORDER BY T.t DESC
                   LIMIT 0, 1';
 
   $result = $DB->query($query_last);
-
   if ($result) {
     $row = $result->fetch_assoc();
     if (count($row) > 0) {
+      foreach ($row as $k => $v) {
+        $row[$k] = utf8_encode($v);
+      }
       jsonOutput($row);
     } else {
       jsonOutput(array());
