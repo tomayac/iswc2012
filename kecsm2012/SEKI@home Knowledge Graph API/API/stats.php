@@ -21,7 +21,7 @@
                         ' . DB_STORE_NAME . '_s2val S,
                         ' . DB_STORE_NAME . '_o2val O,
                         ' . DB_STORE_NAME . '_id2val P
-                  WHERE T.s=S.id AND T.p=P.id AND T.o=O.id AND T.t=20086
+                  WHERE T.s=S.id AND T.p=P.id AND T.o=O.id
                   ORDER BY T.t DESC
                   LIMIT 0, 1';
 
