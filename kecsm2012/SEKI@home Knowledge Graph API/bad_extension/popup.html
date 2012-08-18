@@ -1,0 +1,54 @@
+<html>
+  <head>
+    <style>
+      body {
+        font-family: "lucida grande", verdana, arial;
+        font-size: 9pt;
+      }
+      a {
+        text-decoration: none;
+        color: #33f;
+      }
+      a:hover {
+        text-decoration: underline;
+        color: crimson;
+      }
+      ul {
+        padding: 0;
+        margin: 0;
+        list-style-type: none;
+      }
+      #options {
+        width: 300px;
+      }
+      .selected {
+        font-weight: bold;
+        color: #333;
+      }
+      #stats-left {
+        color: green;
+      }
+      #stats-visited {
+        color: blue;
+      }
+      a[target="_blank"] {
+        background: transparent url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAkAAAAJCAIAAABv85FHAAAALHRFWHRDcmVhdGlvbiBUaW1lAEZyaSAzMCBKdW4gMjAwNiAxMjo1MTo1MiAtMDAwMAcGCaoAAAAHdElNRQfWBh4LNwyi0YNgAAAACXBIWXMAAAsSAAALEgHS3X78AAAABGdBTUEAALGPC/xhBQAAAERJREFUeNp1j1EOADAEQxFHc2vuZpJl1lj2PqS0IjgzCYiI1jw8TCgGzWwbJapqj3rjtu6eB9SFvBt9RcYxROiPjp+QBSNmN/gDGx1UAAAAAElFTkSuQmCC) no-repeat center right;
+        padding-right: 12px;
+      }​
+    </style>
+    <script src="js/URI.min.js"></script>
+    <script src="js/popup.js"></script>
+  </head>
+  <body>
+    <div id="options"></div>
+    <hr />
+    <div id="stats">
+      <div>
+        links visited: <b id="stats-visited"></b>/<b id="stats-left"></b>
+      </div>
+      <hr />
+      First and last 5 queries:
+      <ul id="stats-preview"></ul>
+    </div>
+  </body>
+</html>
