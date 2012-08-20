@@ -7,13 +7,12 @@
  */
 
 (function Google_Navigator () {
-  // timeout after which the page is redirected
-  var navigateTimeout = 5 * 1000;
 
   var left;
   var visited;
   var method;
-
+  // timeout after which the page is redirected
+  var navigateTimeout;
 
   $(function _onDocumentReady () {
     var blockNo = 0;
@@ -65,6 +64,7 @@
       left = data.left;
       visited = data.visited;
       method = data.method;
+      navigateTimeout = data.timeout * 1000;
       callback();
     });
   }
@@ -76,7 +76,8 @@
       console.warn('[Google Navigator] Going to (index: ' + index +
                       ', visited: ' + visited.length +
                       ', left: ' + left.length +
-                      ', method: ' + method + '):',
+                      ', method: ' + method +
+                      ', timeout: ' + navigateTimeout + '):',
                     link
       );
       setTimeout(function(){

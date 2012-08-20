@@ -2,6 +2,7 @@
 var left = JSON.parse(localStorage['google-navigator-left'] || '[]');
 var visited = JSON.parse(localStorage['google-navigator-visited'] || '[]');
 var method = JSON.parse(localStorage['google-navigator-method'] || '"queue"');
+var timeout = JSON.parse(localStorage['google-navigator-timeout'] || '5');
 
 chrome.tabs.onUpdated.addListener(function _addPageAction (tabId, change, tab) {
   if (change.status === 'loading') {
@@ -17,8 +18,13 @@ chrome.extension.onMessage.addListener(function (request, sender, sendResponse){
       sendResponse({
         method: method,
         left: left,
-        visited: visited
+        visited: visited,
+        timeout: timeout
       });
+      break;
+    case 'setTimeout':
+      timeout = request.data;
+      saveState();
       break;
     case 'setMethod':
       method = request.data;
@@ -51,4 +57,5 @@ function saveState () {
   localStorage['google-navigator-method'] = JSON.stringify(method);
   localStorage['google-navigator-left'] = JSON.stringify(left);
   localStorage['google-navigator-visited'] = JSON.stringify(visited);
+  localStorage['google-navigator-timeout'] = JSON.stringify(timeout);
 }

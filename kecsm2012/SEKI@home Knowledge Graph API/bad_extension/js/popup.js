@@ -5,9 +5,12 @@ var methods = ['random', 'queue', 'stack'];
 var method;
 var left;
 var visited;
+var timeout;
 
 // DOM elements
 var options;
+var timeoutSeek;
+var rangeValue;
 var stats = {
   wrapper: null,
   left: null,
@@ -17,12 +20,19 @@ var stats = {
 
 window.onload = function () {
   options = document.getElementById('options');
+  timeoutSeek = document.getElementById('timeoutSeek');
+  rangeValue = document.getElementById('rangeValue');
   stats.wrapper = document.getElementById('stats');
   stats.left = document.getElementById('stats-left');
   stats.visited = document.getElementById('stats-visited');
   stats.preview = document.getElementById('stats-preview');
 
   updateData(function _onNewData () {
+    timeoutSeek.onchange = function _onTimeoutSeekChange () {
+      updateTimeout(this.value);
+      chrome.extension.sendMessage({action:'setTimeout', data:timeout});
+    }
+
     options.innerHTML = '';
     options.appendChild(document.createTextNode('Method type: '));
     for (var i=0; i<methods.length; ++i) {
@@ -68,7 +78,6 @@ function updateStats () {
   for (var i=0; i<preview.length; ++i) {
     var query = URI(preview[i]).query(true).q;
     var li = document.createElement('li');
-    console.log(preview[i]);
     li.innerHTML = '<a href="https://google.com' + preview[i] +
                       '" target="_blank">' + query + '</a>';
     stats.preview.appendChild(li);
@@ -86,8 +95,15 @@ function updateData (callback) {
     left = data.left;
     visited = data.visited;
     method = data.method;
+    timeout = data.timeout;
+    updateTimeout(data.timeout);
     callback();
   });
+}
+
+function updateTimeout (value) {
+  timeout = parseInt(parseFloat(value) * 10) / 10;
+  rangeValue.innerHTML = value + 's';
 }
 
 function setMethod (index) {
