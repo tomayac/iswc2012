@@ -78,8 +78,11 @@ function updateStats () {
   for (var i=0; i<preview.length; ++i) {
     var query = URI(preview[i]).query(true).q;
     var li = document.createElement('li');
-    li.innerHTML = '<a href="https://google.com' + preview[i] +
-                      '" target="_blank">' + query + '</a>';
+    var href = preview[i];
+    if (!(/^(https?:\/\/)?(www\.)?google\.[a-z]{3}/i.test(preview[i]))) {
+      href = 'https://google.com' + preview[i];
+    }
+    li.innerHTML = '<a href="' + href + '" target="_blank">' + query + '</a>';
     stats.preview.appendChild(li);
     if (i+1 === previewCount) {
       var separator = document.createElement('li');
