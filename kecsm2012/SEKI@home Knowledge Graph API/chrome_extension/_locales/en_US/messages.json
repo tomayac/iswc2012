@@ -1,2 +1,10 @@
 {
+  "extName": {
+    "message": "SEKI@home, or Crowdsourcing an Open Knowledge Graph API",
+    "description": "Extension name"
+  },
+  "extDesc": {
+    "message": "With SEKI@home, which stands for Search for Embedded Knowledge Items, we propose a browser extension-based approach to crowdsource an Open Knowledge Graph API. As people with the extension installed search on Google.com, the extension sends extracted anonymous Knowledge Graph facts from Search Engine Results Pages (SERPs) to a centralized, publicly accessible triple store, and thus over time creates a SPARQL-queryable Open Knowledge Graph. The SPARQL endpoint for the Open Knowledge Graph is available at http://openknowledgegraph.org/sparql.",
+    "description": "Extension description"
+  }
 }

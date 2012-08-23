@@ -1,8 +1,8 @@
 {
-  "name": "SEKI@home",
-  "version": "0.8",
+  "name": "__MSG_extName__",
+  "version": "0.9",
   "manifest_version": 2,
-  "description": "SEKI@home, or Crowdsourcing an Open Knowledge Graph API",
+  "description": "__MSG_extDesc__",
   "icons": {
     "16": "images/logo_16.png",
     "19": "images/logo_19.png",
@@ -17,7 +17,10 @@
   },
   "content_scripts": [
     {
-      "matches": ["https://www.google.com/*", "http://www.google.com/*"],
+      "matches": [
+        "https://www.google.com/*",
+        "http://www.google.com/*"
+      ],
       "js": [
         "js/jquery.js",
         "js/URI.min.js",
