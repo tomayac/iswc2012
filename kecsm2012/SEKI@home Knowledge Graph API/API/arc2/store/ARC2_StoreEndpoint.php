@@ -331,18 +331,10 @@ class ARC2_StoreEndpoint extends ARC2_Store {
       'sql' => ($this->allow_sql ? 'Plain' : 'xSQL'),
       'infos' => 'Plain',
       'htmltab' => 'HTMLTable',
-      'turtle' => 'Turtle',
       'tsv' => 'TSV',
     );
     if ($f = $this->getResultFormat($formats, 'xml')) {
-      $m = null;
-      switch ($f) {
-        case 'Turtle':
-          $m = 'getTurtleConstructResultDoc';
-          break;
-        default:
-          $m = 'get' . $f . 'SelectResultDoc';
-      }
+      $m = 'get' . $f . 'SelectResultDoc';
       return method_exists($this, $m) ? $this->$m($r) : 'not implemented';
     }
     return '';
