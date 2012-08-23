@@ -19,6 +19,7 @@
       "matches": ["https://www.google.com/*", "http://www.google.com/*"],
       "js": [
         "js/jquery.js",
+        "js/URI.min.js",
         "js/contentscript.js"
       ],
       "run_at": "document_idle"
@@ -28,6 +29,7 @@
   "offline_enabled": false,
   "permissions": [
     "tabs",
+    "unlimitedStorage",
     "https://www.google.com/*",
     "http://www.google.com/*"
   ]

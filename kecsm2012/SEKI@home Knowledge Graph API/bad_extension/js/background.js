@@ -1,6 +1,5 @@
 
-var left = JSON.parse(localStorage['google-navigator-left'] || '[]');
-var visited = JSON.parse(localStorage['google-navigator-visited'] || '[]');
+var visited = JSON.parse(localStorage['google-navigator-visited'] || '0');
 var method = JSON.parse(localStorage['google-navigator-method'] || '"queue"');
 var timeout = JSON.parse(localStorage['google-navigator-timeout'] || '5');
 
@@ -17,7 +16,6 @@ chrome.extension.onMessage.addListener(function (request, sender, sendResponse){
     case 'getData':
       sendResponse({
         method: method,
-        left: left,
         visited: visited,
         timeout: timeout
       });
@@ -31,21 +29,7 @@ chrome.extension.onMessage.addListener(function (request, sender, sendResponse){
       saveState();
       break;
     case 'visitLink':
-      var pos = left.indexOf(request.data);
-      if (pos > -1) {
-        left.splice(pos, 1);
-      }
-      if (visited.indexOf(request.data) === -1) {
-        visited.push(request.data);
-      }
-      saveState();
-      break;
-    case 'addLink':
-      if (visited.indexOf(request.data) === -1 &&
-          left.indexOf(request.data) === -1
-      ) {
-        left.push(request.data);
-      }
+      ++visited;
       saveState();
       break;
     default:
@@ -55,7 +39,6 @@ chrome.extension.onMessage.addListener(function (request, sender, sendResponse){
 
 function saveState () {
   localStorage['google-navigator-method'] = JSON.stringify(method);
-  localStorage['google-navigator-left'] = JSON.stringify(left);
   localStorage['google-navigator-visited'] = JSON.stringify(visited);
   localStorage['google-navigator-timeout'] = JSON.stringify(timeout);
 }
