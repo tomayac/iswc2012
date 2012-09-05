@@ -9,22 +9,46 @@
 
   if (isset($_REQUEST['query'])) {
 
-    $format = isset($_REQUEST['format']) ? $_REQUEST['format'] : 'xml';
+    // mapping from format to extension
+    $extensions = array(
+      'xml' => 'xml',
+      'sparql-results+xml' => 'xml',
+      'json' => 'json',
+      'sparql-results+json' => 'json',
+      'php_ser' => 'json',
+      'plain' => 'txt',
+      'sql' => 'sql',
+      'infos' => 'txt',
+      'htmltab' => 'html',
+      'tsv' => 'tsv'
+    );
+
+    $format = 'xml';
+    if (!isset($_REQUEST['format'])) {
+      // which accept headers to ignore
+      $ignoreContentTypes = array('*', 'html', 'xml', 'xhtml+xml');
+
+      $headers = apache_request_headers();
+      $accept = explode(';', $headers['Accept']);
+      $accept = explode(',', $accept[0]);
+
+      foreach ($accept as $contentType) {
+        $type = substr($contentType, strpos($contentType, '/') + 1);
+        if (!in_array($type, $ignoreContentTypes)) {
+          if (isset($extensions[$type])) {
+            $format = $type;
+            break;
+          } else {
+            // TODO: error or ignore?
+          }
+        }
+      }
+    } else if (isset($extensions[$_REQUEST['format']])) {
+      $format = $_REQUEST['format'];
+    }
 
     if (!headers_sent() && strlen($_REQUEST['query']) > 0) {
       $format = isset($_REQUEST['format']) ? trim($_REQUEST['format']) : 'xml';
-      $extensions = array(
-        'xml' => 'xml',
-        'sparql-results+xml' => 'xml',
-        'json' => 'json',
-        'sparql-results+json' => 'json',
-        'php_ser' => 'json',
-        'plain' => 'txt',
-        'sql' => 'sql',
-        'infos' => 'txt',
-        'htmltab' => 'html',
-        'tsv' => 'tsv'
-      );
       $extension = $format;
       foreach ($extensions as $key => $value) {
         if (preg_match('/^' . $key . '/i', $format)) {
@@ -35,7 +59,6 @@
 
       header('Content-type: text/plain');
       header("Content-Disposition:attachment;filename='$filename'");
-
     }
 
     /* MySQL and endpoint configuration */
