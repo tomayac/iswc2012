@@ -10,6 +10,9 @@
 \usepackage[activate=compatibility]{microtype}
 \usepackage{graphicx}
 
+\usepackage{xspace}
+\newcommand{\googleplus}{Google\nolinebreak\hspace{0em}\raisebox{.28ex}{\tiny\bf +}\kern-0.2ex\xspace}
+
 % autoref command
 \usepackage[pdftex,urlcolor=black,colorlinks=true,linkcolor=black,citecolor=black]{hyperref}
 \def\sectionautorefname{Section}
@@ -34,8 +37,8 @@
 
 \begin{document}
 
-\title{SEKI@home, or Crowdsourcing\\ an Open Knowledge Graph API}
-\titlerunning{SEKI@home, or Crowdsourcing an Open Knowledge Graph API}
+\title{SEKI@home, or Crowdsourcing\\ an Open Knowledge Graph}
+\titlerunning{SEKI@home, or Crowdsourcing an Open Knowledge Graph}
 \authorrunning{T. Steiner and S. Mirea}
 
 \author{
@@ -63,10 +66,11 @@ It currently contains more than 500 million objects,
 as well as more than 3.5 billion facts about
 and relationships between these different objects.
 Soon after its announcement, people started to ask
-for a~Knowledge Graph Application Programming Interface (API),
+for a~programmatic method to access the data in the Knowledge Graph,
 however, as of today, Google does not provide one.
 With \emph{SEKI@home}, which stands for \emph{Search for Embedded Knowledge Items},
-we propose a~browser extension-based approach to crowdsource such an API.
+we propose a~browser extension-based approach
+to crowdsource the task of populating a~data store to build an Open Knowledge Graph.
 As people with the extension installed search on Google.com,
 the extension sends extracted anonymous Knowledge Graph facts from Search Engine Results Pages (SERPs)
 to a~centralized, publicly accessible triple store,
@@ -88,9 +92,9 @@ The Knowledge Graph enhances Google search in three main ways:
 by disambiguation of search queries,
 by search log-based summarization of key facts,
 and by explorative search suggestions.
-This triggered demand for a~Knowledge Graph API that would allow for
-programmatically accessing the facts stored in the Knowledge Graph~\cite{quora2012}.
-At time of writing, however, no such API is available.
+This triggered demand for a~method to access
+the facts stored in the Knowledge Graph programmatically~\cite{quora2012}.
+At time of writing, however, no such programmatic method is available.
 
 \subsection{On Crowdsourcing} \label{sec:on-crowdsourcing}
 The term \emph{crowdsourcing} was first coined by Jeff Howe
@@ -125,8 +129,9 @@ to make closed knowledge bases programmatically and openly accessible.
 We demonstrate its applicability with the Google Knowledge Graph.
 The extension can be added to the Google Chrome browser by navigating to
 \url{http://bit.ly/SEKIatHome},
-our unofficial crowdsourced Open Knowledge Graph API can be tested at
-\url{http://openknowledgegraph.org/sparql}.
+the Open Knowledge Graph SPARQL endpoint can be tested at
+\url{http://openknowledgegraph.org/sparql}\footnote{
+The SPARQL endpoint and the extension were active from Aug. 11 to Sep. 6, 2012.}.
 
 The remainder of this paper is structured as follows.
 In \autoref{sec:related-work}, we highlight related work
@@ -143,7 +148,7 @@ Examples are the Google Art wrapper by Guéret~\cite{gueret2011},
 which lifts the data from the Google Art project~\cite{sood2011},
 or the now discontinued SlideShare wrapper\footnote{\url{http://linkeddata.few.vu.nl/slideshare/}} by the same author.
 Such wrappers typically work by mimicking the URI scheme of the site they are wrapping.
-Adapting parts of the URL of the original resource for that of the wrapper
+Adapting parts of the URL of the original resource to that of the wrapper
 provides access to the desired data.
 Wrappers do not offer SPARQL endpoints, as their data gets computed on-the-fly.
 
@@ -151,7 +156,7 @@ With \emph{SEKI@home}, we offer a~related, however, still different in the detai
 approach to lift and make machine-readably accessible
 closed knowledge bases like the Knowledge Graph.
 The entirety of the knowledge base being unknown,
-via crowdsourcing, we can distribute the heavy burden
+via crowdsourcing we can distribute the heavy burden
 of crawling the whole Knowledge Graph on many shoulders.
 Finally, by storing the extracted facts centrally in a~triple store,
 our approach allows for openly accessing the data via the standard SPARQL protocol.
@@ -184,9 +189,10 @@ In order to make this data meaningful again, we need to lift it.
 We use JSON-LD~\cite{sporny2012}, a~JSON representation format
 for expressing directed graphs;
 mixing both Linked Data and non-Linked Data in a~single document.
-JSON-LD allows for adding meaning by simply including or referencing a~context.
+JSON-LD allows for adding meaning
+by simply including or referencing a~so-called (data) context.
 The syntax is designed to not disturb already deployed systems running on JSON,
-but provide a~smooth upgrade path from JSON to JSON-LD.
+but to provide a~smooth upgrade path from JSON to JSON-LD.
 
 \begin{comment}
 \begin{figure}[htb!]
@@ -209,9 +215,9 @@ Similar to the unknown list of objects in the Knowledge Graph (see \autoref{sec:
 there is no known list of Knowledge Graph terms,
 which makes a~complete mapping impossible.
 We have collected roughly 380 Knowledge Graph terms
-as of time of writing, however, mapping them to other Linked Data vocabularies
+at time of writing, however, mapping them to other Linked Data vocabularies
 will be a~permanent work in progress.
-\autoref{code:jsonld} shows the lifted, meaningful JSON-LD as returned by the extension.
+As an example, \autoref{code:jsonld} shows the lifted, meaningful JSON-LD as returned by the extension.
 
 \begin{lstlisting}[caption=Subset of the meaningful JSON-LD from the Chuck Norris Knowledge Graph data. The mapping of the Knowledge Graph terms can be seen in the @context., label=code:jsonld, float=hbt!, escapechar=§, belowskip=-1em]
 {
@@ -266,15 +272,15 @@ which we have done via the property \texttt{prov:wasDerivedFrom}
 from the PROV Ontology~\cite{lebo2012} for each entity.
 
 \section{Evaluation} \label{sec:evaluation}
+
+\subsection{Ease of Use}
 At time of writing, we have evaluated the \emph{SEKI@home} approach
-with a~number of 15 users
+for the criterium \emph{ease of use} with a~number of 15 users
 with medium to advanced computer and programming skills
-who had installed the browser extension
+who had installed a~pre-release version of the browser extension
 and who simply browsed the Google Knowledge Graph by following links,
 starting from the URL \url{https://www.google.com/search?q=chuck+norris},
 which triggers Knowledge Graph results.
-
-\subsection{Ease of Use}
 One of our design goals when we imagined \emph{SEKI@home}
 was to make it as unobtrusive as possible.
 We asked the extension users to install the extension
@@ -284,7 +290,7 @@ while actually in the background the extension
 was sending back extracted Knowledge Graph facts
 to the RDF triple store at full pace.
 
-\subsection{Statistics}
+\subsection{Data Statistics}
 On average, the number of 31 triples gets added to the triple store
 per SERP with Knowledge Graph result.
 Knowledge Graph results vary in their level of detail.
@@ -296,6 +302,11 @@ others are references to other Knowledge Graph entities,
 like a~value for \texttt{okg:Movies\_and\_TV\_shows}.
 The relation of reference values to plaintext values is about 1.5,
 which means the Knowledge Graph is well interconnected.
+
+\subsection{Quantitative Evaluation}
+In its short lifetime from August 11 to September 6, 2012, the extension users
+have collected exactly 2,850,510 RDF triples.
+In that period, all in all 39 users had the extension installed in production.
 
 \section{Future Work} \label{sec:future-work}
 A~concrete next step for the current application
@@ -313,11 +324,15 @@ We plan to apply \emph{SEKI@home} to semantic video enrichment by splitting
 the computational heavy annotation task,
 and store the extracted facts centrally in a~triple store
 to allow for open SPARQL access.
+In~\cite{steiner2012}, we have proposed the creation of
+a~comments archive of things people said about real-world entities
+on social networks like Twitter, Facebook, and \googleplus,
+which we plan to realize via \emph{SEKI@home}.
 
 \section{Conclusion} \label{sec:conclusion}
 In this paper, we have shown a~generalizable approach
-to first opening up closed knowledge bases by means of crowdsourcing,
-and then making the extracted facts universally and openly accessible.
+to first open up closed knowledge bases by means of crowdsourcing,
+and then make the extracted facts universally and openly accessible.
 As an example knowledge base, we have used the Google Knowledge Graph.
 The extracted facts can be accessed via the standard SPARQL protocol
 from the Google-independent Open Knowledge Graph website
@@ -330,11 +345,10 @@ we hope to have contributed a~useful socially enabled chain link
 to the Linked Data world.
 
 \section*{Acknowledgments}
-%\small
-T. Steiner is partially supported by the European Commission
-under Grant No.~248296 FP7 (\mbox{I-SEARCH} project).
+\small
+T. Steiner is partially supported by the EC
+under Grant No.~248296 FP7 (\mbox{I-SEARCH}).
 
-%\linespread{1}
 \bibliographystyle{abbrv}
 \bibliography{iswc2012}
 
