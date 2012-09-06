@@ -360,6 +360,7 @@
   }
 
   function handleResult(result) {
+    return; // simply avoid scrobbling for now.
     log('Sending request to server', result);
     $.get(SERVER_URL, {
       data: JSON.stringify(result)
