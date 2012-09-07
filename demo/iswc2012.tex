@@ -36,15 +36,12 @@
 		Rik Van de Walle\inst{2}		
 }
 
-\institute{Universitat Politècnica de Catalunya -- Department {\sc lsi}\\
-		   08034 Barcelona, Spain\\
+\institute{Universitat Politècnica de Catalunya -- Department {\sc lsi}, Spain\\
 		   \urldef{\emails}\UrlFont\path|{tsteiner,gabarro}@lsi.upc.edu|
 		   \emails\rm
 		   \and
 		   Ghent University -- IBBT,
-		   ELIS -- Multimedia Lab\\
-		   Gaston Crommenlaan 8 bus 201,
-		   B-9050 Ledeberg-Ghent, Belgium\\
+		   ELIS -- Multimedia Lab, Belgium\\
 		   \urldef{\emails}\UrlFont\path|{ruben.verborgh,rik.vandewalle}@ugent.be|
 		   \emails\rm
 		   \and
@@ -95,20 +92,23 @@ Earlier this year, a~new feature called \emph{realtime coverage}
 was added to the portal~\cite{zuccarino2012}, providing signed in US \googleplus users
 with the latest relevant posts from the \googleplus community for news stories.
 
-In this paper, we have implemented a~social network-agnostic approach
+We have implemented a~social network-agnostic approach
 to add realtime coverage to Knowledge Graph results via a~browser extension.
 The extension is freely available on the Chrome Web
 Store\footnote{Knowledge Graph Socializer extension (\url{http://goo.gl/rzdVK})};
-an also free Google API key is required.
+a~free Google API key is required.
 
 \section{Methodology}
 Chrome extensions are small software programs that users can install
 to enrich their browsing experience.
 Via so-called \emph{content scripts}, extensions can inject and modify the contents of Web pages.
 We have implemented an extension that gets activated when a~user uses Google to search the Web.
-If the extension detects that the current search engine results page
+If the extension detects that the current search engine results page (SERP)
 has an associated real-world entity in the Knowledge Graph,
-first, it extracts the entity's name and Wikipedia URL.
+first, it extracts the entity's name and its URL.
+The URL typically points to the Wikipedia page of the real-world entity,
+however, in some cases, depending on the data source,
+can also point to, \emph{e.g.}, a~Google Books page.
 Second, the extension performs full-text searches via the search APIs of
 the popular social networking sites \googleplus, Twitter, and Facebook
 and returns the top $n$ results (configurable) of each network.
@@ -116,7 +116,10 @@ Third, all microposts get analyzed and annotated via part-of-speech tagging.
 For each (pair of) nouns, the Freebase search API is used
 to link these strings with entities,
 a~task commonly known as \emph{entity linking}~\cite{spitkovsky2012}.
-We follow a~context-free, most frequent sense approach,
+In future, the Freebase-linked entities can be checked for relevancy
+by measuring their relatedness to the extracted Knowledge Graph concept,
+uniquely identified by its URL.
+For now, we follow a~context-free, most frequent sense approach,
 which, according to Agirre and Edmonds~\cite{agirre2007},
 serves as a~surprisingly strong baseline,
 an observation that we can confirm in our evaluation of micropost \emph{relevancy}
@@ -126,16 +129,22 @@ and attached in form of a~separate panel to the Knowledge Graph result.
 A~screenshot with exemplary extension output for the entity
 \emph{``Isabella Stewart Gardner Museum''} in Boston, MA,
 is online\footnote{Screenshot of the extension (\url{http://twitpic.com/a8zgiq/full})}. 
-% RV: Might be wortwhile to add annotations to the screenshot.
 
 \section{Evaluation}
 For the evaluation, we have considered 100 microposts from 94 unique users,
 out of which 72 microposts contained outbound links to overall 94 Web pages.
-We have evaluated the extension on 21 real-world entities starting from the concept
+We asked a~not involved student evaluator
+to evaluate the extension on 21 real-world entities, starting from the concept
 \emph{``Boston,~MA''}, and then recursively following graph links to related concepts.
 Our evaluation criteria were \emph{usefulness} of the information
 contained in both the microposts and the potentially linked-to Web pages,
 and the \emph{relevancy} of the microposts to the real-world entities in question.
+We considered a~micropost \emph{useful} if it provided additional information on an entity
+that was not covered by the already existing Knowledge Graph facts, like, \emph{e.g.},
+restaurant tips for a location type entity.
+A~micropost was considered \emph{relevant} if the human evaluator could draw a~connection
+to the current real-world entity, like, \emph{e.g.},
+a~link to a~recent news article about a~celebrity type entity.
 We have calculated the Mean~Opinion Score (MOS)~\cite{mos1998} for both criteria.
 
 Traditionally, MOS is used for conducting subjective evaluations
@@ -145,17 +154,17 @@ for evaluating \emph{per se} subjective things
 like perceived quality from the users' perspective. 
 Therefore, a~set of standard, subjective tests are conducted,
 where a~number of users rate the quality of test samples
-with scores ranging from 1 (worst) to 5 (best).
-The actual MOS is then the arithmetic mean of all individual scores.
+with scores from 1 (worst) to 5 (best).
+The actual MOS is the arithmetic mean of all individual scores.
 Given our intrinsically subjective evaluation criteria,
-namely \emph{usefulness} and \emph{relevancy},
-MOS provides a~meaningful way to judge the overall quality of our approach.
+MOS provides a~meaningful way to judge the quality of our approach.
 
 For \emph{relevancy}, the MOS was 4.38 out of 5.
 For \emph{usefulness}, we have calculated a~MOS of 3.75 out of 5.
 Our complete evaluation is available online\footnote{Evaluation (\url{http://goo.gl/dbvr4})}.
 In the following, we provide an interpretation of the MOS results for both criteria.
 
+\vspace{-0.5em}
 \paragraph{Usefulness:}
 The MOS of 3.75 suggests potential for improvement,
 albeit the information from the microposts and linked-to Web pages
@@ -180,6 +189,7 @@ that are geotagged (and thus relevant), however,
 provide no other information besides the fact that a~user was at a~certain place.
 By disregarding all three types of microposts, the MOS could be increased to 3.94.
 
+\vspace{-0.5em}
 \paragraph{Relevancy:} \label{sec:relevancy}
 The high MOS of 4.38 shows that the microposts
 were in the majority of cases considered very relevant.
@@ -201,9 +211,9 @@ Exploiting this fact and considering that Knowledge Graph results
 have already been interlinked via \texttt{owl:sameAs}
 with Freebase entities~\cite{glaser2012},
 we can imagine a~comments archive of things people said about real-world entities.
-The SIOC Ontology~\cite{breslin2005} by Breslin \emph{et al.}
-provides an ideal vocabulary for such archive,
-as both the context of the comments and their provenance can be described.
+% The SIOC Ontology~\cite{breslin2005} by Breslin \emph{et al.}
+% provides an ideal vocabulary for such archive,
+% as both the context of the comments and their provenance can be described.
 Taking it one step further, we can think of not only archiving user comments,
 but also adding meaning to them~\cite{steiner2013},
 which would allow for interesting use cases
@@ -233,7 +243,7 @@ the Fund for Scientific Research Flanders~(\mbox{FWO} Flanders), and the Europea
 J. Gabarr\'o is partially supported by \mbox{SGR}~2009--2015 (\mbox{ALCOM}) and
 \mbox{TIN}--2007--66523~(\mbox{FORMALISM}).
 
-\linespread{1}
+%\linespread{1}
 \bibliographystyle{abbrv}
 \bibliography{iswc2012}
 
