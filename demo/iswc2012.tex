@@ -1,3 +1,7 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%  Adding Realtime Coverage to the Google Knowledge Graph  %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \documentclass[runningheads,a4paper]{llncs}
 
 \usepackage[utf8]{inputenc}
@@ -23,16 +27,20 @@
 \usepackage{comment}
 \linespread{0.96}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%  Beginning of document  %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \begin{document}
 
 \title{Adding Realtime Coverage to\\the Google Knowledge Graph}
 \titlerunning{Adding Realtime Coverage to the Google Knowledge Graph}
-\authorrunning{Adding Realtime Coverage to the Google Knowledge Graph}
+\authorrunning{Steiner et al.}
 
 \author{Thomas Steiner\inst{1}\thanks{Full disclosure: the author is also a~Google employee.} \and
-		Ruben Verborgh\inst{2} \and 
-		Raphaël Troncy\inst{3} \and \\
-		Joaquim Gabarro\inst{1} \and 
+		Ruben Verborgh\inst{2} \and
+		Rapha\"el Troncy\inst{3} \and \\
+		Joaquim Gabarro\inst{1} \and
 		Rik Van de Walle\inst{2}		
 }
 
@@ -54,6 +62,9 @@
 % Start footnotes again by 0.
 \setcounter{footnote}{0}
 
+%%%%%%%%%%%%%%%%%%
+%%%  Abstract  %%%
+%%%%%%%%%%%%%%%%%%
 \begin{abstract}
 In May 2012, the Web search engine Google has introduced the so-called Knowledge Graph,
 a~graph that understands real-world entities and their relationships to one another.
@@ -76,11 +87,15 @@ we invite the reader to reconstruct the examples of this paper
 to see how realtime opinions may have changed since time of writing.
 \end{abstract}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%  1. Introduction  %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \section{Introduction}
 With the introduction of the Knowledge Graph, the search engine Google
 has made a~significant paradigm shift towards \textit{``things, not strings''}~\cite{singhal2012},
 as a~post on the official Google blog states.
-With the graph, Google now publicly acknowledges efforts in the direction of 
+With the graph, Google now publicly acknowledges efforts in the direction of
 understanding the difference between queries like ``giants''
 for the football team (New York Giants)
 and ``giants'' for the baseball team (San Francisco Giants).
@@ -95,23 +110,24 @@ with the latest relevant posts from the \googleplus community for news stories.
 We have implemented a~social network-agnostic approach
 to add realtime coverage to Knowledge Graph results via a~browser extension.
 The extension is freely available on the Chrome Web
-Store\footnote{Knowledge Graph Socializer extension (\url{http://goo.gl/rzdVK})};
-a~free Google API key is required.
+Store\footnote{Knowledge Graph Socializer extension (\url{http://goo.gl/rzdVK})} but a free Google API key is required.
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+%%%  2. Methodology  %%%
+%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Methodology}
 Chrome extensions are small software programs that users can install
-to enrich their browsing experience.
-Via so-called \emph{content scripts}, extensions can inject and modify the contents of Web pages.
+to enrich their browsing experience. Extensions can inject and modify the contents of Web pages via so-called \emph{content scripts}.
 We have implemented an extension that gets activated when a~user uses Google to search the Web.
 If the extension detects that the current search engine results page (SERP)
-has an associated real-world entity in the Knowledge Graph,
-first, it extracts the entity's name and its URL.
-The URL typically points to the Wikipedia page of the real-world entity,
-however, in some cases, depending on the data source,
-can also point to, \emph{e.g.}, a~Google Books page.
+has an associated real-world entity in the Knowledge Graph, it first extracts the entity's name and its URL.
+The URL typically points to a Wikipedia page of the real-world entity.
+In some cases, depending on the data source,
+it can also point to a~Google Books page or other resources.
 Second, the extension performs full-text searches via the search APIs of
 the popular social networking sites \googleplus, Twitter, and Facebook
-and returns the top $n$ results (configurable) of each network.
+and returns the top $n$ results (configurable) of each applications.
 Third, all microposts get analyzed and annotated via part-of-speech tagging.
 For each (pair of) nouns, the Freebase search API is used
 to link these strings with entities,
@@ -128,7 +144,11 @@ In a~final step, the resulting set of microposts is ordered chronologically
 and attached in form of a~separate panel to the Knowledge Graph result.
 A~screenshot with exemplary extension output for the entity
 \emph{``Isabella Stewart Gardner Museum''} in Boston, MA,
-is online\footnote{Screenshot of the extension (\url{http://twitpic.com/a8zgiq/full})}. 
+is online\footnote{Screenshot of the extension (\url{http://twitpic.com/a8zgiq/full})}.
+
+%%%%%%%%%%%%%%%%%%%%%%%
+%%%  3. Evaluation  %%%
+%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Evaluation}
 For the evaluation, we have considered 100 microposts from 94 unique users,
@@ -139,19 +159,18 @@ to evaluate the extension on 21 real-world entities, starting from the concept
 Our evaluation criteria were \emph{usefulness} of the information
 contained in both the microposts and the potentially linked-to Web pages,
 and the \emph{relevancy} of the microposts to the real-world entities in question.
-We considered a~micropost \emph{useful} if it provided additional information on an entity
+We consider a~micropost \emph{useful} if it provides additional information on an entity
 that was not covered by the already existing Knowledge Graph facts, like, \emph{e.g.},
 restaurant tips for a location type entity.
-A~micropost was considered \emph{relevant} if the human evaluator could draw a~connection
+A~micropost is considered \emph{relevant} if the human evaluator could draw a~connection
 to the current real-world entity, like, \emph{e.g.},
 a~link to a~recent news article about a~celebrity type entity.
 We have calculated the Mean~Opinion Score (MOS)~\cite{mos1998} for both criteria.
 
 Traditionally, MOS is used for conducting subjective evaluations
-of telephony network transmission quality,
-however, more recently, MOS has also found wider usage in the multimedia community
+of telephony network transmission quality. More recently, MOS has also found wider usage in the multimedia community
 for evaluating \emph{per se} subjective things
-like perceived quality from the users' perspective. 
+like perceived quality from the users' perspective.
 Therefore, a~set of standard, subjective tests are conducted,
 where a~number of users rate the quality of test samples
 with scores from 1 (worst) to 5 (best).
@@ -164,7 +183,7 @@ For \emph{usefulness}, we have calculated a~MOS of 3.75 out of 5.
 Our complete evaluation is available online\footnote{Evaluation (\url{http://goo.gl/dbvr4})}.
 In the following, we provide an interpretation of the MOS results for both criteria.
 
-\vspace{-0.5em}
+\vspace{-0.7em}
 \paragraph{Usefulness:}
 The MOS of 3.75 suggests potential for improvement,
 albeit the information from the microposts and linked-to Web pages
@@ -185,11 +204,10 @@ but that lack the context of the conversation, and finally
 (iii) so-called native check-in messages on \googleplus,
 together with shared Foursquare check-in messages on Twitter and Facebook
 via connected user profiles\footnote{``Connecting/sharing to Facebook and Twitter'' (\url{http://goo.gl/NBuCr})}
-that are geotagged (and thus relevant), however,
-provide no other information besides the fact that a~user was at a~certain place.
+that are geotagged (and thus relevant) but that provide no other information besides the fact that a~user was at a~certain place.
 By disregarding all three types of microposts, the MOS could be increased to 3.94.
 
-\vspace{-0.5em}
+\vspace{-0.7em}
 \paragraph{Relevancy:} \label{sec:relevancy}
 The high MOS of 4.38 shows that the microposts
 were in the majority of cases considered very relevant.
@@ -200,16 +218,20 @@ or on the other hand, include some sort of disambiguation aid
 In~\cite{spitkovsky2012}, Spitkovsky and Chang have collected
 an extensive set of link titles for Wikipedia concepts
 and shown that an entirely context-free approach
-to linking strings with concepts does consistently well.
+to linking strings with concepts works consistently well.
 Together with the observation above, this justifies
-our concept title-based full-text search approach on social networking sites,
+our concept title-based full-text search approach on social networking sites as
 reflected by the MOS.
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%  4. Future Work and Conclusion  %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \section{Future Work and Conclusion}
-Each concept in the Knowledge Graph has a~unique identifier~\cite{thalhammer2012}.
+Each concept in the Knowledge Graph has a~unique identifier\footnote{\url{http://lists.w3.org/Archives/Public/semantic-web/2012Jun/0028.html}}.
 Exploiting this fact and considering that Knowledge Graph results
 have already been interlinked via \texttt{owl:sameAs}
-with Freebase entities~\cite{glaser2012},
+with Freebase entities\footnote{\url{http://lists.w3.org/Archives/Public/semantic-web/2012Jun/0031.html}},
 we can imagine a~comments archive of things people said about real-world entities.
 % The SIOC Ontology~\cite{breslin2005} by Breslin \emph{et al.}
 % provides an ideal vocabulary for such archive,
@@ -217,9 +239,9 @@ we can imagine a~comments archive of things people said about real-world entitie
 Taking it one step further, we can think of not only archiving user comments,
 but also adding meaning to them~\cite{steiner2013},
 which would allow for interesting use cases
-like searching for places that are frequented by celebrities.
+such as searching for places that are attended by celebrities.
 
-Concluding, in this paper we have shown how realtime coverage
+Concluding, we have shown in this paper how realtime coverage
 can be added to Knowledge Graph results via a~browser extension.
 We have evaluated both the \emph{usefulness} and \emph{relevancy}
 of the returned microposts and linked-to Web pages,
@@ -232,10 +254,13 @@ can be successfully combined for fun and profit
 with the rather dynamic, \emph{a~priori} unstructured world
 of social network microposts.
 
+%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%  Acknowledgments  %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \section*{Acknowledgments}
 \small
-T. Steiner is partially supported by the European Commission
-under Grant No.~248296 FP7 (\mbox{I-SEARCH} project).
+The research leading to this paper was partially supported by the European Commission via the FP7 projects \mbox{I-SEARCH} (GA 248296) and LinkedTV (GA 287911).
 R. Verborgh is funded by Ghent University,
 the Interdisciplinary Institute for Broadband Technology~(\mbox{IBBT}),
 the Institute for the Promotion of Innovation by Science and Technology in Flanders~(\mbox{IWT}),
