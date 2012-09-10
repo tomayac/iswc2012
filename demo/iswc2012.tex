@@ -110,7 +110,8 @@ with the latest relevant posts from the \googleplus community for news stories.
 We have implemented a~social network-agnostic approach
 to add realtime coverage to Knowledge Graph results via a~browser extension.
 The extension is freely available on the Chrome Web
-Store\footnote{Knowledge Graph Socializer extension (\url{http://goo.gl/rzdVK})} but a free Google API key is required.
+Store\footnote{Knowledge Graph Socializer extension (\url{http://goo.gl/rzdVK})};
+a~free Google API key is required.
 
 %%%%%%%%%%%%%%%%%%%%%%%%
 %%%  2. Methodology  %%%
@@ -118,16 +119,20 @@ Store\footnote{Knowledge Graph Socializer extension (\url{http://goo.gl/rzdVK})}
 
 \section{Methodology}
 Chrome extensions are small software programs that users can install
-to enrich their browsing experience. Extensions can inject and modify the contents of Web pages via so-called \emph{content scripts}.
-We have implemented an extension that gets activated when a~user uses Google to search the Web.
+to enrich their browsing experience.
+Extensions can inject and modify the contents of Web pages
+via so-called \emph{content scripts}.
+We have implemented an extension that gets activated
+when a~user uses Google to search the Web.
 If the extension detects that the current search engine results page (SERP)
-has an associated real-world entity in the Knowledge Graph, it first extracts the entity's name and its URL.
-The URL typically points to a Wikipedia page of the real-world entity.
-In some cases, depending on the data source,
-it can also point to a~Google Books page or other resources.
+has an associated real-world entity in the Knowledge Graph,
+it first extracts the entity's name and its URL.
+The URL typically points to a~Wikipedia page of the real-world entity.
+In some cases---depending on the data source---it
+can also point to a~Google Books page or other resources.
 Second, the extension performs full-text searches via the search APIs of
 the popular social networking sites \googleplus, Twitter, and Facebook
-and returns the top $n$ results (configurable) of each applications.
+and returns the top $n$ results (configurable) of each social network.
 Third, all microposts get analyzed and annotated via part-of-speech tagging.
 For each (pair of) nouns, the Freebase search API is used
 to link these strings with entities,
@@ -143,7 +148,7 @@ in \autoref{sec:relevancy}.
 In a~final step, the resulting set of microposts is ordered chronologically
 and attached in form of a~separate panel to the Knowledge Graph result.
 A~screenshot with exemplary extension output for the entity
-\emph{``Isabella Stewart Gardner Museum''} in Boston, MA,
+\emph{``Isabella Stewart Gardner Museum''}
 is online\footnote{Screenshot of the extension (\url{http://twitpic.com/a8zgiq/full})}.
 
 %%%%%%%%%%%%%%%%%%%%%%%
@@ -168,20 +173,20 @@ a~link to a~recent news article about a~celebrity type entity.
 We have calculated the Mean~Opinion Score (MOS)~\cite{mos1998} for both criteria.
 
 Traditionally, MOS is used for conducting subjective evaluations
-of telephony network transmission quality. More recently, MOS has also found wider usage in the multimedia community
+of telephony network transmission quality.
+More recently, MOS has also found wider usage in the multimedia community
 for evaluating \emph{per se} subjective things
 like perceived quality from the users' perspective.
 Therefore, a~set of standard, subjective tests are conducted,
-where a~number of users rate the quality of test samples
+where users rate the quality of test samples
 with scores from 1 (worst) to 5 (best).
 The actual MOS is the arithmetic mean of all individual scores.
 Given our intrinsically subjective evaluation criteria,
 MOS provides a~meaningful way to judge the quality of our approach.
-
-For \emph{relevancy}, the MOS was 4.38 out of 5.
-For \emph{usefulness}, we have calculated a~MOS of 3.75 out of 5.
+For \emph{relevancy}, the MOS was 4.38.
+For \emph{usefulness}, we have calculated a~MOS of 3.75.
 Our complete evaluation is available online\footnote{Evaluation (\url{http://goo.gl/dbvr4})}.
-In the following, we provide an interpretation of the MOS results for both criteria.
+We provide an interpretation of the results below.
 
 \vspace{-0.7em}
 \paragraph{Usefulness:}
@@ -204,7 +209,9 @@ but that lack the context of the conversation, and finally
 (iii) so-called native check-in messages on \googleplus,
 together with shared Foursquare check-in messages on Twitter and Facebook
 via connected user profiles\footnote{``Connecting/sharing to Facebook and Twitter'' (\url{http://goo.gl/NBuCr})}
-that are geotagged (and thus relevant) but that provide no other information besides the fact that a~user was at a~certain place.
+that are geotagged (and thus relevant),
+but that provide no other information besides the fact
+that a~user was at a~certain place.
 By disregarding all three types of microposts, the MOS could be increased to 3.94.
 
 \vspace{-0.7em}
@@ -218,20 +225,20 @@ or on the other hand, include some sort of disambiguation aid
 In~\cite{spitkovsky2012}, Spitkovsky and Chang have collected
 an extensive set of link titles for Wikipedia concepts
 and shown that an entirely context-free approach
-to linking strings with concepts works consistently well.
+to link strings with concepts works consistently well.
 Together with the observation above, this justifies
-our concept title-based full-text search approach on social networking sites as
-reflected by the MOS.
+our concept title-based full-text search approach on social networking sites,
+as reflected by the MOS.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%  4. Future Work and Conclusion  %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Future Work and Conclusion}
-Each concept in the Knowledge Graph has a~unique identifier\footnote{\url{http://lists.w3.org/Archives/Public/semantic-web/2012Jun/0028.html}}.
+Each concept in the Knowledge Graph has a~unique identifier\footnote{A. Thalhammer to the \url{semantic-web@w3.org} mailing list (\url{http://goo.gl/2m0zJ})}.
 Exploiting this fact and considering that Knowledge Graph results
 have already been interlinked via \texttt{owl:sameAs}
-with Freebase entities\footnote{\url{http://lists.w3.org/Archives/Public/semantic-web/2012Jun/0031.html}},
+with Freebase entities\footnote{H. Glaser to the \url{semantic-web@w3.org} mailing list (\url{http://goo.gl/jj6Sg})},
 we can imagine a~comments archive of things people said about real-world entities.
 % The SIOC Ontology~\cite{breslin2005} by Breslin \emph{et al.}
 % provides an ideal vocabulary for such archive,
@@ -267,7 +274,6 @@ the Institute for the Promotion of Innovation by Science and Technology in Fland
 the Fund for Scientific Research Flanders~(\mbox{FWO} Flanders), and the European Union.
 J. Gabarr\'o is partially supported by \mbox{SGR}~2009--2015 (\mbox{ALCOM}) and
 \mbox{TIN}--2007--66523~(\mbox{FORMALISM}).
-
 %\linespread{1}
 \bibliographystyle{abbrv}
 \bibliography{iswc2012}
